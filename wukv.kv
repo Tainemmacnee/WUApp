@@ -1,0 +1,154 @@
+#:import hex kivy.utils.get_color_from_hex
+ScreenManagement:
+    UserPage:
+    LoginPage:
+    LoadingPage:
+    GamePage:
+
+<LoginPage>:
+    name: "login_page"
+    FloatLayout:
+        Image:
+            source: 'Resources/Wellington_title_font.png'
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.5, 'center_y':0.9}
+        Image:
+            source: 'Resources/Ultimate_title_font.png'
+            size_hint: 0.8, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.8}
+        TextInput:
+            id: email
+            multiline: False
+            hint_text: 'Email'
+            size_hint: 0.4, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.62}
+        TextInput:
+            id: passw
+            multiline: False
+            hint_text: 'Password'
+            password: True # hide password
+            size_hint: 0.4, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.55}
+        Button:
+            text: "Login"
+            on_release:
+                #app.root.get_screen("loading_page").username = app.root.get_screen(app.root.current).ids["email"].text
+                #app.root.get_screen("loading_page").password = app.root.get_screen(app.root.current).ids["passw"].text
+                #app.root.current = "loading_page"
+
+                app.root.get_screen(app.root.current).verify_login(app.root.get_screen('login_page').ids["email"].text, app.root.get_screen('login_page').ids["passw"].text)
+            size_hint: 0.4, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.48}
+
+<LoadingPage>:
+    name: "loading_page"
+    FloatLayout:
+        Image:
+            source: 'Resources/Loading.gif'
+            pos_hint: {'center_x': 0.5, 'center_y':0.5}
+
+<UserPage>:
+    name: "user"
+    BoxLayout:
+        orientation: 'vertical'
+        FloatLayout:
+            size_hint: 1, 0.0825
+            canvas:
+                Color:
+                    rgba: hex('#2C2C2E')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            ImageButton:
+                source: 'Resources/Logout_small.png'
+                size_hint: 0.6, 0.6
+                pos_hint: {'center_x': 0.1, 'center_y':0.5}
+                on_release:
+                    app.root.logout()
+            Label:
+                text: 'User Name'
+                pos_hint: {'center_x': 0.5, 'center_y':0.5}
+        FloatLayout:
+            size_hint: 1, 0.9175
+            canvas:
+                Color:
+                    rgba: hex('#555555')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            ImageButton:
+                source: 'Resources/Schedule.png'
+                size_hint: 0.3, 0.3
+                pos_hint: {'center_x': 0.3, 'center_y':0.8}
+                on_release:
+                    app.root.logout()
+            ImageButton:
+                source: 'Resources/team.png'
+                size_hint: 0.3, 0.3
+                pos_hint: {'center_x': 0.7, 'center_y':0.8}
+                on_release:
+                    app.root.logout()
+
+
+<GamePage>:
+    name: "game_page"
+    BoxLayout:
+        orientation: 'vertical'
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            FloatLayout:
+                size_hint: 1, None
+                Label:
+                    text: "Team1"
+                    id: homeTeam
+                    size_hint: 0.25, 0.25
+                    pos_hint: {'center_x': 0.3, 'center_y': 0.9}
+                Label:
+                    text: "Team2"
+                    id: awayTeam
+                    size_hint: 0.25, 0.25
+                    pos_hint: {'center_x': 0.6, 'center_y': 0.9}
+                Spinner:
+                    id: homeTeamScore
+                    size_hint: 0.1, 0.1
+                    pos_hint: {'center_x': 0.3, 'center_y': 0.8}
+                    text: '0'
+                    values: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+                Spinner:
+                    id: awayTeamScore
+                    size_hint: 0.1, 0.1
+                    pos_hint: {'center_x': 0.6, 'center_y': 0.8}
+                    text: '0'
+                    values: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+                Label:
+                    id: lbl1
+                    text: "Test"
+                    size_hint: 0.25, 0.25
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+        Button:
+            text: "back"
+            size_hint: 1, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
+            on_release: app.root.current = "user"
+
+
+<RV>:
+    name: 'games'
+    viewclass: 'gameSelectButton'
+    RecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: True
+        touch_multiselect: True
+
+<gameSelectButton>:
+    on_release:
+        app.root.current = "game_page"
+        app.root.get_screen(app.root.current).load_game(self.game)
+
+<test@Image+ButtonBehavior>:
+    source: 'Resources/Logout.png'
