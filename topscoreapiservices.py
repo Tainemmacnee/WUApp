@@ -3,22 +3,22 @@ import json
 from topscoreoauth2 import generateAuthToken
 from wumodel import Game
 
-def collectPlayerID():
+def collectPlayerID(auth):
     url = "https://wds.usetopscore.com/api/me"
 
     headers = {
-        "Authorization" : "Bearer {}".format(generateAuthToken())
+        "Authorization" : "Bearer {}".format(auth)
     }
 
     req = requests.get(url, headers=headers)
     out = json.loads(req.text)["result"]
     return out[0].get('person_id')
 
-def collectPlayerTeamIDs(playerid):
+def collectPlayerTeamIDs(playerid, auth):
     url = "https://wds.usetopscore.com/api/teams?person_id={0}&active=true".format(playerid)
 
     headers = {
-        "Authorization" : "Bearer {}".format(generateAuthToken())
+        "Authorization" : "Bearer {}".format(auth)
     }
     req = requests.get(url, headers=headers)
     res = json.loads(req.text)["result"]
@@ -27,12 +27,12 @@ def collectPlayerTeamIDs(playerid):
         out.append(dict.get('id'))
     return out
 
-def collectTeamGameInfo(teamid):
+def collectTeamGameInfo(teamid, auth):
     """Return list of game objects for each upcoming game for teamid"""
     url = "https://wds.usetopscore.com/api/games?team_id={0}&active_events_only=true".format(teamid)
 
     headers = {
-        "Authorization" : "Bearer {}".format(generateAuthToken())
+        "Authorization" : "Bearer {}".format(auth)
     }
 
     req = requests.get(url, headers=headers)

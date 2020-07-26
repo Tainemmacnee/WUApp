@@ -4,6 +4,7 @@ import urllib
 from mechanize import Browser
 from wumodel import Game
 from topscoreapiservices import *
+from topscoreoauth2 import *
 
 import concurrent.futures
 from functools import partial
@@ -37,10 +38,6 @@ Config.set('graphics', 'height', '800')
 
 class LoginPage(Screen):
     def verify_login(self, username, password):
-        if username == "a" and password == "a":
-            self.manager.current = "loading_page"
-            return
-
         br.open("http://wellington.ultimate.org.nz/")
         br.select_form(action='https://wds.usetopscore.com/signin?original_domain=wellington.ultimate.org.nz')
         br["signin[email]"] = username
@@ -51,6 +48,7 @@ class LoginPage(Screen):
             print("incorrect login")
 
         if br.response().code == 200:
+            print(collectUserAPIInfo(br))
             self.manager.current = "user"
 
 class UserPage(Screen):
@@ -65,9 +63,10 @@ class GamePage(Screen):
 class LoadingPage(Screen):
 
     def on_enter(self):
+        authToken = generateAuthToken(collectUserAPIInfo(br))
         games = []
-        for teamid in collectPlayerTeamIDs(collectPlayerID()):
-             games += collectTeamGameInfo(teamid)
+        for teamid in collectPlayerTeamIDs(collectPlayerID(authToken), authToken):
+             games += collectTeamGameInfo(teamid, authToken)
 
         #self.manager.get_screen("user").children[0].children[1].data = [{'text': str(game), 'game':game} for game in games]
         self.manager.current = "user"
