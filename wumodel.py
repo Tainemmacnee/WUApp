@@ -30,7 +30,7 @@ class User():
         self.teams = self.getTeams()
 
     def getTeams(self):
-        return ts.collectPlayerTeams(ts.collectPlayerID(self.auth_key), self.auth_key):
+        return ts.collectPlayerTeams(ts.collectPlayerID(self.auth_key), self.auth_key)
 
     def __str__(self):
         return "{} {} with id {}".format(self.first_name, self.last_name, self.id)

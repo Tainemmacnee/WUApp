@@ -45,7 +45,7 @@ ScreenManagement:
             pos_hint: {'center_x': 0.5, 'center_y':0.5}
 
 <UserPage>:
-    name: "user"
+    name: "user_page"
     BoxLayout:
         orientation: 'vertical'
         FloatLayout:
@@ -92,6 +92,41 @@ ScreenManagement:
                 on_release:
                     app.root.logout()
 
+<TeamPage>:
+    name: "team_page"
+    BoxLayout:
+        orientation: 'vertical'
+        FloatLayout:
+            size_hint: 1, 0.0825
+            canvas:
+                Color:
+                    rgba: hex('#2C2C2E')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            ImageButton:
+                source: 'Resources/Logout_small.png'
+                size_hint: 0.6, 0.6
+                pos_hint: {'center_x': 0.1, 'center_y':0.5}
+                on_release:
+                    app.root.logout()
+            Label:
+                id: teamname
+                text: 'Team Name'
+                font_size: 40
+                pos_hint: {'center_x': 0.5, 'center_y':0.5}
+        FloatLayout:
+            size_hint: 1, 0.9175
+            canvas:
+                Color:
+                    rgba: hex('#555555')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            AsyncImage:
+                id: teamimage
+                source: 'https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/s-200-200/uc-logomark-1.png'
+                pos_hint: {'center_x': 0.5, 'center_y':0.8}
 
 <GamePage>:
     name: "game_page"

@@ -82,6 +82,9 @@ class GamePage(Screen):
         self.ids["homeTeam"].text = str(game.homeTeam)
         self.ids["awayTeam"].text = str(game.awayTeam)
 
+class TeamPage(Screen):
+    pass
+
 class ScreenManagement(ScreenManager):
     def logout(self):
         self.current = "login_page"
