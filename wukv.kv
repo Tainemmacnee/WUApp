@@ -33,10 +33,6 @@ ScreenManagement:
         Button:
             text: "Login"
             on_release:
-                #app.root.get_screen("loading_page").username = app.root.get_screen(app.root.current).ids["email"].text
-                #app.root.get_screen("loading_page").password = app.root.get_screen(app.root.current).ids["passw"].text
-                #app.root.current = "loading_page"
-
                 app.root.get_screen(app.root.current).verify_login(app.root.get_screen('login_page').ids["email"].text, app.root.get_screen('login_page').ids["passw"].text)
             size_hint: 0.4, 0.05
             pos_hint: {'center_x': 0.5, 'center_y':0.48}
@@ -44,7 +40,7 @@ ScreenManagement:
 <LoadingPage>:
     name: "loading_page"
     FloatLayout:
-        Image:
+        AsyncImage:
             source: 'Resources/Loading.gif'
             pos_hint: {'center_x': 0.5, 'center_y':0.5}
 
@@ -78,16 +74,20 @@ ScreenManagement:
                 Rectangle:
                     pos: self.pos
                     size: self.size
+            AsyncImage:
+                id: userimage
+                source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+                pos_hint: {'center_x': 0.5, 'center_y':0.8}
             ImageButton:
                 source: 'Resources/Schedule.png'
                 size_hint: 0.3, 0.3
-                pos_hint: {'center_x': 0.3, 'center_y':0.8}
+                pos_hint: {'center_x': 0.3, 'center_y':0.5}
                 on_release:
                     app.root.logout()
             ImageButton:
                 source: 'Resources/team.png'
                 size_hint: 0.3, 0.3
-                pos_hint: {'center_x': 0.7, 'center_y':0.8}
+                pos_hint: {'center_x': 0.7, 'center_y':0.5}
                 on_release:
                     app.root.logout()
 

@@ -80,6 +80,7 @@ class UserPage(Screen):
         self.user = user
 
         self.ids['username'].text = "{} {}".format(self.user.first_name, self.user.last_name)
+        self.ids['userimage'].source = self.user.img
 
 class GamePage(Screen):
 
@@ -116,14 +117,19 @@ def collectUserData():
     for divtag in soup.findAll('div', recursive=True, class_='global-toolbar-item global-toolbar-item-full global-toolbar-user global-toolbar-item-right'):
         names = divtag.text.split()
 
-    #use name to find redirect link to users page
-    response = br.follow_link(link=next(br.links(url_regex='^\/u\/{}'.format(names[0].lower()))))
+    #find redirect link to users page
+    for link in br.links(url_regex='^\/u\/{}'.format(names[0].lower())):
+        response = br.follow_link(link=next(br.links(url='/u/{}'.format(link.url.split('/')[2]))))
+        break
     soup = bs4.BeautifulSoup(response.read(), features="html5lib")
 
     #webscrape page to collect users info
+    print(br.geturl())
     for divtag in soup.findAll('div', class_='profile-image'):
+        print("Profile Image")
         for imgtag in divtag.findAll('img', src=True):
                 img = imgtag['src']
+                print(img)
     id = collectPlayerID(generateAuthToken(collectUserAPIInfo(br)))
 
     return User(names[0], names[1], img, id)
