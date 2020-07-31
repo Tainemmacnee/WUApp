@@ -29,6 +29,7 @@ from kivy.clock import Clock
 from kivy.loader import Loader
 from kivy.uix.image import Image
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.accordion import Accordion
 
 
 
@@ -66,7 +67,6 @@ class LoadingPage(Screen):
     def on_enter(self):
         user = collectUserData()
         self.manager.switch_to(UserPage(user))
-        #self.manager.current = "user"
 
 class UserPage(Screen):
     def __init__(self, user, **kwargs):
@@ -91,6 +91,9 @@ class ScreenManagement(ScreenManager):
         cookiejar.clear()
 
 class RV(RecycleView):
+    pass
+
+class Accor(Accordion):
     pass
 
 class gameSelectButton(Button):

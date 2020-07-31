@@ -48,7 +48,8 @@ ScreenManagement:
     name: "user_page"
     BoxLayout:
         orientation: 'vertical'
-        FloatLayout:
+        GridLayout:
+            cols: 3
             size_hint: 1, 0.0825
             canvas:
                 Color:
@@ -57,40 +58,99 @@ ScreenManagement:
                     pos: self.pos
                     size: self.size
             ImageButton:
+                size_hint: 0.1, 1
                 source: 'Resources/Logout_small.png'
-                size_hint: 0.6, 0.6
-                pos_hint: {'center_x': 0.1, 'center_y':0.5}
                 on_release:
                     app.root.logout()
             Label:
                 id: username
                 text: 'User Name'
                 font_size: 40
-                pos_hint: {'center_x': 0.5, 'center_y':0.5}
-        FloatLayout:
+                size_hint: 0.8, 1
+            Label:
+                size_hint: 0.1, 1
+        GridLayout:
             size_hint: 1, 0.9175
+            cols: 1
             canvas:
                 Color:
                     rgba: hex('#555555')
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            AsyncImage:
-                id: userimage
-                source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
-                pos_hint: {'center_x': 0.5, 'center_y':0.8}
-            ImageButton:
-                source: 'Resources/Schedule.png'
-                size_hint: 0.3, 0.3
-                pos_hint: {'center_x': 0.3, 'center_y':0.5}
-                on_release:
-                    app.root.logout()
-            ImageButton:
-                source: 'Resources/team.png'
-                size_hint: 0.3, 0.3
-                pos_hint: {'center_x': 0.7, 'center_y':0.5}
-                on_release:
-                    app.root.logout()
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                padding: [10,10,10,10]
+                size_hint:1,0.4
+                AsyncImage:
+                    id: userimage
+                    source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+            Accor:
+                orientation: 'vertical'
+                AccordionItem:
+                    title: 'Schedule'
+                    GridLayout:
+                        cols: 1
+                        BackgroundLabel:
+                            background_color: 1,0,0,1
+                            text: 'Game1'
+                        BackgroundLabel:
+                            background_color: 1,1,0,1
+                            text: 'Game2'
+                        BackgroundLabel:
+                            background_color: 1,0,1,1
+                            text: 'Game3'
+                        #size_hint:1,None
+                AccordionItem:
+                    title: 'Teams'
+                    GridLayout:
+                        cols: 1
+                        BackgroundLabel:
+                            background_color: 1,0,0,1
+                            text: 'Team1'
+                        BackgroundLabel:
+                            background_color: 0,1,1,1
+                            text: 'Team2'
+                AccordionItem:
+                    title: 'Events'
+                    GridLayout:
+                        cols: 1
+                        BackgroundLabel:
+                            background_color: 1,0,0,1
+                            text: 'Team1'
+                        BackgroundLabel:
+                            background_color: 0,1,1,1
+                            text: 'Team2'
+                AccordionItem:
+                    title: 'Report Results'
+                    GridLayout:
+                        cols: 1
+                        BackgroundLabel:
+                            background_color: 1,0,0,1
+                            text: 'Team1'
+                        BackgroundLabel:
+                            background_color: 0,1,1,1
+                            text: 'Team2'
+                    #pos_hint: {'center_x': 0.5, 'center_y':0.8}
+        #
+
+            # AsyncImage:
+            #     id: userimage
+            #     source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+            #     pos_hint: {'center_x': 0.5, 'center_y':0.8}
+            # ImageButton:
+            #     source: 'Resources/Schedule.png'
+            #     size_hint: 0.3, 0.3
+            #     pos_hint: {'center_x': 0.3, 'center_y':0.5}
+            #     on_release:
+            #         app.root.logout()
+            # ImageButton:
+            #     source: 'Resources/team.png'
+            #     size_hint: 0.3, 0.3
+            #     pos_hint: {'center_x': 0.7, 'center_y':0.5}
+            #     on_release:
+            #         app.root.logout()
 
 <TeamPage>:
     name: "team_page"
@@ -190,3 +250,17 @@ ScreenManagement:
 
 <test@Image+ButtonBehavior>:
     source: 'Resources/Logout.png'
+
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<BackgroundLabel@Label+BackgroundColor>
+    background_color: 0, 0, 0, 0
+    # Default the background color for this label
+    # to r 0, g 0, b 0, a 0
