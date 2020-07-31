@@ -1,7 +1,6 @@
 import requests
 import json
-from wumodel import Game
-from wumodel import User
+import wumodel
 from topscoreoauth2 import generateAuthToken
 from topscoreoauth2 import collectUserAPIInfo
 import bs4
@@ -17,17 +16,21 @@ def collectPlayerID(auth_key):
     out = json.loads(req.text)["result"]
     return out[0].get('person_id')
 
-def collectPlayerTeamIDs(playerid, auth_key):
+def collectPlayerTeams(playerid, auth_key):
     url = "https://wds.usetopscore.com/api/teams?person_id={0}&active=true".format(playerid)
 
     headers = {
         "Authorization" : "Bearer {}".format(auth_key)
     }
+
     req = requests.get(url, headers=headers)
     res = json.loads(req.text)["result"]
     out = []
     for dict in res:
-        out.append(dict.get('id'))
+        name = dict.get('name')
+        id = dict.get('id')
+        img = dict.get('images').get('200')
+        out.append(wumodel.Team(name, id, img))
     return out
 
 def collectTeamGameInfo(teamid, auth_key):

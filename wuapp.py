@@ -3,7 +3,7 @@ import http.cookiejar as cookielib
 import urllib
 import mechanize
 from mechanize import Browser
-from wumodel import Game
+from wumodel import *
 from topscoreapiservices import *
 from topscoreoauth2 import *
 
@@ -65,13 +65,7 @@ class LoadingPage(Screen):
 
     def on_enter(self):
         user = collectUserData()
-
         self.manager.switch_to(UserPage(user))
-        # authToken = generateAuthToken(collectUserAPIInfo(br))
-        #
-        # games = []
-        # for teamid in collectPlayerTeamIDs(collectPlayerID(authToken), authToken):
-        #      games += collectTeamGameInfo(teamid, authToken)
         #self.manager.current = "user"
 
 class UserPage(Screen):
@@ -124,15 +118,12 @@ def collectUserData():
     soup = bs4.BeautifulSoup(response.read(), features="html5lib")
 
     #webscrape page to collect users info
-    print(br.geturl())
     for divtag in soup.findAll('div', class_='profile-image'):
-        print("Profile Image")
         for imgtag in divtag.findAll('img', src=True):
                 img = imgtag['src']
-                print(img)
     id = collectPlayerID(generateAuthToken(collectUserAPIInfo(br)))
 
-    return User(names[0], names[1], img, id)
+    return User(names[0], names[1], img, id, generateAuthToken(collectUserAPIInfo(br)))
 
 if __name__ == "__main__":
     wuApp().run()
