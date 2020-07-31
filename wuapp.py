@@ -1,6 +1,7 @@
 #! #!/usr/bin/env python3.7
 import http.cookiejar as cookielib
 import urllib
+import mechanize
 from mechanize import Browser
 from wumodel import Game
 from topscoreapiservices import *
@@ -29,9 +30,19 @@ from kivy.loader import Loader
 from kivy.uix.image import Image
 from kivy.uix.behaviors import ButtonBehavior
 
+
+
 br = Browser()
 cookiejar = cookielib.LWPCookieJar()
 br.set_cookiejar( cookiejar )
+
+br.set_handle_equiv(True)
+br.set_handle_redirect(True)
+br.set_handle_referer(True)
+br.set_handle_robots(False)
+br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+
+br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
 
 Config.set('graphics', 'width', '540')
 Config.set('graphics', 'height', '800')
@@ -48,11 +59,27 @@ class LoginPage(Screen):
             print("incorrect login")
 
         if br.response().code == 200:
-            print(collectUserAPIInfo(br))
-            self.manager.current = "user"
+            self.manager.current = "loading_page"
+
+class LoadingPage(Screen):
+
+    def on_enter(self):
+        user = collectUserData()
+
+        self.manager.switch_to(UserPage(user))
+        # authToken = generateAuthToken(collectUserAPIInfo(br))
+        #
+        # games = []
+        # for teamid in collectPlayerTeamIDs(collectPlayerID(authToken), authToken):
+        #      games += collectTeamGameInfo(teamid, authToken)
+        #self.manager.current = "user"
 
 class UserPage(Screen):
-    pass
+    def __init__(self, user, **kwargs):
+        super(Screen,self).__init__(**kwargs)
+        self.user = user
+
+        self.ids['username'].text = "{} {}".format(self.user.first_name, self.user.last_name)
 
 class GamePage(Screen):
 
@@ -60,18 +87,6 @@ class GamePage(Screen):
         self.ids["homeTeam"].text = str(game.homeTeam)
         self.ids["awayTeam"].text = str(game.awayTeam)
 
-class LoadingPage(Screen):
-
-    def on_enter(self):
-        authToken = generateAuthToken(collectUserAPIInfo(br))
-        games = []
-        for teamid in collectPlayerTeamIDs(collectPlayerID(authToken), authToken):
-             games += collectTeamGameInfo(teamid, authToken)
-
-        #self.manager.get_screen("user").children[0].children[1].data = [{'text': str(game), 'game':game} for game in games]
-        self.manager.current = "user"
-
-#test edit
 class ScreenManagement(ScreenManager):
     def logout(self):
         self.current = "login_page"
@@ -91,4 +106,27 @@ class wuApp(App):
     def build(self):
         return kv_file
 
-wuApp().run()
+def collectUserData():
+    """br is an authenticated brower"""
+    names = []
+    img = None
+    soup = bs4.BeautifulSoup(br.response().read(), features="html5lib")\
+
+    #Collect users name
+    for divtag in soup.findAll('div', recursive=True, class_='global-toolbar-item global-toolbar-item-full global-toolbar-user global-toolbar-item-right'):
+        names = divtag.text.split()
+
+    #use name to find redirect link to users page
+    response = br.follow_link(link=next(br.links(url_regex='^\/u\/{}'.format(names[0].lower()))))
+    soup = bs4.BeautifulSoup(response.read(), features="html5lib")
+
+    #webscrape page to collect users info
+    for divtag in soup.findAll('div', class_='profile-image'):
+        for imgtag in divtag.findAll('img', src=True):
+                img = imgtag['src']
+    id = collectPlayerID(generateAuthToken(collectUserAPIInfo(br)))
+
+    return User(names[0], names[1], img, id)
+
+if __name__ == "__main__":
+    wuApp().run()

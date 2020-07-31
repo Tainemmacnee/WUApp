@@ -3,7 +3,6 @@ ScreenManagement:
     LoginPage:
     LoadingPage:
     GamePage:
-    UserPage:
 
 <LoginPage>:
     name: "login_page"
@@ -22,7 +21,7 @@ ScreenManagement:
             hint_text: 'Email'
             size_hint: 0.4, 0.05
             pos_hint: {'center_x': 0.5, 'center_y':0.62}
-            text: 'tainemmacnee@gmail.com'
+            text: 'dreadrelm@gmail.com'
         TextInput:
             id: passw
             multiline: False
@@ -30,7 +29,7 @@ ScreenManagement:
             password: True # hide password
             size_hint: 0.4, 0.05
             pos_hint: {'center_x': 0.5, 'center_y':0.55}
-            text: 'bedf6Rd!a'
+            text: 'whiskers1'
         Button:
             text: "Login"
             on_release:
@@ -68,6 +67,7 @@ ScreenManagement:
                 on_release:
                     app.root.logout()
             Label:
+                id: username
                 text: 'User Name'
                 pos_hint: {'center_x': 0.5, 'center_y':0.5}
         FloatLayout:
