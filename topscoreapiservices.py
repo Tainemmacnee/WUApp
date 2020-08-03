@@ -59,7 +59,6 @@ def collectTeamGames(teamid, auth_key):
     headers = {
         "Authorization" : "Bearer {}".format(auth_key)
     }
-    print(playerid)
     req = requests.get(url, headers=headers)
     res = json.loads(req.text)["result"]
     out = []

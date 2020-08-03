@@ -6,6 +6,8 @@ from mechanize import Browser
 from wumodel import *
 from topscoreapiservices import *
 from topscoreoauth2 import *
+from wuwebscrape import *
+import datetime
 
 import concurrent.futures
 from functools import partial
@@ -50,8 +52,8 @@ Config.set('graphics', 'height', '800')
 
 class LoginPage(Screen):
     def verify_login(self, username, password):
-        br.open("http://wellington.ultimate.org.nz/")
-        br.select_form(action='https://wds.usetopscore.com/signin?original_domain=wellington.ultimate.org.nz')
+        br.open("http://wds.usetopscore.com/")
+        br.select_form(action='https://wds.usetopscore.com/signin')
         br["signin[email]"] = username
         br["signin[password]"] = password
         try:
@@ -65,7 +67,7 @@ class LoginPage(Screen):
 class LoadingPage(Screen):
 
     def on_enter(self):
-        user = collectUserData()
+        user = collectUserData(br)
         self.manager.switch_to(UserPage(user))
 
 class UserPage(Screen):
@@ -73,7 +75,7 @@ class UserPage(Screen):
         super(Screen,self).__init__(**kwargs)
         self.user = user
 
-        self.ids['username'].text = "{} {}".format(self.user.first_name, self.user.last_name)
+        self.ids['username'].text = "{}".format(self.user.name)
         self.ids['userimage'].source = self.user.img
 
 class GamePage(Screen):
@@ -107,29 +109,7 @@ class wuApp(App):
     def build(self):
         return kv_file
 
-def collectUserData():
-    """br is an authenticated brower"""
-    names = []
-    img = None
-    soup = bs4.BeautifulSoup(br.response().read(), features="html5lib")\
 
-    #Collect users name
-    for divtag in soup.findAll('div', recursive=True, class_='global-toolbar-item global-toolbar-item-full global-toolbar-user global-toolbar-item-right'):
-        names = divtag.text.split()
-
-    #find redirect link to users page
-    for link in br.links(url_regex='^\/u\/{}'.format(names[0].lower())):
-        response = br.follow_link(link=next(br.links(url='/u/{}'.format(link.url.split('/')[2]))))
-        break
-    soup = bs4.BeautifulSoup(response.read(), features="html5lib")
-
-    #webscrape page to collect users info
-    for divtag in soup.findAll('div', class_='profile-image'):
-        for imgtag in divtag.findAll('img', src=True):
-                img = imgtag['src']
-    id = collectPlayerID(generateAuthToken(collectUserAPIInfo(br)))
-
-    return User(names[0], names[1], img, id, generateAuthToken(collectUserAPIInfo(br)))
 
 if __name__ == "__main__":
     wuApp().run()

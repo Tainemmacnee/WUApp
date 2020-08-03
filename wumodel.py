@@ -7,7 +7,7 @@ class Game():
         self.homeTeam = homeTeam.encode('utf-8', errors='replace')
         self.awayTeam = awayTeam.encode('utf-8', errors='replace')
         dt = start_date + start_time
-        print("date: {} time: {} DT: {}".format(start_date, start_time, dt))
+        #print("date: {} time: {} DT: {}".format(start_date, start_time, dt))
         self.datetime = datetime.datetime.strptime(dt, "%Y-%m-%d%H:%M:%S")
 
     def __str__(self):
@@ -49,8 +49,8 @@ class User():
         self.events = None
         self.upcomingGames = None
 
-        for game in self.getUpcomingGames():
-            print(game)
+        #for game in self.getUpcomingGames():
+            #print(game)
 
         # for event in self.getEvents():
         #     print(event.name)
