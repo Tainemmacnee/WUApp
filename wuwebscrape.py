@@ -21,9 +21,9 @@ def collectUserData(br):
         for a2 in divtag.findAll('a', class_='icon-schedule'):
             link_schedule = a2['href']
 
-    collectUserUpcomingGames(br, link_schedule)
 
-    return wumodel2.User(name, collectUserEvents(br), img)
+    #return wumodel2.User(name, None, None, img)
+    return wumodel2.User(name, collectUserEvents(br), collectUserUpcomingGames(br, link_schedule), img)
 
 def collectUserUpcomingGames(br, link):
     response = br.open("https://wds.usetopscore.com{}".format(link))
@@ -32,6 +32,7 @@ def collectUserUpcomingGames(br, link):
     games = []
     for gamediv in soup.findAll('div', class_='game-list-item'):
         team_names = []
+        team_images = []
         date = None
         time = None
         location = None
@@ -43,8 +44,11 @@ def collectUserUpcomingGames(br, link):
         time = dtdiv.find('div', recursive=True, class_='push-right').text
 
         #get names of teams in game
-        for teamdiv in gamediv.findAll('div', class_='schedule-team-name'):
-            team_names.append(teamdiv.text.strip())
+        for teamdiv in gamediv.findAll('div', class_='game-participant'):
+            for teamnamediv in teamdiv.findAll('div', class_='schedule-team-name'):
+                team_names.append(teamdiv.text.strip())
+            for img in teamdiv.findAll('img', src=True):
+                team_images.append(img['src'].replace('40', '200'))
 
         #get game location and field
         locationdiv = gamediv.findAll('div', class_='span2')[-1]
@@ -52,7 +56,7 @@ def collectUserUpcomingGames(br, link):
         field = locationspan.text.split()[3]
         location = locationspan.find('a', recursive=True, class_='plain-link').text
 
-        game = wumodel2.Game(home_team=team_names[0], away_team=team_names[1], date=date.split()[1], time=time.split()[0], field=field, location=location)
+        game = wumodel2.Game(home_team=team_names[0], away_team=team_names[1], home_team_img=team_images[0], away_team_img=team_images[1], date=date.split()[1], time=time.split()[0], field=field, location=location)
         games.append(game)
 
     return games

@@ -2,7 +2,7 @@ class User():
     def __init__(self, name, events, upcoming_games, img):
         self.name = name
         self.events = events
-        self.upcoming_game = upcoming_games
+        self.upcoming_games = upcoming_games
         self.img = img
 
         self.upsizeimg()
@@ -41,13 +41,24 @@ class TeamMember():
         self.roles = roles
 
 class Game():
-    def __init__(self, home_team, away_team, date, time, location, field):
+    def __init__(self, home_team, away_team, home_team_img, away_team_img, date, time, location, field):
         self.home_team = home_team
         self.away_team = away_team
         self.date = date
         self.time = time
         self.location = location
         self.field = field
+        self.home_team_img = home_team_img
+        self.away_team_img = away_team_img
 
     def __str__(self):
         return "GAME {} VS {} ON {} {} AT {} {}".format(self.home_team, self.away_team, self.time, self.date, self.field, self.location)
+
+    def toDataDict(self):
+        thisdict = {}
+        thisdict['home_source'] = self.home_team_img
+        thisdict['home_name'] = self.home_team
+        thisdict['away_source'] = self.away_team_img
+        thisdict['away_name'] = self.away_team
+        thisdict['loc_text'] = "{} {} {} {}".format(self.time, self.date, self.field, self.location)
+        return thisdict

@@ -2,7 +2,6 @@
 ScreenManagement:
     LoginPage:
     LoadingPage:
-    GamePage:
 
 <LoginPage>:
     name: "login_page"
@@ -81,76 +80,95 @@ ScreenManagement:
             AnchorLayout:
                 anchor_x: 'center'
                 anchor_y: 'center'
-                padding: [10,10,10,10]
-                size_hint:1,0.4
+                padding: [5,5,5,5]
+                size_hint:1,0.2
                 AsyncImage:
                     id: userimage
                     source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
-            Accor:
-                orientation: 'vertical'
-                AccordionItem:
-                    title: 'Schedule'
-                    GridLayout:
-                        cols: 1
-                        BackgroundLabel:
-                            background_color: 1,0,0,1
-                            text: 'Game1'
-                        BackgroundLabel:
-                            background_color: 1,1,0,1
-                            text: 'Game2'
-                        BackgroundLabel:
-                            background_color: 1,0,1,1
-                            text: 'Game3'
-                        #size_hint:1,None
-                AccordionItem:
-                    title: 'Teams'
-                    GridLayout:
-                        cols: 1
-                        BackgroundLabel:
-                            background_color: 1,0,0,1
-                            text: 'Team1'
-                        BackgroundLabel:
-                            background_color: 0,1,1,1
-                            text: 'Team2'
-                AccordionItem:
-                    title: 'Events'
-                    GridLayout:
-                        cols: 1
-                        BackgroundLabel:
-                            background_color: 1,0,0,1
-                            text: 'Team1'
-                        BackgroundLabel:
-                            background_color: 0,1,1,1
-                            text: 'Team2'
-                AccordionItem:
-                    title: 'Report Results'
-                    GridLayout:
-                        cols: 1
-                        BackgroundLabel:
-                            background_color: 1,0,0,1
-                            text: 'Team1'
-                        BackgroundLabel:
-                            background_color: 0,1,1,1
-                            text: 'Team2'
-                    #pos_hint: {'center_x': 0.5, 'center_y':0.8}
-        #
+            GridLayout:
+                size_hint: 1, 0.8
+                cols: 1
 
-            # AsyncImage:
-            #     id: userimage
-            #     source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
-            #     pos_hint: {'center_x': 0.5, 'center_y':0.8}
-            # ImageButton:
-            #     source: 'Resources/Schedule.png'
-            #     size_hint: 0.3, 0.3
-            #     pos_hint: {'center_x': 0.3, 'center_y':0.5}
-            #     on_release:
-            #         app.root.logout()
-            # ImageButton:
-            #     source: 'Resources/team.png'
-            #     size_hint: 0.3, 0.3
-            #     pos_hint: {'center_x': 0.7, 'center_y':0.5}
-            #     on_release:
-            #         app.root.logout()
+                Accor:
+                    orientation: 'vertical'
+                    AccordionItem:
+                        title: 'Schedule'
+                        RV:
+                            id: upg
+                    AccordionItem:
+                        title: 'Teams'
+
+                    AccordionItem:
+                        title: 'Events'
+                    AccordionItem:
+                        title: 'Report Results'
+
+<RV>:
+    viewclass: 'ComplexGameButtonItem'
+    RecycleBoxLayout:
+        spacing: 5
+        default_size: None, 120#dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+<ComplexGameButtonItem>:
+    canvas.before:
+        Color:
+            rgba: hex('#2C2C2E')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    home_source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+    home_name: 'Home Team'
+    away_source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+    away_name: 'Away Team'
+    loc_text: 'Thu, 6/08/2020 ASB Sports Center #4'
+
+    on_release:
+        self.printer()
+    GridLayout:
+        rows: 2
+        GridLayout:
+            cols: 5
+            size_hint: 1, 0.8
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                AsyncImage:
+                    source: root.home_source
+                    pos_hint: {'center_x': 0.5, 'center_y':0.5}
+                    size_hint: 0.8, 0.8
+            Label:
+                text: root.home_name
+                color: hex('#FFDC35')
+                text_size: self.width, None
+                font_size: sp(18)
+            AsyncImage:
+                source: 'Resources/vs.png'
+            Label:
+                text: root.away_name
+                color: hex('#FFDC35')
+                text_size: self.width, None
+                font_size: sp(18)
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                AsyncImage:
+                    source: root.away_source
+                    pos_hint: {'center_x': 0.5, 'center_y':0.5}
+                    size_hint: 0.8, 0.8
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            size_hint:1,0.2
+            Label:
+                id: id_label1
+                text: root.loc_text
+                color: hex('#FFDC35')
+                font_size: sp(18)
 
 <TeamPage>:
     name: "team_page"
@@ -188,65 +206,8 @@ ScreenManagement:
                 source: 'https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/s-200-200/uc-logomark-1.png'
                 pos_hint: {'center_x': 0.5, 'center_y':0.8}
 
-<GamePage>:
-    name: "game_page"
-    BoxLayout:
-        orientation: 'vertical'
-        ScrollView:
-            do_scroll_x: False
-            do_scroll_y: True
-            FloatLayout:
-                size_hint: 1, None
-                Label:
-                    text: "Team1"
-                    id: homeTeam
-                    size_hint: 0.25, 0.25
-                    pos_hint: {'center_x': 0.3, 'center_y': 0.9}
-                Label:
-                    text: "Team2"
-                    id: awayTeam
-                    size_hint: 0.25, 0.25
-                    pos_hint: {'center_x': 0.6, 'center_y': 0.9}
-                Spinner:
-                    id: homeTeamScore
-                    size_hint: 0.1, 0.1
-                    pos_hint: {'center_x': 0.3, 'center_y': 0.8}
-                    text: '0'
-                    values: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-                Spinner:
-                    id: awayTeamScore
-                    size_hint: 0.1, 0.1
-                    pos_hint: {'center_x': 0.6, 'center_y': 0.8}
-                    text: '0'
-                    values: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-                Label:
-                    id: lbl1
-                    text: "Test"
-                    size_hint: 0.25, 0.25
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
-        Button:
-            text: "back"
-            size_hint: 1, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.1}
-            on_release: app.root.current = "user"
 
 
-<RV>:
-    name: 'games'
-    viewclass: 'gameSelectButton'
-    RecycleBoxLayout:
-        default_size: None, dp(56)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
-        multiselect: True
-        touch_multiselect: True
-
-<gameSelectButton>:
-    on_release:
-        app.root.current = "game_page"
-        app.root.get_screen(app.root.current).load_game(self.game)
 
 <test@Image+ButtonBehavior>:
     source: 'Resources/Logout.png'
