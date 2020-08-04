@@ -1,7 +1,8 @@
 class User():
-    def __init__(self, name, events, img):
+    def __init__(self, name, events, upcoming_games, img):
         self.name = name
         self.events = events
+        self.upcoming_game = upcoming_games
         self.img = img
 
         self.upsizeimg()
@@ -38,3 +39,15 @@ class TeamMember():
     def __init__(self, name, roles):
         self.name = name
         self.roles = roles
+
+class Game():
+    def __init__(self, home_team, away_team, date, time, location, field):
+        self.home_team = home_team
+        self.away_team = away_team
+        self.date = date
+        self.time = time
+        self.location = location
+        self.field = field
+
+    def __str__(self):
+        return "GAME {} VS {} ON {} {} AT {} {}".format(self.home_team, self.away_team, self.time, self.date, self.field, self.location)

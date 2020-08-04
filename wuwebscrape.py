@@ -18,7 +18,44 @@ def collectUserData(br):
             for spantag in a.findAll('span', class_='btn-label'):
                 name = spantag.text #Collect users name
 
+        for a2 in divtag.findAll('a', class_='icon-schedule'):
+            link_schedule = a2['href']
+
+    collectUserUpcomingGames(br, link_schedule)
+
     return wumodel2.User(name, collectUserEvents(br), img)
+
+def collectUserUpcomingGames(br, link):
+    response = br.open("https://wds.usetopscore.com{}".format(link))
+    soup = bs4.BeautifulSoup(response.read(), features="html5lib")
+
+    games = []
+    for gamediv in soup.findAll('div', class_='game-list-item'):
+        team_names = []
+        date = None
+        time = None
+        location = None
+        field = None
+
+        #get date and Time
+        dtdiv = gamediv.find('div', class_='span2')
+        date = dtdiv.find('span', recursive=True, class_='push-left').text
+        time = dtdiv.find('div', recursive=True, class_='push-right').text
+
+        #get names of teams in game
+        for teamdiv in gamediv.findAll('div', class_='schedule-team-name'):
+            team_names.append(teamdiv.text.strip())
+
+        #get game location and field
+        locationdiv = gamediv.findAll('div', class_='span2')[-1]
+        locationspan = locationdiv.find('span', recursive=True, class_='push-left')
+        field = locationspan.text.split()[3]
+        location = locationspan.find('a', recursive=True, class_='plain-link').text
+
+        game = wumodel2.Game(home_team=team_names[0], away_team=team_names[1], date=date.split()[1], time=time.split()[0], field=field, location=location)
+        games.append(game)
+
+    return games
 
 def collectUserEvents(br):
     """br is an authenticated brower"""
