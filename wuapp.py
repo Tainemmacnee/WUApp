@@ -9,10 +9,6 @@ from topscoreoauth2 import *
 from wuwebscrape import *
 import datetime
 
-import concurrent.futures
-from functools import partial
-import multiprocessing as mp
-
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -34,7 +30,7 @@ from kivy.uix.image import Image
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.accordion import Accordion
 
-
+t1 = datetime.datetime.now()
 
 br = Browser()
 cookiejar = cookielib.LWPCookieJar()
@@ -63,12 +59,14 @@ class LoginPage(Screen):
             print("incorrect login")
 
         if br.response().code == 200:
+            print(t1)
             self.manager.current = "loading_page"
 
 class LoadingPage(Screen):
 
     def on_enter(self):
-        user = collectUserData(br)
+        user = collectUserData(br, cookiejar)
+        print("TOTAL LOADING TIME: {}".format(datetime.datetime.now()-t1))
         self.manager.switch_to(UserPage(user))
 
 class UserPage(Screen):

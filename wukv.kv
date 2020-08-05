@@ -66,8 +66,11 @@ ScreenManagement:
                 text: 'User Name'
                 font_size: 40
                 size_hint: 0.8, 1
-            Label:
+            ImageButton:
                 size_hint: 0.1, 1
+                source: 'Resources/Refresh_icon.png'
+                on_release:
+                    app.root.logout()
         GridLayout:
             size_hint: 1, 0.9175
             cols: 1
@@ -146,8 +149,14 @@ ScreenManagement:
                 color: hex('#FFDC35')
                 text_size: self.width, None
                 font_size: sp(18)
-            AsyncImage:
-                source: 'Resources/vs.png'
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+                padding: [5,5,5,5]
+                AsyncImage:
+                    source: 'Resources/vs.png'
+                    size_hint: 0.4, 0.4
+
             Label:
                 text: root.away_name
                 color: hex('#FFDC35')
