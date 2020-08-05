@@ -91,26 +91,36 @@ ScreenManagement:
             GridLayout:
                 size_hint: 1, 0.8
                 cols: 1
-
                 Accor:
                     orientation: 'vertical'
                     AccordionItem:
                         title: 'Schedule'
-                        RV:
+                        Game_RV:
                             id: upg
                     AccordionItem:
                         title: 'Teams'
-
+                        Team_RV:
+                            id: teams
                     AccordionItem:
                         title: 'Events'
                     AccordionItem:
                         title: 'Report Results'
 
-<RV>:
+<Game_RV>:
     viewclass: 'ComplexGameButtonItem'
     RecycleBoxLayout:
         spacing: 5
-        default_size: None, 120#dp(56)
+        default_size: None, 120
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+<Team_RV>:
+    viewclass: 'ComplexTeamButtonItem'
+    RecycleBoxLayout:
+        spacing: 5
+        default_size: None, 120
         default_size_hint: 1, None
         size_hint_y: None
         height: self.minimum_height
@@ -178,6 +188,35 @@ ScreenManagement:
                 text: root.loc_text
                 color: hex('#FFDC35')
                 font_size: sp(18)
+
+<ComplexTeamButtonItem>:
+    canvas.before:
+        Color:
+            rgba: hex('#2C2C2E')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    team_source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+    team_name: 'Home Team'
+
+    on_release:
+        self.printer()
+
+    GridLayout:
+        cols: 2
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            size_hint: 0.3, 1
+            AsyncImage:
+                source: root.team_source
+                #pos_hint: {'center_x': 0.5, 'center_y':0.5}
+        Label:
+            text: root.team_name
+            color: hex('#FFDC35')
+            text_size: self.width, None
+            font_size: sp(22)
 
 <TeamPage>:
     name: "team_page"

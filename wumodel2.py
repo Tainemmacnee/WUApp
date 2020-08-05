@@ -12,6 +12,12 @@ class User():
         img_temp = self.img[:-6]
         self.img = img_temp+"200.jpg"
 
+    def getTeams(self):
+        teams = []
+        for event in self.events:
+            teams += event.getTeamsWithPlayer(self.name)
+        return teams
+
     def __str__(self):
         return "User {} with Events {}".format(self.name, self.events)
 
@@ -24,6 +30,13 @@ class Event():
     def __str__(self):
         return "Event {} with Teams {}".format(self.name, self.teams)
 
+    def getTeamsWithPlayer(self, player):
+        teams = []
+        for team in self.teams:
+            if team.hasPlayer(player):
+                teams.append(team)
+        return teams
+
 class Team():
     def __init__(self, name, female_matchups, male_matchups, img):
         self.name = name
@@ -31,9 +44,23 @@ class Team():
         self.female_matchups = female_matchups
         self.img = img
 
+    def hasPlayer(self, player):
+        for team_member in self.female_matchups:
+            if player == team_member:
+                return True
+        for team_member in self.male_matchups:
+            if player == team_member:
+                return True
+        return False
+
     def __str__(self):
         return "TEAM {} with members {} {}".format(self.name, self.male_matchups, self.female_matchups)
 
+    def toDataDict(self):
+        thisdict = {}
+        thisdict['team_source'] = self.img
+        thisdict['team_name'] = self.name
+        return thisdict
 
 class TeamMember():
     def __init__(self, name, roles):
