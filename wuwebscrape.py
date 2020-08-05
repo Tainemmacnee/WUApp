@@ -114,7 +114,7 @@ def collectUserEvents(br):
                 for spantag in a.findAll('span', class_='global-toolbar-subnav-item-name'):
                     event_dict['name'] = spantag.text #Event name
                 for imgtag in a.findAll('img', src=True):
-                    event_dict['img'] = imgtag['src'] # Event image
+                    event_dict['img'] = imgtag['src'].replace('40', '200') # Event image
                 if(a['href'].startswith('/e/')):
                     futures.append(executor.submit(collectEventTeams, getBrowser(br.cookiejar), "{}/teams".format(a['href']), event_dict))
 
@@ -133,7 +133,7 @@ def collectEventTeams(br, link, event_dict):
         futures = []
         teams = []
         for i in range(1, 5):
-            futures.append(executor.submit(collectEventTeamsPage, getBrowser(br.cookiejar), link, i))
+            futures.append(executor.submit(collectEventTeamsPage, getBrowser(br.cookiejar), link, i, event_dict['name']))
 
         for future in fu.as_completed(futures):
             teams += future.result()
@@ -141,7 +141,7 @@ def collectEventTeams(br, link, event_dict):
     event_dict['teams'] = teams
     return event_dict
 
-def collectEventTeamsPage(br, link, pagenum):
+def collectEventTeamsPage(br, link, pagenum, event_name):
     response = br.open("https://wds.usetopscore.com{}?page={}".format(link, pagenum))
     soup = bs4.BeautifulSoup(response.read(), features="html5lib")
     teams = []
@@ -165,7 +165,7 @@ def collectEventTeamsPage(br, link, pagenum):
                     for a in gender_cluster.findAll('a'):
                         male_matchups.append(a.text)
 
-            team = wumodel2.Team(name=team_name, male_matchups=male_matchups, female_matchups=female_matchups, img=team_img)
+            team = wumodel2.Team(name=team_name, male_matchups=male_matchups, female_matchups=female_matchups, img=team_img, event_name=event_name)
             #print(team)
             teams.append(team)
 

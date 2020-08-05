@@ -103,6 +103,8 @@ ScreenManagement:
                             id: teams
                     AccordionItem:
                         title: 'Events'
+                        Event_RV:
+                            id: events
                     AccordionItem:
                         title: 'Report Results'
 
@@ -118,6 +120,16 @@ ScreenManagement:
 
 <Team_RV>:
     viewclass: 'ComplexTeamButtonItem'
+    RecycleBoxLayout:
+        spacing: 5
+        default_size: None, 120
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+<Event_RV>:
+    viewclass: 'ComplexEventButtonItem'
     RecycleBoxLayout:
         spacing: 5
         default_size: None, 120
@@ -199,6 +211,7 @@ ScreenManagement:
 
     team_source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
     team_name: 'Home Team'
+    team_event: 'Event#1'
 
     on_release:
         self.printer()
@@ -212,11 +225,55 @@ ScreenManagement:
             AsyncImage:
                 source: root.team_source
                 #pos_hint: {'center_x': 0.5, 'center_y':0.5}
+        GridLayout:
+            rows: 2
+            Label:
+                text: root.team_name
+                color: hex('#FFDC35')
+                text_size: self.width, None
+                font_size: sp(22)
+                size_hint: 1, 0.7
+                halign: 'center'
+                valign: 'top'
+            Label:
+                text: root.team_event
+                color: hex('#FFDC35')
+                text_size: self.width, None
+                font_size: sp(18)
+                halign: 'center'
+                valign: 'middle'
+
+<ComplexEventButtonItem>:
+    canvas.before:
+        Color:
+            rgba: hex('#2C2C2E')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    event_source: 'https://secure.gravatar.com/avatar/141e6351340866c7a943bbefdce75dc5?s=200&d=mm&r=r'
+    event_name: 'Home Team'
+
+    on_release:
+        self.printer()
+
+    GridLayout:
+        cols: 2
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            size_hint: 0.3, 1
+            AsyncImage:
+                source: root.event_source
         Label:
-            text: root.team_name
+            text: root.event_name
             color: hex('#FFDC35')
             text_size: self.width, None
             font_size: sp(22)
+            size_hint: 1, 0.7
+            halign: 'center'
+            valign: 'middle'
+
 
 <TeamPage>:
     name: "team_page"

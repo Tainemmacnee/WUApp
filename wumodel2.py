@@ -37,12 +37,19 @@ class Event():
                 teams.append(team)
         return teams
 
+    def toDataDict(self):
+        thisdict = {}
+        thisdict['event_source'] = self.img
+        thisdict['event_name'] = self.name
+        return thisdict
+
 class Team():
-    def __init__(self, name, female_matchups, male_matchups, img):
+    def __init__(self, name, female_matchups, male_matchups, img, event_name):
         self.name = name
         self.male_matchups = male_matchups
         self.female_matchups = female_matchups
         self.img = img
+        self.event_name = event_name
 
     def hasPlayer(self, player):
         for team_member in self.female_matchups:
@@ -60,6 +67,7 @@ class Team():
         thisdict = {}
         thisdict['team_source'] = self.img
         thisdict['team_name'] = self.name
+        thisdict['team_event'] = self.event_name
         return thisdict
 
 class TeamMember():

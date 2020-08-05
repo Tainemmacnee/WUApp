@@ -100,6 +100,11 @@ class UserPage(Screen):
             data.append(team.toDataDict())
         self.ids['teams'].data = data
 
+        data = []
+        for event in user.events:
+            data.append(event.toDataDict())
+        self.ids['events'].data = data
+
 class GamePage(Screen):
 
     def load_game(self, game):
@@ -152,6 +157,26 @@ class ComplexTeamButtonItem(ButtonBehavior, RecycleDataViewBehavior, GridLayout)
         ''' Catch and handle the view changes '''
         self.index = index
         return super(ComplexTeamButtonItem, self).refresh_view_attrs(rv, index, data)
+
+    def printer(self):
+        print("YEET")
+
+class Event_RV(RecycleView):
+    def __init__(self, **kwargs):
+        super(Event_RV, self).__init__(**kwargs)
+
+        self.data = [{'event_source' : 'https://d36m266ykvepgv.cloudfront.net/uploads/media/TpbNfwbJFz/c-40-40/11132abf624399ef34b9336181e6fa3b-1.jpg',
+                        'event_name' : 'Dumbo'}]
+
+class ComplexEventButtonItem(ButtonBehavior, RecycleDataViewBehavior, GridLayout):
+
+    index = None
+    cols = 1
+
+    def refresh_view_attrs(self, rv, index, data):
+        ''' Catch and handle the view changes '''
+        self.index = index
+        return super(ComplexEventButtonItem, self).refresh_view_attrs(rv, index, data)
 
     def printer(self):
         print("YEET")
