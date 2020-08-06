@@ -105,6 +105,9 @@ class UserPage(Screen):
             data.append(event.toDataDict())
         self.ids['events'].data = data
 
+        for game in user.missing_result_games:
+            print(game)
+
 class GamePage(Screen):
 
     def load_game(self, game):

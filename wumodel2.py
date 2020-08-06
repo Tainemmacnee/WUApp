@@ -1,9 +1,10 @@
 class User():
-    def __init__(self, name, events, upcoming_games, img):
+    def __init__(self, name, events, upcoming_games, missing_result_games, img):
         self.name = name
         self.events = events
         self.upcoming_games = upcoming_games
         self.img = img
+        self.missing_result_games = missing_result_games
 
         self.upsizeimg()
 
@@ -76,7 +77,7 @@ class TeamMember():
         self.roles = roles
 
 class Game():
-    def __init__(self, home_team, away_team, home_team_img, away_team_img, date, time, location, field):
+    def __init__(self, home_team, away_team, home_team_img, away_team_img, date, time, location, field, link_report_result):
         self.home_team = home_team
         self.away_team = away_team
         self.date = date
@@ -85,6 +86,7 @@ class Game():
         self.field = field
         self.home_team_img = home_team_img
         self.away_team_img = away_team_img
+        self.link_report_result = link_report_result
 
     def __str__(self):
         return "GAME {} VS {} ON {} {} AT {} {}".format(self.home_team, self.away_team, self.time, self.date, self.field, self.location)

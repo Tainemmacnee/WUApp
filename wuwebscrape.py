@@ -29,7 +29,8 @@ def collectUserData(br):
     """br is an authenticated brower"""
     name = None
     img = None
-    games = []
+    upcoming_games = []
+    missing_result_games = []
     events = []
     futures = []
 
@@ -52,23 +53,70 @@ def collectUserData(br):
                 link_schedule = a2['href']
 
             futures.append(executor.submit(collectUserUpcomingGames, getBrowser(br.cookiejar), link_schedule))
+            futures.append(executor.submit(collectUserReportResultGames, getBrowser(br.cookiejar), "{}/game_type/missing_result".format(link_schedule)))
 
         for future in fu.as_completed(futures):
                 res =  future.result()
-                if isinstance(res[0], wumodel2.Event):
-                    events = res
-                else:
-                    games = res
+                for result in future.result():
+                    if isinstance(result, wumodel2.Event):
+                        events = res
+                        break
+                    elif result.link_report_result == None:
+                        upcoming_games = res
+                        break
+                    else:
+                        missing_result_games = res
+                        break
 
-    #return wumodel2.User(name, None, None, img)
-    return wumodel2.User(name, events, games, img)
+    return wumodel2.User(name, events, upcoming_games, missing_result_games, img)
+
+def collectUserReportResultGames(br, link):
+    response = br.open("https://wds.usetopscore.com{}".format(link))
+    soup = bs4.BeautifulSoup(response.read(), features="html5lib")
+    games = []
+
+    for gamediv in soup.findAll('div', class_='game-list-item'):
+        team_names = []
+        team_images = []
+        date = None
+        time = None
+        location = None
+        field = None
+        link_report_result = None
+
+        #get date and Time
+        dtdiv = gamediv.find('div', class_='span2')
+        date = dtdiv.find('span', recursive=True, class_='push-left').text
+        time = dtdiv.find('div', recursive=True, class_='push-right').text
+
+        #get names of teams in game
+        for teamdiv in gamediv.findAll('div', class_='game-participant'):
+            for teamnamediv in teamdiv.findAll('div', class_='schedule-team-name'):
+                team_names.append(teamnamediv.text.strip())
+            for img in teamdiv.findAll('img', src=True):
+                team_images.append(img['src'].replace('40', '200'))
+        for reportdiv in gamediv.findAll('div', class_='can-report', limit=1):
+            a = reportdiv.find('a')
+            link_report_result = a['href']
+
+        #get game location and field
+        locationdiv = gamediv.findAll('div', class_='span2')[-1]
+        locationspan = locationdiv.find('span', recursive=True, class_='push-left')
+        field = locationspan.text.split()[3]
+        location = locationspan.find('a', recursive=True, class_='plain-link').text
+
+        if not link_report_result == None:
+            game = wumodel2.Game(home_team=team_names[0], away_team=team_names[1], home_team_img=team_images[0], away_team_img=team_images[1], date=date.split()[1], time=time.split()[0], field=field, location=location, link_report_result=link_report_result)
+            games.append(game)
+
+    return games
 
 def collectUserUpcomingGames(br, link):
     response = br.open("https://wds.usetopscore.com{}".format(link))
     soup = bs4.BeautifulSoup(response.read(), features="html5lib")
     games = []
 
-    for gamediv in soup.findAll('div', class_='game-list-item'):
+    for gamediv in soup.findAll('div', class_='game-list-item row-select'):
         team_names = []
         team_images = []
         date = None
@@ -83,8 +131,8 @@ def collectUserUpcomingGames(br, link):
 
         #get names of teams in game
         for teamdiv in gamediv.findAll('div', class_='game-participant'):
-            for teamnamediv in teamdiv.findAll('div', class_='schedule-team-name'):
-                team_names.append(teamdiv.text.strip())
+            for teamnamediv in teamnamediv.findAll('div', class_='schedule-team-name'):
+                team_names.append(teamnamediv.text.strip())
             for img in teamdiv.findAll('img', src=True):
                 team_images.append(img['src'].replace('40', '200'))
 
@@ -94,7 +142,7 @@ def collectUserUpcomingGames(br, link):
         field = locationspan.text.split()[3]
         location = locationspan.find('a', recursive=True, class_='plain-link').text
 
-        game = wumodel2.Game(home_team=team_names[0], away_team=team_names[1], home_team_img=team_images[0], away_team_img=team_images[1], date=date.split()[1], time=time.split()[0], field=field, location=location)
+        game = wumodel2.Game(home_team=team_names[0], away_team=team_names[1], home_team_img=team_images[0], away_team_img=team_images[1], date=date.split()[1], time=time.split()[0], field=field, location=location, link_report_result=None)
         games.append(game)
 
     return games
