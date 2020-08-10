@@ -1,0 +1,55 @@
+#:import hex kivy.utils.get_color_from_hex
+ScreenManagement:
+    LoginPage:
+
+<LoginPage>:
+    name: "login_page"
+    FloatLayout:
+        Image:
+            source: 'Resources/Wellington_title_font.png'
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.5, 'center_y':0.9}
+        Image:
+            source: 'Resources/Ultimate_title_font.png'
+            size_hint: 0.8, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.8}
+        TextInput:
+            id: email
+            multiline: False
+            hint_text: 'Email'
+            size_hint: 0.4, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.62}
+            text: 'tainemmacnee@gmail.com'
+        TextInput:
+            id: passw
+            multiline: False
+            hint_text: 'Password'
+            password: True # hide password
+            size_hint: 0.4, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.55}
+            text: 'bedf6Rd!a'
+        Button:
+            text: "Login"
+            on_release:
+                app.root.get_screen(app.root.current).verify_login(app.root.get_screen('login_page').ids["email"].text, app.root.get_screen('login_page').ids["passw"].text)
+            size_hint: 0.4, 0.05
+            pos_hint: {'center_x': 0.5, 'center_y':0.48}
+
+
+
+<test@Image+ButtonBehavior>:
+    source: 'Resources/Logout.png'
+
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<BackgroundLabel@Label+BackgroundColor>
+    background_color: 0, 0, 0, 0
+    # Default the background color for this label
+    # to r 0, g 0, b 0, a 0
