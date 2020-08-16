@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:id="@+id/user_nav"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_events"
+            android:title="Events" />
+        <item
+            android:id="@+id/nav_upcoming_games"
+            android:title="Upcomming Games" />
+        <item
+            android:id="@+id/nav_missing_results"
+            android:title="Games Missing Results" />
+
+    </group>
+</menu>

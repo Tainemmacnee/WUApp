@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="hello_first_fragment">st1</string>
+    <string name="next">st2</string>
+    <string name="previous">st3</string>
+    <string name="action_settings">st4</string>
+    <string name="first_fragment_label">st5</string>
+    <string name="second_fragment_label">st6</string>
+    <string name="title_display_user_activity">test_activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Devon Melvor</string>
+    <string name="nav_header_subtitle">devon.melvor@gmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_events">Events</string>
+    <string name="menu_upcoming_games">Upcoming Games</string>
+</resources>
