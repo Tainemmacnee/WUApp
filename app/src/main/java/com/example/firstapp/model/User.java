@@ -1,12 +1,10 @@
 package com.example.firstapp.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,25 +18,28 @@ import java.util.concurrent.Future;
 
 public class User {
 
-        private String name, profileImgUrl;
-        private Future<List<Event>> futureEvents;
-        private Future<List<UpcomingGame>> futureUpcomingGames;
-        private Map<String, String> links = new HashMap<>();
-        private ExecutorService executor = Executors.newCachedThreadPool();
+        public static final String UPCOMINGGAMESLINK = "upcomingGamesLink";
 
-    public User(HashMap<String, String> cookies){
+        private String name, profileImgUrl;
+        public Future<List<Event>> futureEvents;
+        private Future<List<UpcomingGame>> futureUpcomingGames;
+        private HashMap<String, String> links;
+        private HashMap<String, String> cookies;
+
+    public User(HashMap<String, String> cookies, String name, String profileImgUrl, HashMap<String, String> links){
         //Load user data from wds.usetopscore.com with cookies
-        try {
-            futureEvents = Event.LoadEvents(cookies);
-            Map<String, String> userdata = (Map<String, String>) loadUser(cookies).get();
-            futureUpcomingGames = UpcomingGame.LoadUpcomingGames(cookies, userdata.get("upcomingGamesLink"));
-            this.name = userdata.get("name");
-            this.profileImgUrl = userdata.get("profileImgUrl");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        this.name = name;
+        this.profileImgUrl = profileImgUrl;
+        this.links = links;
+        this.cookies = cookies;
+    }
+
+    public void loadExtras(){
+        System.out.println("BIG L: "+links);
+        futureEvents = Event.LoadEvents(cookies);
+        futureUpcomingGames = UpcomingGame.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
+
     }
 
     public Event[] getEvents(){
@@ -66,45 +67,71 @@ public class User {
         return UpcomingGameAsList.toArray(new UpcomingGame[UpcomingGameAsList.size()]);
     }
 
-    public Future<?> loadUser(HashMap<String, String> input) {
+    public static Future<User> loadUser(String username, String password) {
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
-        Map<String, String> output = new HashMap<>();
+        ExecutorService executor = Executors.newCachedThreadPool();
 
         return executor.submit(() -> {
+            HashMap<String, String> cookies = null;
+            HashMap<String, String> links = new HashMap<>();
+            String name = null;
+            String profileImgUrl = null;
+
+
             try {
-                Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
+                Connection.Response loginFormResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
                         .userAgent(USER_AGENT)
-                        .cookies(input)
+//                        .cookies(input)
                         .execute();
-                Document doc = loadPageResponse.parse();
+
+                //log user in
+                Element loginForm = loginFormResponse.parse()
+                        .getElementsByClass("form-vertical signin exists spacer1").first();
+
+                Element emailField = loginForm.getElementsByClass("span3 full initial-focus span3 mailcheck").first();
+                emailField.val(username);
+
+                Element passwordField = loginForm.getElementById("signin_password");
+                passwordField.val(password);
+
+                FormElement form = (FormElement)loginForm;
+                Connection.Response loginActionResponse = form.submit()
+                        .cookies(loginFormResponse.cookies())
+                        .userAgent(USER_AGENT)
+                        .execute();
+
+                cookies = (HashMap)loginActionResponse.cookies();
+
+                Document doc = loginActionResponse.parse();
                 Element userpageLink = doc.getElementsByClass("global-toolbar-user-btn ").first();
 
                 //Collect link to upcoming schedule for later web scraping
-                output.put("upcomingGamesLink", userpageLink.attr("href")+"/schedule");
+                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href")+"/schedule");
 
                 String NEW_URL = WEB_URL + userpageLink.attr("href");
-                loadPageResponse = Jsoup.connect(NEW_URL)
+                Connection.Response loadPageResponse = Jsoup.connect(NEW_URL)
                         .method(Connection.Method.GET)
                         .userAgent(USER_AGENT)
-                        .cookies(input)
+                        .cookies(cookies)
                         .execute();
+
                 doc = loadPageResponse.parse();
 
                 //Collect username from page
                 Element profileNameDiv = doc.getElementsByClass("profile-name").first();
                 Element profileName = profileNameDiv.child(0);
-                output.put("name", profileName.text().trim());
+                name = profileName.text().trim();
 
                 //Collect user image url from page
                 Element profilePicDiv = profileNameDiv.nextElementSibling();
                 Element profilePic = profilePicDiv.child(0);
-                output.put("profileImgUrl", profilePic.attr("src"));
+                profileImgUrl =  profilePic.attr("src");
             } catch (IOException e) {
-                e.printStackTrace();
+                return null;
             }
-            return output;
+            return new User(cookies, name, profileImgUrl, links);
         });
     }
 
@@ -116,5 +143,11 @@ public class User {
 
     public String getProfileImgUrl() {
         return this.profileImgUrl;
+    }
+    public HashMap<String, String> getCookies() {
+        return this.cookies;
+    }
+    public HashMap<String, String> getLinks() {
+        return this.links;
     }
 }

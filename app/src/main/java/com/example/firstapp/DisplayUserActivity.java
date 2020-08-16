@@ -45,7 +45,12 @@ public class DisplayUserActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         Intent intent = getIntent();
-        this.user = new User((HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.EXTRA_MESSAGE));
+        String name = (String) intent.getExtras().get(MainActivity.MESSAGE_NAME);
+        String profileImgUrl = (String) intent.getExtras().get(MainActivity.MESSAGE_IMAGE);
+        HashMap<String, String> cookies = (HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.MESSAGE_COOKIES);
+        HashMap<String, String> links = (HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.MESSAGE_LINKS);
+        this.user = new User(cookies, name, profileImgUrl, links);
+        this.user.loadExtras();
 
         View hview = navigationView.getHeaderView(0);
         Picasso.get().load(this.user.getProfileImgUrl()).into((ImageView) hview.findViewById(R.id.nav_header_profile_image));

@@ -158,7 +158,7 @@
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="12dp"
@@ -186,12 +186,12 @@
     <TextView
         android:id="@+id/upcoming_game_league"
         android:layout_width="match_parent"
-        android:layout_height="28dp"
+        android:layout_height="35dp"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="12dp"
         android:gravity="center"
-        android:text="Winter Monday Mixed Social League"
+        android:text="Winter Monday Mixed Social League Here is some extra text to make it longer"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

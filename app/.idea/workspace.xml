@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="" />
+    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_S_API_30" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -30,6 +43,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Nexus_S_API_30" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-08-16T11:39:21.258Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
@@ -105,6 +120,48 @@
       <option name="presentableId" value="Default" />
       <updated>1597574471091</updated>
     </task>
+    <task id="LOCAL-00001" summary="Test commit">
+      <created>1597574605971</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597574605971</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Test commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test commit" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597578548251">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548251" />
+    <state width="2517" height="266" key="GridCell.Tab.0.bottom" timestamp="1597578548290">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="266" key="GridCell.Tab.0.bottom/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
+    <state width="2517" height="266" key="GridCell.Tab.0.center" timestamp="1597578548290">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="266" key="GridCell.Tab.0.center/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
+    <state width="2517" height="266" key="GridCell.Tab.0.left" timestamp="1597578548290">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="266" key="GridCell.Tab.0.left/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
+    <state width="2517" height="266" key="GridCell.Tab.0.right" timestamp="1597578548290">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597578577780">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578577780" />
+    <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1597577926210">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597577926210" />
   </component>
 </project>
