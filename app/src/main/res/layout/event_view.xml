@@ -11,16 +11,20 @@
     <TextView
         android:id="@+id/upcoming_game_home_team"
         android:layout_width="280dp"
-        android:layout_height="50dp"
+        android:layout_height="90dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
-        android:gravity="center"
-        android:text="Default Event Name"
+        android:layout_marginTop="16dp"
+        android:gravity="center|left"
+        android:text="2020 Winter Monday mens Womexn's Leauge"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toEndOf="@+id/upcoming_game_home_image"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/upcoming_game_home_image"
