@@ -50,6 +50,7 @@ public class MainActivity extends Activity{
             intent.putExtra(MESSAGE_COOKIES, new HashMap<String, String>());
             intent.putExtra(MESSAGE_LINKS, new HashMap<String, String>());
             startActivity(intent);
+            finish();
             return;
         }
 

@@ -3,6 +3,7 @@ package com.example.firstapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,5 +75,32 @@ public class DisplayUserActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if(item.getItemId() == R.id.action_refresh){
+            refresh();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void refresh(){
+        Intent intent = new Intent(this, DisplayUserActivity.class);//DisplayUserActivity.class);
+        intent.putExtra(MainActivity.MESSAGE_NAME, user.getName());
+        intent.putExtra(MainActivity.MESSAGE_IMAGE, user.getProfileImgUrl());
+        intent.putExtra(MainActivity.MESSAGE_COOKIES, user.getCookies());
+        intent.putExtra(MainActivity.MESSAGE_LINKS, user.getLinks());
+        startActivity(intent);
+        finish();
+    }
+
+    public void logout(){
+        Intent intent = new Intent(this, MainActivity.class);//DisplayUserActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
