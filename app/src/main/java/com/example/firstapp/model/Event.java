@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
 public class Event {
 
     String eventName, eventImg;
+    List<Team> teams;
 
     public Event(String eventName, String eventImg){
         this.eventName = eventName;
@@ -43,6 +44,12 @@ public class Event {
 
                 Elements eventLinks = doc.getElementsByClass("global-toolbar-subnav-img-item plain-link");
                 for(Element e: eventLinks){
+                    if(e.attr("href").startsWith("/e/")) {
+                        List<Future<List<Team>>> eventTeams = Team.loadTeams(e.attr("href"), cookies);
+                    } else {
+                        continue;
+                    }
+
                     //Collect event image url from page
                     Element eventImgElem = e.child(0);
                     eventImg = eventImgElem.attr("src");
