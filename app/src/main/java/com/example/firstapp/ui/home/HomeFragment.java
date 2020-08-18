@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment {
         final TextView gId = root.findViewById(R.id.home_gender_id);
         final TextView age = root.findViewById(R.id.home_age);
         final TextView dHand = root.findViewById(R.id.home_dominant_hand);
+        final TextView aboutText = root.findViewById(R.id.home_about_text);
         final ImageView profileImg = root.findViewById(R.id.profile_image_main);
 
         DisplayUserActivity activity = (DisplayUserActivity)getActivity();
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
         gId.setText(user.getgId());
         age.setText(user.getAge());
         dHand.setText(user.getdHand());
+        aboutText.setText((user.getAboutText()));
         Picasso.get().load(user.getProfileImgUrl()).into(profileImg);
 
         return root;

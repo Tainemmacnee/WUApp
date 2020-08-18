@@ -20,7 +20,7 @@ public class User {
         public static final String UPCOMINGGAMESLINK = "upcomingGamesLink";
         public static final String USERPAGELINK = "userPageLink";
 
-        private String name, profileImgUrl, gId, age, dHand;
+        private String name, profileImgUrl, gId, age, dHand, aboutText;
         public Future<List<Event>> futureEvents;
         private Future<List<Game>> futureUpcomingGames;
         private HashMap<String, String> links;
@@ -160,6 +160,10 @@ public class User {
             Element profilePic = profilePicDiv.child(0);
             profileImgUrl = profilePic.attr("src");
 
+            Element profileAboutDiv = doc.getElementsByClass("profile-about").first();
+            Element profileAboutText = profileAboutDiv.getElementsByClass("rich-text").first();
+            aboutText = profileAboutText.text();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -182,6 +186,10 @@ public class User {
 
     public String getgId() {
         return gId;
+    }
+
+    public String getAboutText() {
+        return aboutText;
     }
 
     public String getProfileImgUrl() {
