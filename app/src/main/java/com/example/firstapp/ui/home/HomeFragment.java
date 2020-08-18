@@ -29,12 +29,18 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         final TextView userName = root.findViewById(R.id.username_display_main);
+        final TextView gId = root.findViewById(R.id.home_gender_id);
+        final TextView age = root.findViewById(R.id.home_age);
+        final TextView dHand = root.findViewById(R.id.home_dominant_hand);
         final ImageView profileImg = root.findViewById(R.id.profile_image_main);
 
         DisplayUserActivity activity = (DisplayUserActivity)getActivity();
         User user = activity.getUserData();
 
         userName.setText(user.getName());
+        gId.setText(user.getgId());
+        age.setText(user.getAge());
+        dHand.setText(user.getdHand());
         Picasso.get().load(user.getProfileImgUrl()).into(profileImg);
 
         return root;

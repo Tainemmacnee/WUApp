@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.firstapp.model.User;
+import com.example.firstapp.model.UserLoginToken;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -26,8 +27,6 @@ import java.util.concurrent.Future;
 
 
 public class MainActivity extends Activity{
-    public static final String MESSAGE_NAME="USERNAME";
-    public static final String MESSAGE_IMAGE="USERIMAGE";
     public static final String MESSAGE_COOKIES="LOGINCOOKIE";
     public static final String MESSAGE_LINKS="USERLINKS";
 
@@ -45,8 +44,6 @@ public class MainActivity extends Activity{
 
         if(params.get(0).equals("dev") && params.get(1).equals("dev")){
             Intent intent = new Intent(this, DisplayUserActivity.class);//DisplayUserActivity.class);
-            intent.putExtra(MESSAGE_NAME, "Devon Melvor");
-            intent.putExtra(MESSAGE_IMAGE, "");
             intent.putExtra(MESSAGE_COOKIES, new HashMap<String, String>());
             intent.putExtra(MESSAGE_LINKS, new HashMap<String, String>());
             startActivity(intent);
@@ -56,15 +53,13 @@ public class MainActivity extends Activity{
 
         //Begin Task
         try {
-            User user = User.loadUser(params.get(0), params.get(1)).get();
-            if(user==null){
+            UserLoginToken lt = User.loginUser(params.get(0), params.get(1)).get();
+            if(lt==null){
                 System.out.println("LOGIN FAILED");
             } else {
                 Intent intent = new Intent(this, DisplayUserActivity.class);
-                intent.putExtra(MESSAGE_NAME, user.getName());
-                intent.putExtra(MESSAGE_IMAGE, user.getProfileImgUrl());
-                intent.putExtra(MESSAGE_COOKIES, user.getCookies());
-                intent.putExtra(MESSAGE_LINKS, user.getLinks());
+                intent.putExtra(MESSAGE_COOKIES, lt.getCookies());
+                intent.putExtra(MESSAGE_LINKS, lt.getLinks());
                 startActivity(intent);
             }
         } catch (ExecutionException e) {

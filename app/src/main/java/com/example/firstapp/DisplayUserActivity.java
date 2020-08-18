@@ -46,12 +46,9 @@ public class DisplayUserActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         Intent intent = getIntent();
-        String name = (String) intent.getExtras().get(MainActivity.MESSAGE_NAME);
-        String profileImgUrl = (String) intent.getExtras().get(MainActivity.MESSAGE_IMAGE);
         HashMap<String, String> cookies = (HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.MESSAGE_COOKIES);
         HashMap<String, String> links = (HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.MESSAGE_LINKS);
-        this.user = new User(cookies, name, profileImgUrl, links);
-        this.user.loadExtras();
+        this.user = new User(cookies, links);
 
         View hview = navigationView.getHeaderView(0);
         Picasso.get().load(this.user.getProfileImgUrl()).into((ImageView) hview.findViewById(R.id.nav_header_profile_image));
@@ -90,15 +87,13 @@ public class DisplayUserActivity extends AppCompatActivity {
 
     private void refresh(){
         Intent intent = new Intent(this, DisplayUserActivity.class);//DisplayUserActivity.class);
-        intent.putExtra(MainActivity.MESSAGE_NAME, user.getName());
-        intent.putExtra(MainActivity.MESSAGE_IMAGE, user.getProfileImgUrl());
         intent.putExtra(MainActivity.MESSAGE_COOKIES, user.getCookies());
         intent.putExtra(MainActivity.MESSAGE_LINKS, user.getLinks());
         startActivity(intent);
         finish();
     }
 
-    public void logout(){
+    public void logout(View view){
         Intent intent = new Intent(this, MainActivity.class);//DisplayUserActivity.class);
         startActivity(intent);
         finish();

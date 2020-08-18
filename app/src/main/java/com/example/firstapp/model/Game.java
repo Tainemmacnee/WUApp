@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class UpcomingGame {
+public class Game {
 
     String homeTeamName, homeTeamImg;
     String awayTeamName, awayTeamImg;
@@ -52,7 +52,7 @@ public class UpcomingGame {
         return location;
     }
 
-    public UpcomingGame(String homeTeamName, String homeTeamImg, String awayTeamName, String awayTeamImg, String league, String date, String time, String location){
+    public Game(String homeTeamName, String homeTeamImg, String awayTeamName, String awayTeamImg, String league, String date, String time, String location){
         this.homeTeamName = homeTeamName;
         this.homeTeamImg = homeTeamImg;
         this.awayTeamName = awayTeamName;
@@ -63,11 +63,11 @@ public class UpcomingGame {
         this.location = location;
     }
 
-    public static Future<List<UpcomingGame>> LoadUpcomingGames(Map<String, String> cookies, String link){
+    public static Future<List<Game>> LoadUpcomingGames(Map<String, String> cookies, String link){
         ExecutorService executor = Executors.newCachedThreadPool();
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com"+link;
-        List<UpcomingGame> output = new ArrayList<>();
+        List<Game> output = new ArrayList<>();
 
         return executor.submit(() -> {
             try {
@@ -108,7 +108,7 @@ public class UpcomingGame {
                     Element awayTeamImgElem = awayTeamElem.child(0);
                     awayTeamImg = awayTeamImgElem.attr("src");
 
-                    output.add(new UpcomingGame(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location));
+                    output.add(new Game(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

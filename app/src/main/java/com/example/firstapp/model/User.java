@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,33 +18,41 @@ import java.util.concurrent.Future;
 public class User {
 
         public static final String UPCOMINGGAMESLINK = "upcomingGamesLink";
+        public static final String USERPAGELINK = "userPageLink";
 
-        private String name, profileImgUrl;
+        private String name, profileImgUrl, gId, age, dHand;
         public Future<List<Event>> futureEvents;
-        private Future<List<UpcomingGame>> futureUpcomingGames;
+        private Future<List<Game>> futureUpcomingGames;
         private HashMap<String, String> links;
         private HashMap<String, String> cookies;
 
-    public User(HashMap<String, String> cookies, String name, String profileImgUrl, HashMap<String, String> links){
+    public User(HashMap<String, String> cookies, HashMap<String, String> links){
         //Load user data from wds.usetopscore.com with cookies
 
-        this.name = name;
-        this.profileImgUrl = profileImgUrl;
         this.links = links;
         this.cookies = cookies;
+
+        loadExtras();
+        try {
+            loadUser().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadExtras(){
         System.out.println("BIG L: "+links);
         futureEvents = Event.LoadEvents(cookies);
-        futureUpcomingGames = UpcomingGame.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
-
+        futureUpcomingGames = Game.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
     }
 
     public Event[] getEvents(){
         ArrayList<Event> eventsAsList = null;
         try {
             eventsAsList = (ArrayList<Event>) futureEvents.get();
+            System.out.println("EVENTS LOADED");
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -55,19 +62,20 @@ public class User {
         return eventsAsList.toArray(new Event[eventsAsList.size()]);
     }
 
-    public UpcomingGame[] getUpcomingGames(){
-        ArrayList<UpcomingGame> UpcomingGameAsList = null;
+    public Game[] getUpcomingGames(){
+        ArrayList<Game> gameAsList = null;
         try {
-            UpcomingGameAsList = (ArrayList<UpcomingGame>) futureUpcomingGames.get();
+            gameAsList = (ArrayList<Game>) futureUpcomingGames.get();
+            System.out.println("UPCOMING GAMES LOADED");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return UpcomingGameAsList.toArray(new UpcomingGame[UpcomingGameAsList.size()]);
+        return gameAsList.toArray(new Game[gameAsList.size()]);
     }
 
-    public static Future<User> loadUser(String username, String password) {
+    public static Future<UserLoginToken> loginUser(String username, String password) {
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -77,13 +85,12 @@ public class User {
             HashMap<String, String> links = new HashMap<>();
             String name = null;
             String profileImgUrl = null;
-
+            String gId, age, dHand;
 
             try {
                 Connection.Response loginFormResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
                         .userAgent(USER_AGENT)
-//                        .cookies(input)
                         .execute();
 
                 //log user in
@@ -96,49 +103,85 @@ public class User {
                 Element passwordField = loginForm.getElementById("signin_password");
                 passwordField.val(password);
 
-                FormElement form = (FormElement)loginForm;
+                FormElement form = (FormElement) loginForm;
                 Connection.Response loginActionResponse = form.submit()
                         .cookies(loginFormResponse.cookies())
                         .userAgent(USER_AGENT)
                         .execute();
 
-                cookies = (HashMap)loginActionResponse.cookies();
+                cookies = (HashMap) loginActionResponse.cookies();
 
                 Document doc = loginActionResponse.parse();
                 Element userpageLink = doc.getElementsByClass("global-toolbar-user-btn ").first();
 
                 //Collect link to upcoming schedule for later web scraping
-                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href")+"/schedule");
+                links.put(User.USERPAGELINK, userpageLink.attr("href"));
+                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return new UserLoginToken(cookies, links);
+        });
+    }
 
-                String NEW_URL = WEB_URL + userpageLink.attr("href");
-                Connection.Response loadPageResponse = Jsoup.connect(NEW_URL)
+
+    private Future<?> loadUser() {
+        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+        final String WEB_URL = "https://wds.usetopscore.com";
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        return executor.submit(() -> {
+            String NEW_URL = WEB_URL + links.get(User.USERPAGELINK);
+            Connection.Response loadPageResponse = null;
+            try {
+                loadPageResponse = Jsoup.connect(NEW_URL)
                         .method(Connection.Method.GET)
                         .userAgent(USER_AGENT)
                         .cookies(cookies)
                         .execute();
 
-                doc = loadPageResponse.parse();
 
-                //Collect username from page
-                Element profileNameDiv = doc.getElementsByClass("profile-name").first();
-                Element profileName = profileNameDiv.child(0);
-                name = profileName.text().trim();
+            Document doc = loadPageResponse.parse();
 
-                //Collect user image url from page
-                Element profilePicDiv = profileNameDiv.nextElementSibling();
-                Element profilePic = profilePicDiv.child(0);
-                profileImgUrl =  profilePic.attr("src");
+            //Collect username from page
+            Element profileNameDiv = doc.getElementsByClass("profile-name").first();
+            Element profileName = profileNameDiv.child(0);
+            name = profileName.text().trim();
+
+            //collect profile info
+            Element profileInfoElem = doc.getElementsByClass("profile-info").first().child(0);
+            gId = profileInfoElem.child(1).text();
+            age = profileInfoElem.child(3).text();
+            dHand = profileInfoElem.child(5).text();
+
+            //Collect user image url from page
+            Element profilePicDiv = doc.getElementsByClass("profile-image").first();
+            Element profilePic = profilePicDiv.child(0);
+            profileImgUrl = profilePic.attr("src");
+
             } catch (IOException e) {
-                return null;
+                e.printStackTrace();
             }
-            return new User(cookies, name, profileImgUrl, links);
+
+            return;
         });
     }
 
-
-
     public String getName() {
         return this.name;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getdHand() {
+        return dHand;
+    }
+
+    public String getgId() {
+        return gId;
     }
 
     public String getProfileImgUrl() {

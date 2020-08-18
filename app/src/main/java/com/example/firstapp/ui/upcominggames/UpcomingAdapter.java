@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firstapp.R;
-import com.example.firstapp.model.UpcomingGame;
+import com.example.firstapp.model.Game;
 import com.squareup.picasso.Picasso;
 
 public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.UpcomingViewHolder> {
 
-    private UpcomingGame[] upcomingGames;
+    private Game[] games;
 
     public class UpcomingViewHolder extends RecyclerView.ViewHolder {
         public TextView homeTeamName;
@@ -39,8 +39,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
         }
     }
 
-    public UpcomingAdapter(UpcomingGame[] upcomingGames) {
-        this.upcomingGames = upcomingGames;
+    public UpcomingAdapter(Game[] games) {
+        this.games = games;
     }
 
     public UpcomingViewHolder onCreateViewHolder(ViewGroup parent,
@@ -55,20 +55,20 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
 
     @Override
     public void onBindViewHolder(@NonNull UpcomingViewHolder holder, int position) {
-        holder.homeTeamName.setText(upcomingGames[position].getHomeTeamName());
-        holder.awayTeamName.setText(upcomingGames[position].getAwayTeamName());
-        holder.date.setText(upcomingGames[position].getDate());
-        holder.time.setText(upcomingGames[position].getTime());
-        holder.league.setText(upcomingGames[position].getLeague());
-        holder.location.setText(upcomingGames[position].getLocation());
-        Picasso.get().load(upcomingGames[position].getHomeTeamImg()).into(holder.homeTeamImage);
-        Picasso.get().load(upcomingGames[position].getAwayTeamImg()).into(holder.awayTeamImage);
+        holder.homeTeamName.setText(games[position].getHomeTeamName());
+        holder.awayTeamName.setText(games[position].getAwayTeamName());
+        holder.date.setText(games[position].getDate());
+        holder.time.setText(games[position].getTime());
+        holder.league.setText(games[position].getLeague());
+        holder.location.setText(games[position].getLocation());
+        Picasso.get().load(games[position].getHomeTeamImg()).into(holder.homeTeamImage);
+        Picasso.get().load(games[position].getAwayTeamImg()).into(holder.awayTeamImage);
     }
 
 
     @Override
     public int getItemCount() {
-        return upcomingGames.length;
+        return games.length;
     }
 
 

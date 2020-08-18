@@ -7,19 +7,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/UserLoginToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/UpcomingGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/home/HomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/upcominggames/UpcomingAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/upcominggames/UpcomingAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../old-Kivvy/wuapp-old/wumodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/../old-Kivvy/wuapp-old/wumodel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_S_API_30" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_30" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -32,7 +38,19 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Tainemmacnee &lt;tainemmacnee@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1gB45sngyoQO4A0fQrnZ4b1Q96a" />
@@ -43,9 +61,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Nexus_S_API_30" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-08-16T11:39:21.258Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_30" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-08-16T12:44:49.722Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
@@ -127,41 +146,86 @@
       <option name="project" value="LOCAL" />
       <updated>1597574605971</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Finished rebuilding login system to improve performance">
+      <created>1597578603816</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1597578603816</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Started implementing logout button">
+      <created>1597581621105</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1597581621105</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed an issue with events titles being displayed incorrectly">
+      <created>1597582033756</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1597582033756</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Test commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test commit" />
+    <MESSAGE value="Finished rebuilding login system to improve performance" />
+    <MESSAGE value="Started implementing logout button" />
+    <MESSAGE value="Fixed an issue with events titles being displayed incorrectly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed an issue with events titles being displayed incorrectly" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597578548251">
+    <state x="927" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1597662049875">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548251" />
-    <state width="2517" height="266" key="GridCell.Tab.0.bottom" timestamp="1597578548290">
+    <state x="927" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597662049875" />
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597723153416">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.bottom/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
-    <state width="2517" height="266" key="GridCell.Tab.0.center" timestamp="1597578548290">
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723153416" />
+    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597582032585">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.center/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
-    <state width="2517" height="266" key="GridCell.Tab.0.left" timestamp="1597578548290">
+    <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597582032585" />
+    <state width="2517" height="266" key="GridCell.Tab.0.bottom" timestamp="1597723434530">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.left/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
-    <state width="2517" height="266" key="GridCell.Tab.0.right" timestamp="1597578548290">
+    <state width="2517" height="266" key="GridCell.Tab.0.bottom/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723434530" />
+    <state width="2517" height="266" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597662084430" />
+    <state width="2517" height="266" key="GridCell.Tab.0.center" timestamp="1597723434530">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578548290" />
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597578577780">
+    <state width="2517" height="266" key="GridCell.Tab.0.center/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723434530" />
+    <state width="2517" height="266" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597662084430" />
+    <state width="2517" height="266" key="GridCell.Tab.0.left" timestamp="1597723434530">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597578577780" />
+    <state width="2517" height="266" key="GridCell.Tab.0.left/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723434530" />
+    <state width="2517" height="266" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597662084430" />
+    <state width="2517" height="266" key="GridCell.Tab.0.right" timestamp="1597723434530">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723434530" />
+    <state width="2517" height="266" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597662084430" />
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597582037504">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597582037504" />
     <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1597577926210">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597577926210" />
+    <state x="976" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1597717927040">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597717927040" />
+    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597661406099" />
+    <state x="993" y="491" key="git4idea.merge.GitPullDialog" timestamp="1597661412618">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="993" y="491" key="git4idea.merge.GitPullDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597661412618" />
   </component>
 </project>
