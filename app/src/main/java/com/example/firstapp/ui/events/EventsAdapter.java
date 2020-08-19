@@ -1,6 +1,5 @@
 package com.example.firstapp.ui.events;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firstapp.DisplayEventTeamsActivity;
 import com.example.firstapp.DisplayUserActivity;
-import com.example.firstapp.MainActivity;
 import com.example.firstapp.R;
 import com.example.firstapp.model.Event;
+import com.example.firstapp.model.Team;
 import com.squareup.picasso.Picasso;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewHolder> {
 
@@ -59,9 +61,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         holder.eventTeamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(view.getContext(), DisplayEventTeamsActivity.class);
-//                intent.putExtra(DisplayUserActivity.MESSAGEEVENTNAME, events[position].getName());
-//                view.getContext().startActivity(intent);
+                ArrayList<Team> teams = (ArrayList<Team>) events[position].getTeams();
+                Intent intent = new Intent(view.getContext(), DisplayEventTeamsActivity.class);
+                intent.putExtra(DisplayUserActivity.MESSAGEEVENTNAME, events[position].getName());
+                intent.putExtra(DisplayUserActivity.MESSAGEEVENTTEAMS, teams);
+                view.getContext().startActivity(intent);
+
             }
         });
     }

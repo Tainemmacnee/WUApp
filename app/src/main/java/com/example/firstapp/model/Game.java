@@ -63,6 +63,14 @@ public class Game {
         this.location = location;
     }
 
+    public static Future<List<Game>> LoadMissingResultsGames(Map<String, String> cookies, String link) {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+        final String WEB_URL = "https://wds.usetopscore.com"+link;
+
+        return null;
+    }
+
     public static Future<List<Game>> LoadUpcomingGames(Map<String, String> cookies, String link){
         ExecutorService executor = Executors.newCachedThreadPool();
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";

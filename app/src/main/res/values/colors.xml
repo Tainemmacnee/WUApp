@@ -6,6 +6,7 @@
     <color name="colorTest">#003180</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="red">#FF0000</color>
+    <color name="red">#b23b3b</color>
+    <color name="grey">#808080</color>
     <color name="colorSecondaryDark">#353537</color>
 </resources>

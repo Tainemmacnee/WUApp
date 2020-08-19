@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.firstapp.DisplayUserActivity;
+import com.example.firstapp.DisplayEventTeamsActivity;
 import com.example.firstapp.R;
-import com.example.firstapp.model.User;
-import com.example.firstapp.ui.events.EventsAdapter;
+import com.example.firstapp.model.Event;
+import com.example.firstapp.model.Team;
+
+import java.util.List;
 
 public class EventTeamsFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -25,26 +27,19 @@ public class EventTeamsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_teams, container, false);
 
+        DisplayEventTeamsActivity activity = (DisplayEventTeamsActivity)getActivity();
+        Team[] eventTeams = activity.getEventTeams();
+
         recyclerView = (RecyclerView) v.findViewById(R.id.event_team_recycler_view);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        DisplayUserActivity activity = (DisplayUserActivity)getActivity();
-        User user = activity.getUserData();
-        mAdapter = new EventTeamsAdapter(user.getEvent(eventName).getTeams());
+        mAdapter = new EventTeamsAdapter(eventTeams);
         recyclerView.setAdapter(mAdapter);
 
         return v;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            this.eventName = bundle.getString("eventName");
-        }
-    }
 }

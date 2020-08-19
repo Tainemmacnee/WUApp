@@ -58,12 +58,12 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/rounded_background_yellow"
-        android:foreground="?attr/selectableItemBackground"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Teams"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
+    <!-- android:foreground="?attr/selectableItemBackground" -->
 
     <Button
         android:id="@+id/button4"
@@ -72,7 +72,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_background_yellow"
+        android:background="@drawable/rounded_background_grey"
         android:foreground="?attr/selectableItemBackground"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

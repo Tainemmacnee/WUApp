@@ -50,4 +50,83 @@
         app:layout_constraintTop_toBottomOf="@+id/event_team_image"
         tools:ignore="MissingConstraints" />
 
+    <LinearLayout
+        android:id="@+id/male_matchup_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintWidth_percent="0.5">
+
+        <TextView
+            android:id="@+id/textView_male_matchups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Male Matchups"
+            android:textColor="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/male_matchup_display"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/male_matchup_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Devon Melvor"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/female_matchup_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/male_matchup_container"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintWidth_percent="0.5">
+
+        <TextView
+            android:id="@+id/textView_female_matchups2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Female Matchups"
+            android:textColor="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/female_matchup_display"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/female_matchup_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Devon Melvor"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

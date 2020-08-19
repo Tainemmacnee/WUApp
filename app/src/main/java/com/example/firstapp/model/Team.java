@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Team {
+public class Team implements Serializable {
 
     private String name, imageUrl;
     private List<String> maleMatchups, femaleMatchups;
@@ -61,6 +62,13 @@ public class Team {
         return imageUrl;
     }
 
+    public List<String> getMaleMatchups(){
+        return this.maleMatchups;
+    }
+    public List<String> getFemaleMatchups(){
+        return this.femaleMatchups;
+    }
+
     private static class loadTeamsTask implements Callable<List<Team>> {
 
         private final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
@@ -74,7 +82,6 @@ public class Team {
 
         @Override
         public List<Team> call() throws Exception {
-            System.out.println(URL);
             Connection.Response loadPageResponse = Jsoup.connect(URL)
                     .method(Connection.Method.GET)
                     .userAgent(USER_AGENT)
@@ -96,7 +103,9 @@ public class Team {
                 for(Element genderMatchupDiv : teamDiv.getElementsByClass("gender-cluster")){
                     List<String> matchups = new ArrayList<>();
                     for(Element member : genderMatchupDiv.getElementsByTag("a")){
-                        matchups.add(member.text().trim());
+                        if(member.nextElementSibling().children().first().attr("data-value").contains("player")) { //check they are a player not a coach/admin
+                            matchups.add(member.text().trim());
+                        }
                     }
 
                     if(genderMatchupDiv.getElementsByTag("h5").first().text().startsWith("Female")){
@@ -106,10 +115,13 @@ public class Team {
                     }
                 }
 
-                System.out.println("TEAM: "+teamName+" With MALES: "+maleMatchups + " And FEMALES: "+femaleMatchups);
                 teams.add(new Team(teamName, teamImage, maleMatchups, femaleMatchups));
             }
             return teams;
         }
+    }
+
+    public String toString(){
+        return "TEAM: "+this.name+" IMAGE: "+this.imageUrl+" MEMBERS "+this.maleMatchups+" "+this.femaleMatchups;
     }
 }

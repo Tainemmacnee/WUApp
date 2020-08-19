@@ -6,30 +6,27 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="Started implementing displaying event teams but stopped due to issues.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/activity_display_event_teams.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/content_display_event_teams.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_event_teams.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/navigation/nav_graph.xml" afterDir="false" />
+    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/rounded_background_grey.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/menu/display_event_teams_activity.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/navEditor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/EventsAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/EventsAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/upcominggames/UpcomingAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/upcominggames/UpcomingAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/acivity_display_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/acivity_display_user.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_display_event_teams.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_display_event_teams.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/content_display_event_teams.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../old-Kivvy/wuapp-old/wumodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/../old-Kivvy/wuapp-old/wumodel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +51,7 @@
       <list>
         <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -64,6 +62,7 @@
       </list>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
   <component name="ProjectId" id="1gB45sngyoQO4A0fQrnZ4b1Q96a" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -78,17 +77,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/drawable" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="RecentsManager">
     <key name="android.template.1160011513">
       <recent name="com.example.firstapp" />
     </key>
+    <key name="android.template.-598303784">
+      <recent name="com.example.firstapp" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.example.firstapp.ui.events.teams" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable" />
       <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\layout" />
     </key>
   </component>
@@ -212,7 +215,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597757658833</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Started implementing displaying event teams but stopped due to issues.">
+      <created>1597828997773</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1597828997773</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -231,44 +241,48 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597753040942" />
+    <state x="960" y="427" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1597829545006">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="960" y="427" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597829545006" />
     <state x="927" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1597662049875">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="927" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597662049875" />
-    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597827277241">
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597829432015">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723153416" />
-    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597827277241" />
-    <state x="860" y="454" key="AndroidCreateResourceFileDialog" timestamp="1597809406489">
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597829432015" />
+    <state x="860" y="454" key="AndroidCreateResourceFileDialog" timestamp="1597830456003">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="860" y="454" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597809406489" />
-    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597828808231">
+    <state x="860" y="454" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597830456003" />
+    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597828996614">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757657917" />
-    <state x="489" y="223" key="CommitChangelistDialog2/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828808231" />
-    <state width="2517" height="266" key="GridCell.Tab.0.bottom" timestamp="1597828626271">
+    <state x="489" y="223" key="CommitChangelistDialog2/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828996614" />
+    <state width="2499" height="266" key="GridCell.Tab.0.bottom" timestamp="1597852618679">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.bottom/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757634997" />
-    <state width="2517" height="266" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828626271" />
-    <state width="2517" height="266" key="GridCell.Tab.0.center" timestamp="1597828626271">
+    <state width="2499" height="266" key="GridCell.Tab.0.bottom/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
+    <state width="2517" height="266" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
+    <state width="2499" height="266" key="GridCell.Tab.0.center" timestamp="1597852618679">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.center/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757634996" />
-    <state width="2517" height="266" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828626271" />
-    <state width="2517" height="266" key="GridCell.Tab.0.left" timestamp="1597828626271">
+    <state width="2499" height="266" key="GridCell.Tab.0.center/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
+    <state width="2517" height="266" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
+    <state width="2499" height="266" key="GridCell.Tab.0.left" timestamp="1597852618679">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.left/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757634996" />
-    <state width="2517" height="266" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828626271" />
-    <state width="2517" height="266" key="GridCell.Tab.0.right" timestamp="1597828626271">
+    <state width="2499" height="266" key="GridCell.Tab.0.left/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
+    <state width="2517" height="266" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
+    <state width="2499" height="266" key="GridCell.Tab.0.right" timestamp="1597852618679">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757634997" />
-    <state width="2517" height="266" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828626271" />
+    <state width="2499" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
+    <state width="2517" height="266" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
     <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597757663913">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -277,11 +291,11 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597577926210" />
-    <state x="976" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1597805831043">
+    <state x="976" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1597849794205">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597717927040" />
-    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597805831043" />
+    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597849794205" />
+    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597829564884" />
     <state x="993" y="491" key="git4idea.merge.GitPullDialog" timestamp="1597661412618">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -290,5 +304,9 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="936" y="330" key="run.anything.popup/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597809185674" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1597835080791">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597835080791" />
   </component>
 </project>

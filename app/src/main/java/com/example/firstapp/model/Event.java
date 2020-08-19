@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +16,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Event {
+public class Event implements Serializable{
 
     String eventName, eventImg;
     Future<List<Team>> teams;
 
-    public Event(String eventName, String eventImg, Future<List<Team>> teams){
+    public Event(String eventName, String eventImg, Future<List<Team>> teams)
+
+    {
         this.teams = teams;
         this.eventName = eventName;
         this.eventImg = eventImg.replace("40", "200");
@@ -77,15 +80,15 @@ public class Event {
         return this.eventImg;
     }
 
-    public Team[] getTeams(){
+    public List<Team> getTeams(){
         List<Team> teams = null;
         try {
-            teams = this.teams.get();
+            teams =  this.teams.get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return teams.toArray(new Team[teams.size()]);
+        return teams;
     }
 }

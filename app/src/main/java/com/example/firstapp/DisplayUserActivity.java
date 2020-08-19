@@ -25,6 +25,8 @@ import java.util.HashMap;
 public class DisplayUserActivity extends AppCompatActivity {
 
     public static final String MESSAGEEVENTNAME = "messageeventname";
+    public static final String MESSAGEEVENTTEAMS = "messageeventteams";
+
     private AppBarConfiguration mAppBarConfiguration;
     private User user;
 
