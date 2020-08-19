@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 public class DisplayUserActivity extends AppCompatActivity {
 
+    public static final String MESSAGEEVENTNAME = "messageeventname";
     private AppBarConfiguration mAppBarConfiguration;
     private User user;
 
@@ -98,4 +99,6 @@ public class DisplayUserActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 }

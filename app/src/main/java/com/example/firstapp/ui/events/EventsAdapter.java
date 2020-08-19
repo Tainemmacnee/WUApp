@@ -1,14 +1,21 @@
 package com.example.firstapp.ui.events;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firstapp.DisplayEventTeamsActivity;
+import com.example.firstapp.DisplayUserActivity;
+import com.example.firstapp.MainActivity;
 import com.example.firstapp.R;
 import com.example.firstapp.model.Event;
 import com.squareup.picasso.Picasso;
@@ -20,10 +27,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     public class EventViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public ImageView imageView;
+        public Button eventTeamsButton;
+        private final Context context;
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.textView = (TextView) itemView.findViewById(R.id.upcoming_game_home_team);
-            this.imageView = (ImageView) itemView.findViewById(R.id.upcoming_game_home_image);
+            this.context = itemView.getContext();
+            this.textView = (TextView) itemView.findViewById(R.id.event_team_name);
+            this.imageView = (ImageView) itemView.findViewById(R.id.event_team_image);
+            this.eventTeamsButton = (Button) itemView.findViewById(R.id.event_teams_button);
         }
     }
 
@@ -36,15 +47,23 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_view, parent, false);
-
         EventViewHolder vh = new EventViewHolder(v);
         return vh;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         holder.textView.setText(events[position].getName());
         Picasso.get().load(events[position].getEventImg()).into(holder.imageView);
+        holder.eventTeamsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(view.getContext(), DisplayEventTeamsActivity.class);
+//                intent.putExtra(DisplayUserActivity.MESSAGEEVENTNAME, events[position].getName());
+//                view.getContext().startActivity(intent);
+            }
+        });
     }
 
 

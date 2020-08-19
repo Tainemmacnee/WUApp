@@ -62,6 +62,16 @@ public class User {
         return eventsAsList.toArray(new Event[eventsAsList.size()]);
     }
 
+    public Event getEvent(String eventName){
+        Event[] events = getEvents();
+        for(Event e : events){
+            if(e.getName().equals(eventName)){
+                return e;
+            }
+        }
+        return null;
+    }
+
     public Game[] getUpcomingGames(){
         ArrayList<Game> gameAsList = null;
         try {

@@ -28,14 +28,14 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
         public ImageView awayTeamImage;
         public UpcomingViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.homeTeamName = (TextView) itemView.findViewById(R.id.upcoming_game_home_team);
-            this.awayTeamName = (TextView) itemView.findViewById(R.id.upcoming_game_away_team);
-            this.date = (TextView) itemView.findViewById(R.id.upcoming_game_date);
-            this.time = (TextView) itemView.findViewById(R.id.upcoming_game_time);
-            this.league = (TextView) itemView.findViewById(R.id.upcoming_game_league);
-            this.location = (TextView) itemView.findViewById(R.id.upcoming_game_location);
-            this.homeTeamImage = (ImageView) itemView.findViewById(R.id.upcoming_game_home_image);
-            this.awayTeamImage = (ImageView) itemView.findViewById(R.id.upcoming_game_away_image);
+            this.homeTeamName = itemView.findViewById(R.id.event_team_name);
+            this.awayTeamName = itemView.findViewById(R.id.upcoming_game_away_team);
+            this.date = itemView.findViewById(R.id.upcoming_game_date);
+            this.time = itemView.findViewById(R.id.upcoming_game_time);
+            this.league = itemView.findViewById(R.id.upcoming_game_league);
+            this.location = itemView.findViewById(R.id.upcoming_game_location);
+            this.homeTeamImage = itemView.findViewById(R.id.event_team_image);
+            this.awayTeamImage = itemView.findViewById(R.id.upcoming_game_away_image);
         }
     }
 
@@ -49,8 +49,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.upcoming_game_view, parent, false);
 
-        UpcomingViewHolder vh = new UpcomingViewHolder(v);
-        return vh;
+        return new UpcomingViewHolder(v);
     }
 
     @Override

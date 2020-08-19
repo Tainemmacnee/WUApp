@@ -8,9 +8,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -18,9 +18,10 @@ import java.util.concurrent.Future;
 public class Event {
 
     String eventName, eventImg;
-    List<Team> teams;
+    Future<List<Team>> teams;
 
-    public Event(String eventName, String eventImg){
+    public Event(String eventName, String eventImg, Future<List<Team>> teams){
+        this.teams = teams;
         this.eventName = eventName;
         this.eventImg = eventImg.replace("40", "200");
     }
@@ -41,11 +42,12 @@ public class Event {
 
                 Document doc = loadPageResponse.parse();
                 String eventName, eventImg;
+                Future<List<Team>> eventTeams;
 
                 Elements eventLinks = doc.getElementsByClass("global-toolbar-subnav-img-item plain-link");
                 for(Element e: eventLinks){
                     if(e.attr("href").startsWith("/e/")) {
-                        List<Future<List<Team>>> eventTeams = Team.loadTeams(e.attr("href"), cookies);
+                        eventTeams = Team.loadTeams(e.attr("href"), cookies);
                     } else {
                         continue;
                     }
@@ -58,7 +60,7 @@ public class Event {
                     Element eventNameElem = e.child(1);
                     eventName = eventNameElem.text();
 
-                    output.add(new Event(eventName, eventImg));
+                    output.add(new Event(eventName, eventImg, eventTeams));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -73,5 +75,17 @@ public class Event {
 
     public String getEventImg(){
         return this.eventImg;
+    }
+
+    public Team[] getTeams(){
+        List<Team> teams = null;
+        try {
+            teams = this.teams.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return teams.toArray(new Team[teams.size()]);
     }
 }

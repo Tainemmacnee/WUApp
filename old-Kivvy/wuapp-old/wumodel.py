@@ -47,7 +47,7 @@ class User():
         self.auth_key = auth_key
         self.teams = None
         self.events = None
-        self.upcomingGames = None
+        self.games = None
 
         #for game in self.getUpcomingGames():
             #print(game)
@@ -69,12 +69,12 @@ class User():
         return self.teams
 
     def getUpcomingGames(self):
-        if self.upcomingGames == None:
+        if self.games == None:
             games = []
             for team in self.getTeams():
                 games += team.getUpcomingGames(self.auth_key)
-            self.upcomingGames = games
-        return sorted(self.upcomingGames, key=lambda x: x.datetime, reverse=True)
+            self.games = games
+        return sorted(self.games, key=lambda x: x.datetime, reverse=True)
 
     def __str__(self):
         return "{} {} with id {}".format(self.first_name, self.last_name, self.id)

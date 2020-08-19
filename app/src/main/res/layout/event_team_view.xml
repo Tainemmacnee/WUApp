@@ -50,33 +50,4 @@
         app:layout_constraintTop_toBottomOf="@+id/event_team_image"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/event_teams_button"
-        android:layout_width="90dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_background_yellow"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="Teams"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_background_yellow"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="Pools and Standings"
-        app:layout_constraintStart_toEndOf="@+id/event_teams_button"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
