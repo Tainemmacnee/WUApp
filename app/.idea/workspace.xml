@@ -7,26 +7,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/rounded_background_grey.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/menu/display_event_teams_activity.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/missingresultgames/MissingResultAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/missingresultgames/MissingResultGamesFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/heart_icon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/heart_shape_silhouette.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_missing_result_games.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/missing_result_game_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/navEditor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/EventsAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/EventsAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/events/teams/EventTeamsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/acivity_display_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/acivity_display_user.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_display_event_teams.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_display_event_teams.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/content_display_event_teams.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/rounded_background_red.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/rounded_background_red.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/menu/activity_main_drawer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/menu/activity_main_drawer.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/navigation/mobile_navigation.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,8 +50,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="layoutResourceFile" />
         <option value="resourceFile" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -65,34 +65,38 @@
     <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
   <component name="ProjectId" id="1gB45sngyoQO4A0fQrnZ4b1Q96a" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_30" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-08-16T12:44:49.722Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="RecentsManager">
-    <key name="android.template.1160011513">
-      <recent name="com.example.firstapp" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\layout" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\java\com\example\firstapp\ui\missingresultgames" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable" />
     </key>
-    <key name="android.template.-598303784">
+    <key name="android.template.1160011513">
       <recent name="com.example.firstapp" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.example.firstapp.ui.events.teams" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable" />
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\layout" />
+    <key name="android.template.-598303784">
+      <recent name="com.example.firstapp" />
     </key>
   </component>
   <component name="RunManager">
@@ -222,10 +226,18 @@
       <option name="project" value="LOCAL" />
       <updated>1597828997773</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Huge Update! viewing event teams is now implemented. pools and standings button changed">
+      <created>1597853683725</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1597853683726</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Test commit" />
     <MESSAGE value="Finished rebuilding login system to improve performance" />
     <MESSAGE value="Started implementing logout button" />
@@ -234,7 +246,8 @@
     <MESSAGE value="user home now correctly displays users about section from their profile" />
     <MESSAGE value="Started implementing loading of Teams for each event. Removed support for events not on wds" />
     <MESSAGE value="Started implementing displaying event teams but stopped due to issues." />
-    <option name="LAST_COMMIT_MESSAGE" value="Started implementing displaying event teams but stopped due to issues." />
+    <MESSAGE value="Huge Update! viewing event teams is now implemented. pools and standings button changed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Huge Update! viewing event teams is now implemented. pools and standings button changed" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser" timestamp="1597753040942">
@@ -254,48 +267,53 @@
     </state>
     <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597723153416" />
     <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597829432015" />
-    <state x="860" y="454" key="AndroidCreateResourceFileDialog" timestamp="1597830456003">
+    <state x="860" y="454" key="AndroidCreateResourceFileDialog" timestamp="1597895189488">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="860" y="454" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597830456003" />
-    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597828996614">
+    <state x="860" y="454" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597895189488" />
+    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597853682675">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757657917" />
+    <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597853682675" />
     <state x="489" y="223" key="CommitChangelistDialog2/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828996614" />
-    <state width="2499" height="266" key="GridCell.Tab.0.bottom" timestamp="1597852618679">
+    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1597901680672">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597901680672" />
+    <state width="2517" height="270" key="GridCell.Tab.0.bottom" timestamp="1597905030553">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2499" height="266" key="GridCell.Tab.0.bottom/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
-    <state width="2517" height="266" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
-    <state width="2499" height="266" key="GridCell.Tab.0.center" timestamp="1597852618679">
+    <state width="2517" height="270" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905030553" />
+    <state width="2517" height="270" key="GridCell.Tab.0.center" timestamp="1597905030553">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2499" height="266" key="GridCell.Tab.0.center/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
-    <state width="2517" height="266" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
-    <state width="2499" height="266" key="GridCell.Tab.0.left" timestamp="1597852618679">
+    <state width="2517" height="270" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905030553" />
+    <state width="2517" height="270" key="GridCell.Tab.0.left" timestamp="1597905030553">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2499" height="266" key="GridCell.Tab.0.left/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
-    <state width="2517" height="266" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
-    <state width="2499" height="266" key="GridCell.Tab.0.right" timestamp="1597852618679">
+    <state width="2517" height="270" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905030553" />
+    <state width="2517" height="270" key="GridCell.Tab.0.right" timestamp="1597905030553">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2499" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
-    <state width="2517" height="266" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597838825513" />
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597757663913">
+    <state width="2517" height="270" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905030553" />
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597853692176">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597757663913" />
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597853692176" />
     <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1597577926210">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597577926210" />
-    <state x="976" y="523" key="com.intellij.ide.util.TipDialog" timestamp="1597849794205">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="-1188" y="204" key="com.intellij.ide.util.TipDialog" timestamp="1597898157452">
+      <screen x="-1920" y="-185" width="1920" height="1040" />
     </state>
     <state x="976" y="523" key="com.intellij.ide.util.TipDialog/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597849794205" />
-    <state x="976" y="523" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597829564884" />
+    <state x="-1188" y="204" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@-1920.-185.1920.1040" timestamp="1597898157452" />
+    <state x="-1188" y="204" key="com.intellij.ide.util.TipDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597893941466" />
     <state x="993" y="491" key="git4idea.merge.GitPullDialog" timestamp="1597661412618">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

@@ -18,11 +18,13 @@ import java.util.concurrent.Future;
 public class User {
 
         public static final String UPCOMINGGAMESLINK = "upcomingGamesLink";
+        public static final String MISSINGRESULTSLINK = "missingResultsLink";
         public static final String USERPAGELINK = "userPageLink";
 
         private String name, profileImgUrl, gId, age, dHand, aboutText;
         public Future<List<Event>> futureEvents;
         private Future<List<Game>> futureUpcomingGames;
+        private Future<List<Game>> futureMissingResultGames;
         private HashMap<String, String> links;
         private HashMap<String, String> cookies;
 
@@ -46,6 +48,7 @@ public class User {
         System.out.println("BIG L: "+links);
         futureEvents = Event.LoadEvents(cookies);
         futureUpcomingGames = Game.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
+        futureMissingResultGames = Game.LoadMissingResultsGames(cookies, links.get(User.MISSINGRESULTSLINK));
     }
 
     public Event[] getEvents(){
@@ -77,6 +80,19 @@ public class User {
         try {
             gameAsList = (ArrayList<Game>) futureUpcomingGames.get();
             System.out.println("UPCOMING GAMES LOADED");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return gameAsList.toArray(new Game[gameAsList.size()]);
+    }
+
+    public Game[] getMissingResultGames() {
+        ArrayList<Game> gameAsList = null;
+        try {
+            gameAsList = (ArrayList<Game>) futureMissingResultGames.get();
+            System.out.println("MISSING RESULT GAMES LOADED");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -127,6 +143,7 @@ public class User {
                 //Collect link to upcoming schedule for later web scraping
                 links.put(User.USERPAGELINK, userpageLink.attr("href"));
                 links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
+                links.put(User.MISSINGRESULTSLINK, userpageLink.attr("href") + "/schedule/game_type/missing_result");
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -211,4 +228,5 @@ public class User {
     public HashMap<String, String> getLinks() {
         return this.links;
     }
+
 }

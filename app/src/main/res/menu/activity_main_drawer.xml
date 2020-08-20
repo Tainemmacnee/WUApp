@@ -14,8 +14,7 @@
             android:id="@+id/nav_upcoming_games"
             android:title="Upcomming Games" />
         <item
-            android:id="@+id/nav_missing_results"
-            android:title="Games Missing Results" />
-
+            android:id="@+id/nav_missing_result_games"
+            android:title="Missing Result Games" />
     </group>
 </menu>

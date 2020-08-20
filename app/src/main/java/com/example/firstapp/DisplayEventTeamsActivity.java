@@ -1,6 +1,7 @@
 package com.example.firstapp;
 
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -56,4 +57,5 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
     public Team[] getEventTeams() {
         return eventTeams.toArray(new Team[eventTeams.size()]);
     }
+
 }

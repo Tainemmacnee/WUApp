@@ -16,6 +16,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_events">Events</string>
     <string name="menu_upcoming_games">Upcoming Games</string>
+    <string name="menu_missing_result_games">Missing Result Games</string>
     <string name="title_activity_display_event_teams">DisplayEventTeamsActivity</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
