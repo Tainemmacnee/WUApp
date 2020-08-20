@@ -7,26 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/missingresultgames/MissingResultAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/missingresultgames/MissingResultGamesFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/heart_icon.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/heart_shape_silhouette.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_missing_result_games.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/missing_result_game_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/navEditor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayEventTeamsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/DisplayUserActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/rounded_background_red.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/rounded_background_red.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/upcoming_game_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/menu/activity_main_drawer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/menu/activity_main_drawer.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/navigation/mobile_navigation.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597853683726</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Implemented loading and displaying of missing games">
+      <created>1597905519657</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1597905519657</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -247,7 +237,8 @@
     <MESSAGE value="Started implementing loading of Teams for each event. Removed support for events not on wds" />
     <MESSAGE value="Started implementing displaying event teams but stopped due to issues." />
     <MESSAGE value="Huge Update! viewing event teams is now implemented. pools and standings button changed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Huge Update! viewing event teams is now implemented. pools and standings button changed" />
+    <MESSAGE value="Implemented loading and displaying of missing games" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented loading and displaying of missing games" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser" timestamp="1597753040942">
@@ -271,11 +262,11 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="860" y="454" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597895189488" />
-    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597853682675">
+    <state x="489" y="223" key="CommitChangelistDialog2" timestamp="1597905518584">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="489" y="223" key="CommitChangelistDialog2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597853682675" />
-    <state x="489" y="223" key="CommitChangelistDialog2/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597828996614" />
+    <state x="489" y="223" key="CommitChangelistDialog2/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905518584" />
     <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1597901680672">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -300,10 +291,11 @@
     </state>
     <state width="2499" height="266" key="GridCell.Tab.0.right/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597852618679" />
     <state width="2517" height="270" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905030553" />
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597853692176">
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1597905523130">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.-185.1920.1040/-5760.-1277.1280.639/0.0.2560.1400@0.0.2560.1400" timestamp="1597853692176" />
+    <state x="506" y="359" key="Vcs.Push.Dialog.v2/0.0.2560.1400/-1920.-185.1920.1040/-5760.-1277.1280.639@0.0.2560.1400" timestamp="1597905523130" />
     <state x="92" y="92" width="2376" height="1216" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1597577926210">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

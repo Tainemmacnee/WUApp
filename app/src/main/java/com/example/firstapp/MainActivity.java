@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.firstapp.model.User;
 import com.example.firstapp.model.UserLoginToken;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -55,6 +56,7 @@ public class MainActivity extends Activity{
         try {
             UserLoginToken lt = User.loginUser(params.get(0), params.get(1)).get();
             if(lt==null){
+                Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();
                 System.out.println("LOGIN FAILED");
             } else {
                 Intent intent = new Intent(this, DisplayUserActivity.class);
