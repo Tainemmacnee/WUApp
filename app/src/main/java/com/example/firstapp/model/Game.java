@@ -73,6 +73,7 @@ public class Game {
         List<Game> output = new ArrayList<>();
 
         return executor.submit(() -> {
+            System.out.println("MISSING RESULTS LOADING");
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
@@ -91,6 +92,7 @@ public class Game {
                     Element reportLink = scoreBoxDiv.getElementsByTag("a").first();
 
                     if(reportLink == null){
+                        System.out.println("SKIP");
                         continue;
                     }
 
@@ -110,17 +112,39 @@ public class Game {
                     Element homeTeamElem = e.getElementsByClass("game-participant").first();
                     Element homeTeamNameElem = homeTeamElem.getElementsByClass("schedule-team-name ").first();
                     homeTeamName = homeTeamNameElem.text().trim();
-                    homeTeamScore = homeTeamElem.getElementsByClass("score ").first().text().trim();
-                    homeTeamSpirit = homeTeamElem.getElementsByClass("schedule-score-box-game-result").first().text().trim();
+
+                    System.out.println("MISSING RESULTS LOADING HOME");
+                    Element homeTeamScoreElem = homeTeamElem.getElementsByClass("score ").first();
+                    if(homeTeamScoreElem == null) {homeTeamScore = "?";} else{
+                        homeTeamScore = homeTeamScoreElem.text().trim();
+                    }
+
+                    Element homeTeamSpiritElem = homeTeamElem.getElementsByClass("schedule-score-box-game-result").first();
+                    if(homeTeamSpiritElem == null) {homeTeamSpirit = "?";} else {
+                        homeTeamSpirit = homeTeamSpiritElem.text().trim();
+                    }
 
                     Element homeTeamImgElem = homeTeamElem.child(0);
                     homeTeamImg = homeTeamImgElem.attr("src");
 
+
+
                     Element awayTeamElem = e.getElementsByClass("game-participant").last();
                     Element awayTeamNameElem = awayTeamElem.getElementsByClass("schedule-team-name ").first();
                     awayTeamName = awayTeamNameElem.text().trim();
-                    awayTeamScore = awayTeamElem.getElementsByClass("score ").first().text().trim();
-                    awayTeamSpirit = awayTeamElem.getElementsByClass("schedule-score-box-game-result").first().text().trim();
+
+                    Element awayTeamScoreElem = awayTeamElem.getElementsByClass("score ").first();
+                    if(awayTeamScoreElem == null) {awayTeamScore = "?";} else{
+                        awayTeamScore = awayTeamScoreElem.text().trim();
+                    }
+
+                    Element awayTeamSpiritElem = awayTeamElem.getElementsByClass("schedule-score-box-game-result").first();
+                    if(awayTeamSpiritElem == null) {awayTeamSpirit = "?";} else {
+                        awayTeamSpirit = awayTeamSpiritElem.text().trim();
+                    }
+
+//                    awayTeamScore = awayTeamElem.getElementsByClass("score ").first().text().trim();
+//                    awayTeamSpirit = awayTeamElem.getElementsByClass("schedule-score-box-game-result").first().text().trim();
 
                     Element awayTeamImgElem = awayTeamElem.child(0);
                     awayTeamImg = awayTeamImgElem.attr("src");
@@ -130,6 +154,7 @@ public class Game {
                     game.awayTeamScore = awayTeamScore;
                     game.homeTeamSpirit = homeTeamSpirit;
                     game.awayTeamSpirit = awayTeamSpirit;
+                    System.out.println("MISSING RESULTS GAME ADDED");
                     output.add(game);
                 }
             } catch (IOException e) {

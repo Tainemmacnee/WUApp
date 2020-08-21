@@ -89,7 +89,7 @@ public class User {
     }
 
     public Game[] getMissingResultGames() {
-        ArrayList<Game> gameAsList = null;
+        ArrayList<Game> gameAsList = new ArrayList<>();
         try {
             gameAsList = (ArrayList<Game>) futureMissingResultGames.get();
             System.out.println("MISSING RESULT GAMES LOADED");

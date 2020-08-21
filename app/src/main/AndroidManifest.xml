@@ -16,6 +16,12 @@
                 android:value="com.example.firstapp.DisplayUserActivity" />
         </activity>
         <activity android:name=".DisplayUserActivity" />
+        <activity android:name=".ReportResultActivity"
+            android:parentActivityName=".DisplayUserActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.example.firstapp.DisplayUserActivity" />
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

@@ -1,19 +1,27 @@
 package com.example.firstapp.ui.missingresultgames;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firstapp.DisplayEventTeamsActivity;
+import com.example.firstapp.DisplayUserActivity;
 import com.example.firstapp.R;
+import com.example.firstapp.ReportResultActivity;
 import com.example.firstapp.model.Game;
+import com.example.firstapp.model.Team;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdapter.UpcomingViewHolder> {
 
@@ -33,6 +41,8 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         public TextView location;
         public ImageView homeTeamImage;
         public ImageView awayTeamImage;
+
+        public Button reportResultButton;
         public UpcomingViewHolder(@NonNull View itemView) {
             super(itemView);
             this.homeTeamName = itemView.findViewById(R.id.event_team_name);
@@ -46,7 +56,8 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
             this.homeTeamScore = itemView.findViewById(R.id.home_team_score);
             this.awayTeamScore = itemView.findViewById(R.id.away_team_score);
             this.homeTeamSpirit = itemView.findViewById(R.id.home_team_spirit);
-            this.awayTeamSpirit = itemView.findViewById(R.id.home_team_spirit);
+            this.awayTeamSpirit = itemView.findViewById(R.id.away_team_spirit);
+            this.reportResultButton = itemView.findViewById(R.id.report_results);
         }
     }
 
@@ -80,15 +91,30 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         holder.awayTeamSpirit.setText(games[position].awayTeamSpirit);
         holder.homeTeamSpirit.setText(games[position].homeTeamSpirit);
 
+        holder.reportResultButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ReportResultActivity.class);
+//                intent.putExtra(DisplayUserActivity.MESSAGEEVENTNAME, events[position].getName());
+//                intent.putExtra(DisplayUserActivity.MESSAGEEVENTTEAMS, teams);
+                view.getContext().startActivity(intent);
+            }
+        });
+
         int red = Color.rgb(255, 0, 0);
         int green = Color.rgb(0, 177, 64);
+
+        System.out.println("GAME "+games[position].getHomeTeamName()+" "+games[position].homeTeamSpirit+" "+games[position].getAwayTeamName()+" "+games[position].awayTeamSpirit);
 
         if(games[position].homeTeamScore.contains("W")){
             holder.homeTeamScore.setTextColor(green);
             holder.awayTeamScore.setTextColor(red);
-        } else if(games[position].awayTeamScore.contains("W")){
+        } else if(games[position].awayTeamScore.contains("W")) {
             holder.awayTeamScore.setTextColor(green);
             holder.homeTeamScore.setTextColor(red);
+        } else if(games[position].homeTeamScore.contains("?")){
+            holder.homeTeamScore.setTextColor(Color.BLACK);
+            holder.awayTeamScore.setTextColor(Color.BLACK);
         } else {
             int homeTeamScore = Integer.parseInt(games[position].homeTeamScore);
             int awayTeamScore = Integer.parseInt(games[position].awayTeamScore);
@@ -105,11 +131,9 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         }
     }
 
-
     @Override
     public int getItemCount() {
         return games.length;
     }
-
 
 }
