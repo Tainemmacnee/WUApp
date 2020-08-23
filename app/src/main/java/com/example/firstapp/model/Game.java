@@ -22,6 +22,7 @@ public class Game {
 
     public String homeTeamScore, homeTeamSpirit;
     public String awayTeamScore, awayTeamSpirit;
+    public String reportLink;
 
     public String getHomeTeamName() {
         return homeTeamName;
@@ -84,17 +85,18 @@ public class Game {
                 Document doc = loadPageResponse.parse();
                 String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location;
                 String homeTeamScore, homeTeamSpirit, awayTeamScore, awayTeamSpirit;
+                String reportLink;
                 Elements UpcomingGameLinks = doc.getElementsByClass("striped-block");
                 for(Element e: UpcomingGameLinks){
                     //Collect game data from page
 
                     Element scoreBoxDiv = e.getElementsByClass("schedule-score-box").first();
-                    Element reportLink = scoreBoxDiv.getElementsByTag("a").first();
+                    Element reportLinkTag = scoreBoxDiv.getElementsByTag("a").first();
 
-                    if(reportLink == null){
-                        System.out.println("SKIP");
+                    if(reportLinkTag == null){
                         continue;
                     }
+                    reportLink = reportLinkTag.attr("href");
 
                     Element datetimeElem = e.getElementsByClass("clearfix").first();
                     String[] datetime = datetimeElem.text().trim().split(" ");
@@ -143,9 +145,6 @@ public class Game {
                         awayTeamSpirit = awayTeamSpiritElem.text().trim();
                     }
 
-//                    awayTeamScore = awayTeamElem.getElementsByClass("score ").first().text().trim();
-//                    awayTeamSpirit = awayTeamElem.getElementsByClass("schedule-score-box-game-result").first().text().trim();
-
                     Element awayTeamImgElem = awayTeamElem.child(0);
                     awayTeamImg = awayTeamImgElem.attr("src");
 
@@ -154,6 +153,7 @@ public class Game {
                     game.awayTeamScore = awayTeamScore;
                     game.homeTeamSpirit = homeTeamSpirit;
                     game.awayTeamSpirit = awayTeamSpirit;
+                    game.reportLink = reportLink;
                     System.out.println("MISSING RESULTS GAME ADDED");
                     output.add(game);
                 }
@@ -219,4 +219,7 @@ public class Game {
     }
 
 
+    public Team getHomeTeam() {
+        return null;
+    }
 }

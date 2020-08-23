@@ -1,6 +1,7 @@
 package com.example.firstapp.ui.missingresultgames;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -15,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firstapp.DisplayEventTeamsActivity;
 import com.example.firstapp.DisplayUserActivity;
+import com.example.firstapp.MainActivity;
 import com.example.firstapp.R;
 import com.example.firstapp.ReportResultActivity;
+import com.example.firstapp.model.Event;
 import com.example.firstapp.model.Game;
 import com.example.firstapp.model.Team;
 import com.squareup.picasso.Picasso;
@@ -94,9 +97,16 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         holder.reportResultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DisplayUserActivity a = (DisplayUserActivity)view.getContext();
+                Event event = a.getUserData().getEvent(games[position].getLeague());
+                Team homeTeam = event.getTeam(games[position].getHomeTeamName());
+                Team awayTeam = event.getTeam(games[position].getAwayTeamName());
                 Intent intent = new Intent(view.getContext(), ReportResultActivity.class);
-//                intent.putExtra(DisplayUserActivity.MESSAGEEVENTNAME, events[position].getName());
-//                intent.putExtra(DisplayUserActivity.MESSAGEEVENTTEAMS, teams);
+                intent.putExtra(DisplayUserActivity.MESSAGEHOMETEAM, homeTeam);
+                intent.putExtra(DisplayUserActivity.MESSAGEAWAYTEAM, awayTeam);
+                intent.putExtra(DisplayUserActivity.MESSAGEREPORTLINK, games[position].reportLink);
+                intent.putExtra(DisplayUserActivity.MESSAGEUSERNAME, a.getUserData().getName());
+                intent.putExtra(MainActivity.MESSAGE_COOKIES, a.getUserData().getCookies());
                 view.getContext().startActivity(intent);
             }
         });

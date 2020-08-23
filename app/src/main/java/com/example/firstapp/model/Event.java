@@ -91,4 +91,13 @@ public class Event implements Serializable{
         }
         return teams;
     }
+
+    public Team getTeam(String teamName){
+        for(Team t : getTeams()){
+            if(t.getName().equals(teamName)){
+                return t;
+            }
+        }
+        return null;
+    }
 }

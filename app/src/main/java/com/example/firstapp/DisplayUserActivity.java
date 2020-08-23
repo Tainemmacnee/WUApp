@@ -26,6 +26,10 @@ public class DisplayUserActivity extends AppCompatActivity {
 
     public static final String MESSAGEEVENTNAME = "messageeventname";
     public static final String MESSAGEEVENTTEAMS = "messageeventteams";
+    public static final String MESSAGEHOMETEAM = "messagehometeam";
+    public static final String MESSAGEAWAYTEAM = "messageawayteam";
+    public static final String MESSAGEREPORTLINK = "messagereportlink";
+    public static final String MESSAGEUSERNAME = "messageusername";
 
     private AppBarConfiguration mAppBarConfiguration;
     private User user;

@@ -65,7 +65,6 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
     public void onBindViewHolder(@NonNull EventTeamViewHolder holder, int position) {
         holder.textView.setText(teams[position].getName());
         Picasso.get().load(teams[position].getImageUrl()).into(holder.imageView);
-        System.out.println(teams[position]);
         if(teams[position].getMaleMatchups().size() == 0){
             holder.maleMatchupContainer.setVisibility(View.GONE);
             System.out.println("Team "+teams[position].getName()+" Hides Men "+teams[position].getMaleMatchups());
@@ -73,7 +72,6 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
             holder.maleMatchupContainer.setVisibility(View.VISIBLE);
             holder.maleMatchupDisplay.removeAllViews();
             for(String name : teams[position].getMaleMatchups()){
-                System.out.println("ADDING DISPLAY NAME: "+name);
                 TextView example = holder.maleMatchupTextView;
                 TextView newtextview = new TextView(holder.maleMatchupDisplay.getContext());
                 newtextview.setText(name);
