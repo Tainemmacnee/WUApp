@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Wellington Ultimate App</string>
     <string name="hello_first_fragment">st1</string>
     <string name="next">st2</string>
     <string name="previous">st3</string>
