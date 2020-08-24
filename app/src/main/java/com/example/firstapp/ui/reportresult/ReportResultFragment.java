@@ -71,6 +71,7 @@ public class ReportResultFragment extends Fragment {
         ArrayList list =  new ArrayList<>();
         list.add("");
         list.addAll(team.getMaleMatchups());
+        System.out.println("MALE ADAPTER: "+list);
         return list;
     }
 
@@ -78,6 +79,7 @@ public class ReportResultFragment extends Fragment {
         ArrayList list =  new ArrayList<>();
         list.add("");
         list.addAll(team.getFemaleMatchups());
+        System.out.println("FEMALE ADAPTER: "+list);
         return list;
     }
 
@@ -101,8 +103,18 @@ public class ReportResultFragment extends Fragment {
         String spiritPos = (String) spiritPosSpinner.getSelectedItem();
         String spiritCom = (String) spiritComSpinner.getSelectedItem();
 
+        //get mvps
+        List<String> mvpList = new ArrayList<>();
+        LinearLayout mvpBox = activity.findViewById(R.id.mvpBox);
+        for(int i = 1; i < mvpBox.getChildCount(); i++){
+            LinearLayout mvpLayout = (LinearLayout) mvpBox.getChildAt(i);
+            Spinner mvpSpinner = (Spinner) mvpLayout.getChildAt(1);
+            mvpList.add((String) mvpSpinner.getSelectedItem());
+        }
+
         try {
             activity.report(homeScore, awayScore, spiritRules, spiritFouls, spiritFair, spiritPos, spiritCom, comments.getText().toString());
+            activity.reportMVPs(mvpList);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -200,8 +212,11 @@ public class ReportResultFragment extends Fragment {
 
         spinner.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_background_light));
         spinner.setAdapter(adapter);
-        spinner.setSelection(adapter.getPosition(name));
-//        spinner.setVisibility(View.VISIBLE);
+        for(int i = 0; i < adapter.getCount(); i++){
+            if(adapter.getItem(i).contains(name) || name.contains(adapter.getItem(i))){
+                spinner.setSelection(i);
+            }
+        }
 
 
         layout.addView(titleView, 0);

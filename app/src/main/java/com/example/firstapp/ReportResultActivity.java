@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +16,7 @@ import com.example.firstapp.model.Event;
 import com.example.firstapp.model.ReportFormState;
 import com.example.firstapp.model.Team;
 
+import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +26,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -116,6 +119,135 @@ public class ReportResultActivity extends AppCompatActivity {
         return null;
     }
 
+    public String getOAuthToken() throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+        final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
+        List<String> credentials = executor.submit(() -> {
+            List<String> output = new ArrayList<>();
+            try {
+                Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
+                        .method(Connection.Method.GET)
+                        .userAgent(USER_AGENT)
+                        .cookies(cookies)
+                        .execute();
+
+                Document doc = loadPageResponse.parse();
+                Element table = doc.getElementsByClass("table no-border").first();
+
+                for(Element row : table.getElementsByTag("tr")){
+                    output.add(row.getElementsByTag("td").first().text());
+                }
+
+                output.remove(2);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return  output;
+        }).get();
+
+       return (String) executor.submit(() -> {
+
+
+            Document response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
+                    .userAgent(USER_AGENT)
+                    .data("grant_type", "client_credentials")
+                    .data("client_id", credentials.get(0))
+                    .data("client_secret", credentials.get(1))
+                    .ignoreContentType(true)
+                    .post();
+            JSONObject result = new JSONObject(response.body().text());
+            System.out.println();
+
+            return result.get("access_token");
+        }).get();
+    }
+
+    public void reportMVPs(List<String> mvps) throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+        final String WEB_URL = "https://wds.usetopscore.com";
+            System.out.println(mvps);
+            executor.submit(() -> {
+                String authToken = "";
+                try {
+                    authToken = getOAuthToken();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+
+                    Connection.Response loadPageResponse = Jsoup.connect(WEB_URL + reportLink)
+                            .method(Connection.Method.GET)
+                            .userAgent(USER_AGENT)
+                            .cookies(cookies)
+                            .execute();
+
+                    Document doc = loadPageResponse.parse();
+                    int count = 0;
+
+                    System.out.println("FIND FORM");
+                    for(Element mvpForm : doc.getElementsByClass("form-api live spacer-half keep-popup-open person-award-form")){
+                        String playerID = null;
+                        String URL = "https://wds.usetopscore.com/api/person-award/edit";
+                        Element select = mvpForm.getElementsByTag("select").first();
+
+                      for(Element option : select.children()){
+                          if(option.text().contains(mvps.get(count))){
+                              playerID = option.attr("value");
+                          }
+                      }
+
+                        Elements inputs = mvpForm.getElementsByTag("input");
+                        String gameID = inputs.get(0).attr("value");
+                        String teamID = inputs.get(1).attr("value");
+                        String rank = inputs.get(2).attr("value");
+                        String award = inputs.get(3).attr("value");
+
+                        Map<String, String> data = new HashMap<>();
+                        data.put("person_id", playerID);
+                        data.put("game_id", gameID);
+                        data.put("team_id", teamID);
+                        data.put("rank", rank);
+                        data.put("award", award);
+
+                        if(select.child(0).attr("selected").equals("selected")){ //create award if value changed from blank to a name
+                            URL = "https://wds.usetopscore.com/api/person-award/new";
+                        } else if(mvps.get(count).equals("")){ //Delete award if value changed from a name to blank
+                            data.put("id", inputs.get(4).attr("value"));
+                            data.remove("person_id");
+                            Jsoup.connect("https://wds.usetopscore.com/api/person-award/delete")
+                                    .userAgent(USER_AGENT)
+                                    .ignoreContentType(true)
+                                    .header("Authorization", "Bearer "+authToken)
+                                    .data(data)
+                                    .post();
+                            continue;
+                        } else { //edit award at id if not adding or deleting
+                            data.put("id", inputs.get(4).attr("value"));
+                        }
+
+                        Document reportResponse = Jsoup.connect(URL)
+                                .userAgent(USER_AGENT)
+                                .ignoreContentType(true)
+                                .header("Authorization", "Bearer "+authToken)
+                                .data(data)
+                                .post();
+
+                        System.out.println("REPORTED: "+mvps.get(count));
+                        count++;
+                    }
+                    System.out.println("DONE FINDING");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }).get();
+    }
+
     public void report(String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newCachedThreadPool();
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
@@ -174,8 +306,6 @@ public class ReportResultActivity extends AppCompatActivity {
                         .execute();
 
                 System.out.println("DONE! ");
-                System.out.println(reportActionResponse.statusMessage());
-                System.out.println(reportActionResponse.body());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -199,7 +329,7 @@ public class ReportResultActivity extends AppCompatActivity {
         }
         //set correct selected option
         for (Element op : selectTag.children()) {
-            if (op.text().equals(option)) {
+            if (op.text().contains(option)) {
                 System.out.println("Selected: "+option);
                 op.attr("selected", "selected");
             }
