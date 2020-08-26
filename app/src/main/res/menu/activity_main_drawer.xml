@@ -12,9 +12,9 @@
             android:title="Events" />
         <item
             android:id="@+id/nav_upcoming_games"
-            android:title="Upcomming Games" />
+            android:title="@string/menu_upcoming_games" />
         <item
             android:id="@+id/nav_missing_result_games"
-            android:title="Missing Result Games" />
+            android:title="@string/menu_missing_result_games" />
     </group>
 </menu>

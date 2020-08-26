@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,15 +13,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
 
 import com.example.firstapp.R;
 import com.example.firstapp.model.Event;
 import com.example.firstapp.model.Team;
 import com.squareup.picasso.Picasso;
 
-public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.EventTeamViewHolder> {
+import java.util.ArrayList;
+
+public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.EventTeamViewHolder> implements Filterable {
 
     private Team[] teams;
+    private Team[] teamsFiltered;
+
+
 
     public class EventTeamViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout femaleMatchupDisplay;
@@ -47,6 +55,7 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
 
     public EventTeamsAdapter(Team[] teams) {
         this.teams = teams;
+        this.teamsFiltered = teams;
     }
 
     public EventTeamViewHolder onCreateViewHolder(ViewGroup parent,
@@ -59,19 +68,18 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
         return vh;
     }
 
-    //Team romeo, doesnt hide men, doesnt have men?
-
     @Override
     public void onBindViewHolder(@NonNull EventTeamViewHolder holder, int position) {
-        holder.textView.setText(teams[position].getName());
-        Picasso.get().load(teams[position].getImageUrl()).into(holder.imageView);
-        if(teams[position].getMaleMatchups().size() == 0){
+
+        Team team = teamsFiltered[position];
+        holder.textView.setText(team.getName());
+        Picasso.get().load(team.getImageUrl()).into(holder.imageView);
+        if(team.getMaleMatchups().size() == 0){
             holder.maleMatchupContainer.setVisibility(View.GONE);
-            System.out.println("Team "+teams[position].getName()+" Hides Men "+teams[position].getMaleMatchups());
         } else {
             holder.maleMatchupContainer.setVisibility(View.VISIBLE);
             holder.maleMatchupDisplay.removeAllViews();
-            for(String name : teams[position].getMaleMatchups()){
+            for(String name : team.getMaleMatchups()){
                 TextView example = holder.maleMatchupTextView;
                 TextView newtextview = new TextView(holder.maleMatchupDisplay.getContext());
                 newtextview.setText(name);
@@ -81,14 +89,12 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
                 holder.maleMatchupDisplay.addView(newtextview);
             }
         }
-        if(teams[position].getFemaleMatchups().size() == 0){
+        if(team.getFemaleMatchups().size() == 0){
             holder.femaleMatchupContainer.setVisibility(View.GONE);
-            System.out.println("Team "+teams[position].getName()+" Hides Women "+teams[position].getFemaleMatchups());
         } else {
             holder.femaleMatchupContainer.setVisibility(View.VISIBLE);
             holder.femaleMatchupDisplay.removeAllViews();
-            for(String name : teams[position].getFemaleMatchups()){
-                System.out.println("ADDING DISPLAY NAME: "+name);
+            for(String name : team.getFemaleMatchups()){
                 TextView example = holder.femaleMatchupTextView;
                 TextView newtextview = new TextView(holder.femaleMatchupDisplay.getContext());
                 newtextview.setText(name);
@@ -103,8 +109,38 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
 
     @Override
     public int getItemCount() {
-        return teams.length;
+        return teamsFiltered.length;
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    teamsFiltered = teams;
+                } else {
+                    ArrayList<Team> filteredList = new ArrayList<>();
+                    for(Team team : teams){
+                        if(team.getName().toLowerCase().contains(charString.toLowerCase())){
+                            filteredList.add(team);
+                        }
+                    }
+                    teamsFiltered = filteredList.toArray(new Team[filteredList.size()]);
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = teamsFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                teamsFiltered = (Team[]) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 
 }

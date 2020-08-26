@@ -1,5 +1,7 @@
 package com.example.firstapp.model;
 
+import android.annotation.SuppressLint;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -123,5 +126,23 @@ public class Team implements Serializable {
 
     public String toString(){
         return "TEAM: "+this.name+" IMAGE: "+this.imageUrl+" MEMBERS "+this.maleMatchups+" "+this.femaleMatchups;
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return name.equals(team.name) &&
+                Objects.equals(imageUrl, team.imageUrl) &&
+                Objects.equals(maleMatchups, team.maleMatchups) &&
+                Objects.equals(femaleMatchups, team.femaleMatchups);
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, imageUrl, maleMatchups, femaleMatchups);
     }
 }

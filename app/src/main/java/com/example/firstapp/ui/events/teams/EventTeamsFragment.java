@@ -39,6 +39,9 @@ public class EventTeamsFragment extends Fragment {
         mAdapter = new EventTeamsAdapter(eventTeams);
         recyclerView.setAdapter(mAdapter);
 
+        activity.setmAdapter((EventTeamsAdapter) mAdapter);
+        System.out.println("FIRST!");
+
         return v;
     }
 
