@@ -152,6 +152,34 @@ public class User {
         });
     }
 
+    public static Future<UserLoginToken> loginUser(HashMap<String, String> cookies){
+        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+        final String WEB_URL = "https://wds.usetopscore.com";
+        HashMap<String, String> links = new HashMap<>();
+        ExecutorService executor = Executors.newCachedThreadPool();
+        return executor.submit(() -> {
+            try {
+                Connection.Response loginFormResponse = Jsoup.connect(WEB_URL)
+                        .method(Connection.Method.GET)
+                        .userAgent(USER_AGENT)
+                        .cookies(cookies)
+                        .execute();
+
+                Document doc = loginFormResponse.parse();
+                Element userpageLink = doc.getElementsByClass("global-toolbar-user-btn ").first();
+
+                //Collect link to upcoming schedule for later web scraping
+                links.put(User.USERPAGELINK, userpageLink.attr("href"));
+                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
+                links.put(User.MISSINGRESULTSLINK, userpageLink.attr("href") + "/schedule/game_type/missing_result");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return new UserLoginToken(cookies, links);
+        });
+    }
+
 
     private Future<?> loadUser() {
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";

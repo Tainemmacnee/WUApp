@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class DisplayUserActivity extends AppCompatActivity {
@@ -102,6 +103,10 @@ public class DisplayUserActivity extends AppCompatActivity {
     }
 
     public void logout(View view){
+        File file = new File(getApplicationContext().getFilesDir(), "login.txt");
+        if (file.exists()) {
+            file.delete();
+        }
         Intent intent = new Intent(this, MainActivity.class);//DisplayUserActivity.class);
         startActivity(intent);
         finish();
