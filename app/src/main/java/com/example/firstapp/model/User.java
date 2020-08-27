@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +22,7 @@ public class User {
         public static final String MISSINGRESULTSLINK = "missingResultsLink";
         public static final String USERPAGELINK = "userPageLink";
 
+        private Map<String, String> profileInfo = new HashMap<String, String>();;
         private String name, profileImgUrl, gId, age, dHand, aboutText;
         public Future<List<Event>> futureEvents;
         private Future<List<Game>> futureUpcomingGames;
@@ -206,9 +208,9 @@ public class User {
 
             //collect profile info
             Element profileInfoElem = doc.getElementsByClass("profile-info").first().child(0);
-            gId = profileInfoElem.child(1).text();
-            age = profileInfoElem.child(3).text();
-            dHand = profileInfoElem.child(5).text();
+            for(int i = 0; i < profileInfoElem.children().size(); i++){
+                profileInfo.put(profileInfoElem.child(i).text(), profileInfoElem.child(++i).text());
+            }
 
             //Collect user image url from page
             Element profilePicDiv = doc.getElementsByClass("profile-image").first();
@@ -231,16 +233,16 @@ public class User {
         return this.name;
     }
 
-    public String getAge() {
-        return age;
+    public String getNickName() {
+        if(this.name.contains("\"")){
+            String nickname = this.name.split(" ")[1];
+            return nickname.substring(1, nickname.length()-1); //clip quotation marks
+        }
+        return this.name;
     }
 
-    public String getdHand() {
-        return dHand;
-    }
-
-    public String getgId() {
-        return gId;
+    public Map<String, String> getProfileInfo() {
+        return profileInfo;
     }
 
     public String getAboutText() {

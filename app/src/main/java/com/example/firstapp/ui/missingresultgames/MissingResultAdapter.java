@@ -114,8 +114,6 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         int red = Color.rgb(255, 0, 0);
         int green = Color.rgb(0, 177, 64);
 
-        System.out.println("GAME "+games[position].getHomeTeamName()+" "+games[position].homeTeamSpirit+" "+games[position].getAwayTeamName()+" "+games[position].awayTeamSpirit);
-
         if(games[position].homeTeamScore.contains("W")){
             holder.homeTeamScore.setTextColor(green);
             holder.awayTeamScore.setTextColor(red);

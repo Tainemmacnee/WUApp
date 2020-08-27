@@ -74,7 +74,6 @@ public class Game {
         List<Game> output = new ArrayList<>();
 
         return executor.submit(() -> {
-            System.out.println("MISSING RESULTS LOADING");
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
@@ -115,7 +114,6 @@ public class Game {
                     Element homeTeamNameElem = homeTeamElem.getElementsByClass("schedule-team-name ").first();
                     homeTeamName = homeTeamNameElem.text().trim();
 
-                    System.out.println("MISSING RESULTS LOADING HOME");
                     Element homeTeamScoreElem = homeTeamElem.getElementsByClass("score ").first();
                     if(homeTeamScoreElem == null) {homeTeamScore = "?";} else{
                         homeTeamScore = homeTeamScoreElem.text().trim();
@@ -154,7 +152,6 @@ public class Game {
                     game.homeTeamSpirit = homeTeamSpirit;
                     game.awayTeamSpirit = awayTeamSpirit;
                     game.reportLink = reportLink;
-                    System.out.println("MISSING RESULTS GAME ADDED");
                     output.add(game);
                 }
             } catch (IOException e) {

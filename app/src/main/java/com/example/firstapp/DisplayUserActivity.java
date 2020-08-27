@@ -62,7 +62,7 @@ public class DisplayUserActivity extends AppCompatActivity {
         View hview = navigationView.getHeaderView(0);
         Picasso.get().load(this.user.getProfileImgUrl()).into((ImageView) hview.findViewById(R.id.nav_header_profile_image));
         TextView nav_user = (TextView)hview.findViewById(R.id.username);
-        nav_user.setText(this.user.getName());
+        nav_user.setText(this.user.getNickName());
     }
 
     public User getUserData() {
