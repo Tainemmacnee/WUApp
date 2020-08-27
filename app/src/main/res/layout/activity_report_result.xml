@@ -22,10 +22,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.firstapp.ui.reportresult.ReportResultFragment"
+    <FrameLayout
+        android:id="@+id/fragment_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </LinearLayout>

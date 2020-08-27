@@ -112,14 +112,9 @@ public class ReportResultFragment extends Fragment {
             mvpList.add((String) mvpSpinner.getSelectedItem());
         }
 
-        try {
-            activity.report(homeScore, awayScore, spiritRules, spiritFouls, spiritFair, spiritPos, spiritCom, comments.getText().toString());
-            activity.reportMVPs(mvpList);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        activity.submit(homeScore, awayScore, spiritRules, spiritFouls, spiritFair, spiritPos, spiritCom, comments.getText().toString(), mvpList);
+
     }
 
     @Override

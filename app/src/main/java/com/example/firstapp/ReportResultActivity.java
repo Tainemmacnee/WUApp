@@ -3,18 +3,19 @@ package com.example.firstapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.firstapp.model.Event;
 import com.example.firstapp.model.ReportFormState;
 import com.example.firstapp.model.Team;
+import com.example.firstapp.ui.loading.LoadingScreen;
+import com.example.firstapp.ui.reportresult.ReportResultFragment;
 
 import org.json.JSONObject;
 import org.jsoup.Connection;
@@ -41,7 +42,7 @@ public class ReportResultActivity extends AppCompatActivity {
     private String userName;
     private String reportLink;
     private Map<String, String> cookies;
-    private Future<ReportFormState> formState;
+    private ReportFormState formState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +54,7 @@ public class ReportResultActivity extends AppCompatActivity {
         cookies = (Map<String, String>) intent.getSerializableExtra(MainActivity.MESSAGE_COOKIES);
         userName = (String) intent.getStringExtra(DisplayUserActivity.MESSAGEUSERNAME);
 
-        formState = getReportFormState(cookies, reportLink);
-        System.out.println("FORM STATE SET");
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_result);
@@ -64,6 +64,34 @@ public class ReportResultActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        Future<ReportFormState> ffs = getReportFormState(cookies, reportLink);
+        Handler handler = new Handler();
+        int delay = 1000; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                //do something
+                if(ffs.isDone()){
+                    try {
+                        formState = ffs.get();
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_view, new ReportResultFragment(), "REPORTFRAGMENT");
+                        transaction.commit();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    handler.postDelayed(this, delay);
+                }
+            }
+        }, delay);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Loading report form"));
+        transaction.commit();
     }
 
     public Team getOtherTeam(){
@@ -76,8 +104,15 @@ public class ReportResultActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
-                return true;
+                ReportResultFragment frag = (ReportResultFragment) getSupportFragmentManager().findFragmentByTag("REPORTFRAGMENT");
+                if (frag != null && frag.isVisible()) {
+                    System.out.println("VISIBLE");
+                    finish();
+                    return true;
+                } else {
+                    System.out.println("NOT VISIBLE");
+                    return true;
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -102,18 +137,9 @@ public class ReportResultActivity extends AppCompatActivity {
     }
 
     public ReportFormState getReportFormState(){
-        try {
-            if(this.formState == null){
-                return getReportFormState(cookies, reportLink).get();
-            }
-            return this.formState.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return this.formState;
     }
+
 
     public String getOAuthToken() throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -160,12 +186,42 @@ public class ReportResultActivity extends AppCompatActivity {
         }).get();
     }
 
-    public void reportMVPs(List<String> mvps) throws ExecutionException, InterruptedException {
+    public void submit(String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments, List<String> mvps){
+        try {
+            Future<Boolean> frMVP = reportMVPs(mvps);
+            Future<Boolean> frScore = report(homeScore, awayScore, RKU, FBC, FM, PAC, COM, comments);
+
+            Handler handler = new Handler();
+            int delay = 1000; //milliseconds
+
+            handler.postDelayed(new Runnable(){
+                public void run(){
+                    //do something
+                    if(frMVP.isDone() && frScore.isDone()){
+                        finish();
+                    } else {
+                        handler.postDelayed(this, delay);
+                    }
+                }
+            }, delay);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Submitting Form"));
+            transaction.commit();
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Future<Boolean> reportMVPs(List<String> mvps) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
             System.out.println(mvps);
-            executor.submit(() -> {
+            return executor.submit(() -> {
                 String authToken = "";
                 try {
                     authToken = getOAuthToken();
@@ -241,14 +297,14 @@ public class ReportResultActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 return true;
-            }).get();
+            });
     }
 
-    public void report(String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments) throws ExecutionException, InterruptedException {
+    public Future<Boolean> report(String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newCachedThreadPool();
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
-        Future<Boolean> reportMain = executor.submit(() -> {
+        return executor.submit(() -> {
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL+reportLink)
                         .method(Connection.Method.GET)
@@ -308,12 +364,6 @@ public class ReportResultActivity extends AppCompatActivity {
             }
             return true;
         });
-
-        //report mvps
-
-        reportMain.get();
-
-        finish();
     }
 
     private void setSelection(Element selectTag, String option){
