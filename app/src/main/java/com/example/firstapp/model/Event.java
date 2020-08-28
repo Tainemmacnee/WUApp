@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -18,15 +19,18 @@ import java.util.concurrent.Future;
 
 public class Event implements Serializable{
 
-    String eventName, eventImg;
+    String eventName, eventImg, standingsLink;
+    Map<String, String> cookies;
     Future<List<Team>> teams;
 
-    public Event(String eventName, String eventImg, Future<List<Team>> teams)
+    public Event(String eventName, String eventImg, Future<List<Team>> teams, String standingsLink, Map<String, String> cookies)
 
     {
         this.teams = teams;
         this.eventName = eventName;
         this.eventImg = eventImg.replace("40", "200");
+        this.standingsLink = standingsLink;
+        this.cookies = cookies;
     }
 
     public static Future<List<Event>> LoadEvents(Map<String, String> cookies){
@@ -44,13 +48,14 @@ public class Event implements Serializable{
                         .execute();
 
                 Document doc = loadPageResponse.parse();
-                String eventName, eventImg;
+                String eventName, eventImg, standingsLink;
                 Future<List<Team>> eventTeams;
 
                 Elements eventLinks = doc.getElementsByClass("global-toolbar-subnav-img-item plain-link");
                 for(Element e: eventLinks){
                     if(e.attr("href").startsWith("/e/")) {
                         eventTeams = Team.loadTeams(e.attr("href"), cookies);
+                        standingsLink = "https://wds.usetopscore.com"+e.attr("href");
                     } else {
                         continue;
                     }
@@ -63,7 +68,7 @@ public class Event implements Serializable{
                     Element eventNameElem = e.child(1);
                     eventName = eventNameElem.text();
 
-                    output.add(new Event(eventName, eventImg, eventTeams));
+                    output.add(new Event(eventName, eventImg, eventTeams, standingsLink, cookies));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -78,6 +83,14 @@ public class Event implements Serializable{
 
     public String getEventImg(){
         return this.eventImg;
+    }
+
+    public HashMap<String, String> getCookies() {
+        return (HashMap<String, String>) cookies;
+    }
+
+    public String getStandingsLink() {
+        return standingsLink;
     }
 
     public List<Team> getTeams(){

@@ -12,14 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firstapp.DisplayEventStandingsActivity;
 import com.example.firstapp.DisplayEventTeamsActivity;
 import com.example.firstapp.DisplayUserActivity;
+import com.example.firstapp.MainActivity;
 import com.example.firstapp.R;
 import com.example.firstapp.model.Event;
 import com.example.firstapp.model.Team;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewHolder> {
@@ -30,6 +31,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         public TextView textView;
         public ImageView imageView;
         public Button eventTeamsButton;
+        public Button eventStandingsButton;
         private final Context context;
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -37,6 +39,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.textView = (TextView) itemView.findViewById(R.id.event_team_name);
             this.imageView = (ImageView) itemView.findViewById(R.id.event_team_image);
             this.eventTeamsButton = (Button) itemView.findViewById(R.id.event_teams_button);
+            this.eventStandingsButton = (Button) itemView.findViewById(R.id.event_standings_button);
         }
     }
 
@@ -67,6 +70,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 intent.putExtra(DisplayUserActivity.MESSAGEEVENTTEAMS, teams);
                 view.getContext().startActivity(intent);
 
+            }
+        });
+        holder.eventStandingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DisplayEventStandingsActivity.class);
+                intent.putExtra(MainActivity.MESSAGE_COOKIES, events[position].getCookies());
+                intent.putExtra(DisplayEventStandingsActivity.MESSAGESTANDINGSLINK, events[position].getStandingsLink());
+                view.getContext().startActivity(intent);
             }
         });
     }

@@ -21,6 +21,7 @@ import com.example.firstapp.model.User;
 import com.example.firstapp.model.UserLoginToken;
 import com.example.firstapp.ui.loading.LoadingScreen;
 import com.example.firstapp.ui.login.LoginFragment;
+import com.example.firstapp.ui.scores.scoresFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Connection;
@@ -139,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("Exception", "File write failed: " + e.toString());
                     }
                 }
-
 
             Intent intent = new Intent(this, DisplayUserActivity.class);
             intent.putExtra(MESSAGE_COOKIES, lt.getCookies());

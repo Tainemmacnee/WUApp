@@ -69,13 +69,13 @@
     <!-- android:foreground="?attr/selectableItemBackground" -->
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/event_standings_button"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/rounded_background_grey"
+        android:background="@drawable/rounded_background_yellow"
         android:foreground="?attr/selectableItemBackground"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

@@ -44,7 +44,7 @@ import java.util.concurrent.Future;
 
 public class ReportResultFragment extends Fragment {
 
-
+    private int mspCount = 1;
 
     public ReportResultFragment() {
         // Required empty public constructor
@@ -81,6 +81,36 @@ public class ReportResultFragment extends Fragment {
         list.addAll(team.getFemaleMatchups());
         System.out.println("FEMALE ADAPTER: "+list);
         return list;
+    }
+
+    public void addMSP(View view){
+        ReportResultActivity activity = (ReportResultActivity) getActivity();
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setLayoutParams(activity.findViewById(R.id.report_msp_example).getLayoutParams());
+
+        TextView titleView = new TextView(getContext());
+        TextView mspExampleTitle = activity.findViewById(R.id.report_msp_example_title);
+        titleView.setGravity(mspExampleTitle.getGravity());
+        Spinner spinner = new Spinner(getContext());
+        spinner.setLayoutParams(activity.findViewById(R.id.report_msp_example_spinner).getLayoutParams());
+
+        titleView.setText(String.format("MSP #%d", mspCount++));
+        titleView.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        List<String> mspArray = getMaleMvpValues(activity.getOtherTeam());
+        mspArray.addAll(getFemaleMvpValues(activity.getOtherTeam()));
+        ArrayAdapter<String> mspAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, mspArray);
+
+        spinner.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_background_light));
+        spinner.setAdapter(mspAdapter);
+
+
+        layout.addView(titleView, 0);
+        layout.addView(spinner, 1);
+
+        LinearLayout mspBox = view.findViewById(R.id.mspBox);
+        mspBox.addView(layout);
     }
 
     public void report(View view){
@@ -186,6 +216,9 @@ public class ReportResultFragment extends Fragment {
 
         Button reportButton = view.findViewById(R.id.report_results2);
         reportButton.setOnClickListener(this::report);
+
+        Button addMSPButton = view.findViewById(R.id.add_msp_button);
+        addMSPButton.setOnClickListener(this::addMSP);
 
         return view;
     }
