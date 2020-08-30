@@ -30,7 +30,7 @@ public class EventTeamsFragment extends Fragment {
         DisplayEventTeamsActivity activity = (DisplayEventTeamsActivity)getActivity();
         Team[] eventTeams = activity.getEventTeams();
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.event_team_recycler_view);
+        recyclerView = v.findViewById(R.id.event_team_recycler_view);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getActivity());
@@ -40,7 +40,6 @@ public class EventTeamsFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         activity.setmAdapter((EventTeamsAdapter) mAdapter);
-        System.out.println("FIRST!");
 
         return v;
     }

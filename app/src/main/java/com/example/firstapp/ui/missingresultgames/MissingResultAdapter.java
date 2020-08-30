@@ -77,7 +77,6 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         return new UpcomingViewHolder(v);
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull UpcomingViewHolder holder, int position) {
         holder.homeTeamName.setText(games[position].getHomeTeamName());

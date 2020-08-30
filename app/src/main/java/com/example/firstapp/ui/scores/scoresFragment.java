@@ -2,6 +2,7 @@ package com.example.firstapp.ui.scores;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,6 @@ public class scoresFragment extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void loadTable(View view){
         TableRow exampleTableRow = view.findViewById(R.id.scores_example_tablerow);
         LinearLayout exampleTeamBox = view.findViewById(R.id.scores_example_teambox);
@@ -81,7 +81,7 @@ public class scoresFragment extends Fragment {
             teamSpirit.setText(info.get("spirit"));
             teamPointDiff.setText(info.get("pointDiff"));
 
-            tableRow.setGravity(exampleTableRow.getGravity());
+            tableRow.setGravity(Gravity.CENTER);
             teamRecord.setGravity(exampleTeamRecord.getGravity());
             teamSpirit.setGravity(exampleTeamSpirit.getGravity());
             teamPointDiff.setGravity(exampleTeamPointDiff.getGravity());

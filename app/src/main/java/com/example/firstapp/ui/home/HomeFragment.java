@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
         LinearLayout infoDisplay = root.findViewById(R.id.home_info_display);
 
         for(String key : user.getProfileInfo().keySet()){
-            System.out.println(key);
             LinearLayout infoBox = new LinearLayout(getContext());
             TextView infoTitle = new TextView(getContext());
             Space spacer = new Space(getContext());

@@ -223,7 +223,6 @@ public class ReportResultFragment extends Fragment {
         return view;
     }
 
-    @SuppressLint({"ResourceAsColor", "NewApi"})
     private LinearLayout buildMVPBox(View view, String name, String title, ArrayAdapter<String> adapter){
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -240,12 +239,15 @@ public class ReportResultFragment extends Fragment {
 
         spinner.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_background_light));
         spinner.setAdapter(adapter);
-        for(int i = 0; i < adapter.getCount(); i++){
-            if(adapter.getItem(i).contains(name) || name.contains(adapter.getItem(i))){
-                spinner.setSelection(i);
+        System.out.println("NAME: "+name+"|");
+        if(!name.equals("")) {
+            for (int i = 0; i < adapter.getCount(); i++) {
+                if (adapter.getItem(i).contains(name) || name.contains(adapter.getItem(i))) {
+                    System.out.println("Value: " + adapter.getItem(i) + " TRUE");
+                    spinner.setSelection(i);
+                }
             }
         }
-
 
         layout.addView(titleView, 0);
         layout.addView(spinner, 1);

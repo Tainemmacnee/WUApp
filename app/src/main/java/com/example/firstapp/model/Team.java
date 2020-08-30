@@ -128,21 +128,25 @@ public class Team implements Serializable {
         return "TEAM: "+this.name+" IMAGE: "+this.imageUrl+" MEMBERS "+this.maleMatchups+" "+this.femaleMatchups;
     }
 
-    @SuppressLint("NewApi")
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
         return name.equals(team.name) &&
-                Objects.equals(imageUrl, team.imageUrl) &&
-                Objects.equals(maleMatchups, team.maleMatchups) &&
-                Objects.equals(femaleMatchups, team.femaleMatchups);
+                imageUrl.equals(team.imageUrl) &&
+                maleMatchups.equals(team.maleMatchups) &&
+                femaleMatchups.equals(team.femaleMatchups);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public int hashCode() {
-        return Objects.hash(name, imageUrl, maleMatchups, femaleMatchups);
+        int hash = 7;
+        hash = 31 * hash + name.hashCode();
+        hash = 31 * hash + (imageUrl == null ? 0 : imageUrl.hashCode());
+        hash = 31 * hash + (maleMatchups == null ? 0 : maleMatchups.hashCode());
+        hash = 31 * hash + (femaleMatchups == null ? 0 : femaleMatchups.hashCode());
+        return hash;
     }
 }
