@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.firstapp.model.ReportFormState;
 import com.example.firstapp.ui.loading.LoadingScreen;
 import com.example.firstapp.ui.scores.scoresFragment;
 
@@ -29,7 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class DisplayEventStandingsActivity extends AppCompatActivity {
+public class DisplayEventStandingsActivity extends AppCompatActivity implements LoadingScreen.loadableActivity {
 
     private String standingsLink;
     private Map<String, String> cookies;
@@ -59,31 +60,12 @@ public class DisplayEventStandingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Future fs = getStandings(cookies, standingsLink);
-        Handler handler = new Handler();
-        int delay = 1000; //milliseconds
 
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                //do something
-                if(fs.isDone()){
-                    try {
-                        standings = (List<Map<String, String>>) fs.get();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_view, new scoresFragment());
-                        transaction.commit();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    handler.postDelayed(this, delay);
-                }
-            }
-        }, delay);
+        LoadingScreen loadingScreen = new LoadingScreen();
+        loadingScreen.load("Loading Standings", fs, this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Loading standings"));
+        transaction.replace(R.id.fragment_view, loadingScreen);
         transaction.commit();
     }
 
@@ -143,4 +125,13 @@ public class DisplayEventStandingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void processResult(Object Result, boolean finished) {
+        if(finished){
+            standings = (List<Map<String, String>>) Result;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_view, new scoresFragment());
+            transaction.commit();
+        }
+    }
 }

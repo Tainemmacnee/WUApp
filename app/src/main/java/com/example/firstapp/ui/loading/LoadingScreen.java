@@ -13,33 +13,96 @@ import com.example.firstapp.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 
 public class LoadingScreen extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
+    private Queue<Load> queue = new ArrayDeque<>();
+    private Load current;
 
-    private String mParam1;
+    public interface loadableActivity{
 
-    public LoadingScreen() {
-        // Required empty public constructor
+        public void processResult(Object Result, boolean finished);
+
     }
 
-    public static LoadingScreen newInstance(String param1) {
-        LoadingScreen fragment = new LoadingScreen();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private class Load{
+        private String loadingMessage;
+        private Future load;
+        private loadableActivity activity;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+        public Load(String loadingMessage, Future load, loadableActivity activity){
+            this.loadingMessage = loadingMessage;
+            this.load = load;
+            this.activity = activity;
         }
+
+        public String getLoadingMessage() {
+            return loadingMessage;
+        }
+
+        public Future getLoad() {
+            return load;
+        }
+
+        public loadableActivity getActivity() {
+            return activity;
+        }
+    }
+
+    public void load(String loadingMessage, Future load, loadableActivity activity){
+        if(current == null){
+            current = new Load(loadingMessage, load, activity);
+            start();
+        } else {
+            queue.add(new Load(loadingMessage, load, activity));
+        }
+    }
+
+    private void start(){
+        //updateUI(current);
+        Handler handler = new Handler();
+        int delay = 500; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                //do something
+                if(current.getLoad().isDone()){
+                    System.out.println("FINISHED: "+current.getLoadingMessage());
+                    try {
+                        if(queue.isEmpty()){ //finished loading
+                            current.getActivity().processResult(current.getLoad().get(), true);
+                        } else { //send result and get next load
+                            current.getActivity().processResult(current.getLoad().get(), false);
+                            startNextLoad();
+                        }
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("NOT FINISHED: "+current.getLoadingMessage());
+                    handler.postDelayed(this, delay);
+                }
+            }
+        }, delay);
+    }
+
+    private void startNextLoad(){
+        updateUI(queue.peek());
+        current = queue.poll();
+        start();
+    }
+
+    private void updateUI(Load newLoad){
+        View view = getView();
+        TextView text = view.findViewById(R.id.loading_text);
+        text.setText(newLoad.getLoadingMessage());
     }
 
     @Override
@@ -47,9 +110,8 @@ public class LoadingScreen extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_loading_screen, container, false);
-
         TextView message = view.findViewById(R.id.loading_text);
-        message.setText(this.mParam1);
+        message.setText(current.getLoadingMessage());
 
         return view;
     }

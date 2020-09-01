@@ -44,7 +44,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoadingScreen.loadableActivity{
     public static final String MESSAGE_COOKIES="LOGINCOOKIE";
     public static final String MESSAGE_LINKS="USERLINKS";
 
@@ -66,56 +66,22 @@ public class MainActivity extends AppCompatActivity {
         params.add(ed2.getText().toString());
         Future<UserLoginToken> flt = User.loginUser(params.get(0), params.get(1));
 
-        Handler handler = new Handler();
-        int delay = 1000; //milliseconds
-
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                //do something
-                if(flt.isDone()){
-                    try {
-                        finishLogin(flt.get());
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    handler.postDelayed(this, delay);
-                }
-            }
-        }, delay);
+        LoadingScreen loadingScreen = new LoadingScreen();
+        loadingScreen.load("Logging In", flt, this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Logging In"));
+        transaction.replace(R.id.fragment_view, loadingScreen);
         transaction.commit();
     }
 
     public void login(HashMap<String, String> cookies){
         Future<UserLoginToken> flt = User.loginUser(cookies);
 
-        Handler handler = new Handler();
-        int delay = 1000; //milliseconds
-
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                //do something
-                if(flt.isDone()){
-                    try {
-                        finishLogin(flt.get());
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    handler.postDelayed(this, delay);
-                }
-            }
-        }, delay);
+        LoadingScreen loadingScreen = new LoadingScreen();
+        loadingScreen.load("Loading User Details", flt, this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Loading User Details"));
+        transaction.replace(R.id.fragment_view, loadingScreen);
         transaction.commit();
     }
 
@@ -187,4 +153,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("NO LOGIN FOUND");
     }
 
+    @Override
+    public void processResult(Object Result, boolean finished) {
+        if(finished){
+            finishLogin((UserLoginToken) Result);
+        }
+    }
 }

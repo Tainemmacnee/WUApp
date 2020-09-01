@@ -35,7 +35,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ReportResultActivity extends AppCompatActivity {
+public class ReportResultActivity extends AppCompatActivity implements LoadingScreen.loadableActivity {
 
     private Team homeTeam;
     private Team awayTeam;
@@ -66,31 +66,11 @@ public class ReportResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Future<ReportFormState> ffs = getReportFormState(cookies, reportLink);
-        Handler handler = new Handler();
-        int delay = 1000; //milliseconds
-
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                //do something
-                if(ffs.isDone()){
-                    try {
-                        formState = ffs.get();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_view, new ReportResultFragment(), "REPORTFRAGMENT");
-                        transaction.commit();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    handler.postDelayed(this, delay);
-                }
-            }
-        }, delay);
+        LoadingScreen loadingScreen = new LoadingScreen();
+        loadingScreen.load("Loading report form", ffs, this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Loading report form"));
+        transaction.replace(R.id.fragment_view, loadingScreen);
         transaction.commit();
     }
 
@@ -191,22 +171,12 @@ public class ReportResultActivity extends AppCompatActivity {
             Future<Boolean> frMVP = reportMVPs(mvps);
             Future<Boolean> frScore = report(homeScore, awayScore, RKU, FBC, FM, PAC, COM, comments);
 
-            Handler handler = new Handler();
-            int delay = 1000; //milliseconds
-
-            handler.postDelayed(new Runnable(){
-                public void run(){
-                    //do something
-                    if(frMVP.isDone() && frScore.isDone()){
-                        finish();
-                    } else {
-                        handler.postDelayed(this, delay);
-                    }
-                }
-            }, delay);
+            LoadingScreen loadingScreen = new LoadingScreen();
+            loadingScreen.load("Submitting MVPs", frMVP, this);
+            loadingScreen.load("Submitting Scores and Spirit", frScore, this);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_view, LoadingScreen.newInstance("Submitting Form"));
+            transaction.replace(R.id.fragment_view, loadingScreen);
             transaction.commit();
 
         } catch (ExecutionException e) {
@@ -491,5 +461,20 @@ public class ReportResultActivity extends AppCompatActivity {
             }
             return new ReportFormState(doc, homeTeamScore, awayTeamScore, RKU, FBC, FM, PAS, COM, comments, maleMVPs, femaleMVPs);
         });
+    }
+
+    @Override
+    public void processResult(Object Result, boolean finished) {
+        System.out.println("FINISHED?: "+finished);
+        if(finished){
+            if(Result instanceof ReportFormState){
+                formState = (ReportFormState) Result;
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_view, new ReportResultFragment(), "REPORTFRAGMENT");
+                transaction.commit();
+            } else {
+                finish();
+            }
+        }
     }
 }
