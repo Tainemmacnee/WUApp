@@ -268,20 +268,23 @@ public class ReportResultActivity extends AppCompatActivity {
 
                         if(select.child(0).attr("selected").equals("selected")){ //create award if value changed from blank to a name
                             URL = "https://wds.usetopscore.com/api/person-award/new";
-                        } else if(mvps.get(count).equals("")){ //Delete award if value changed from a name to blank
+                            System.out.println("ADDED");
+                        } else {
                             data.put("id", inputs.get(4).attr("value"));
-                            data.remove("person_id");
-                            Jsoup.connect("https://wds.usetopscore.com/api/person-award/delete")
-                                    .userAgent(USER_AGENT)
-                                    .ignoreContentType(true)
-                                    .header("Authorization", "Bearer "+authToken)
-                                    .data(data)
-                                    .post();
-                            continue;
-                        } else { //edit award at id if not adding or deleting
-                            data.put("id", inputs.get(4).attr("value"));
-                        }
+                            if (mvps.get(count).equals("")) { //Delete award if value changed from a name to blank
 
+                                data.remove("person_id");
+                                Document response = Jsoup.connect("https://wds.usetopscore.com/api/person-award/delete")
+                                        .userAgent(USER_AGENT)
+                                        .ignoreContentType(true)
+                                        .header("Authorization", "Bearer " + authToken)
+                                        .data(data)
+                                        .post();
+                                System.out.println("DELETED");
+                                continue;
+                            }
+                        }
+                        System.out.println("EDITED");
                         Document reportResponse = Jsoup.connect(URL)
                                 .userAgent(USER_AGENT)
                                 .ignoreContentType(true)
@@ -289,10 +292,10 @@ public class ReportResultActivity extends AppCompatActivity {
                                 .data(data)
                                 .post();
 
+
                         System.out.println("REPORTED: "+mvps.get(count));
                         count++;
                     }
-                    System.out.println("DONE FINDING");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
