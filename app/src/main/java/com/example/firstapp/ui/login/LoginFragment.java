@@ -35,7 +35,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) view.getContext();
-                activity.newlogin(view);
+                activity.login(view);
             }
         });
 

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.firstapp.model.ReportFormState;
 import com.example.firstapp.model.Team;
+import com.example.firstapp.model.User;
 import com.example.firstapp.ui.loading.LoadingScreen;
 import com.example.firstapp.ui.reportresult.ReportResultFragment;
 
@@ -188,9 +189,8 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
 
     public Future<Boolean> reportMVPs(List<String> mvps) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
-            System.out.println(mvps);
+
             return executor.submit(() -> {
                 String authToken = "";
                 try {
@@ -201,17 +201,15 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                     e.printStackTrace();
                 }
                 try {
-
                     Connection.Response loadPageResponse = Jsoup.connect(WEB_URL + reportLink)
                             .method(Connection.Method.GET)
-                            .userAgent(USER_AGENT)
+                            .userAgent(User.USER_AGENT)
                             .cookies(cookies)
                             .execute();
 
                     Document doc = loadPageResponse.parse();
                     int count = 0;
 
-                    System.out.println("FIND FORM");
                     for(Element mvpForm : doc.getElementsByClass("form-api live spacer-half keep-popup-open person-award-form")){
                         String playerID = null;
                         String URL = "https://wds.usetopscore.com/api/person-award/edit";
@@ -238,32 +236,27 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
 
                         if(select.child(0).attr("selected").equals("selected")){ //create award if value changed from blank to a name
                             URL = "https://wds.usetopscore.com/api/person-award/new";
-                            System.out.println("ADDED");
                         } else {
                             data.put("id", inputs.get(4).attr("value"));
                             if (mvps.get(count).equals("")) { //Delete award if value changed from a name to blank
 
                                 data.remove("person_id");
                                 Document response = Jsoup.connect("https://wds.usetopscore.com/api/person-award/delete")
-                                        .userAgent(USER_AGENT)
+                                        .userAgent(User.USER_AGENT)
                                         .ignoreContentType(true)
                                         .header("Authorization", "Bearer " + authToken)
                                         .data(data)
                                         .post();
-                                System.out.println("DELETED");
                                 continue;
                             }
                         }
-                        System.out.println("EDITED");
                         Document reportResponse = Jsoup.connect(URL)
-                                .userAgent(USER_AGENT)
+                                .userAgent(User.USER_AGENT)
                                 .ignoreContentType(true)
                                 .header("Authorization", "Bearer "+authToken)
                                 .data(data)
                                 .post();
 
-
-                        System.out.println("REPORTED: "+mvps.get(count));
                         count++;
                     }
                 } catch (IOException e) {
@@ -275,13 +268,12 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
 
     public Future<Boolean> report(String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newCachedThreadPool();
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
         return executor.submit(() -> {
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL+reportLink)
                         .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
+                        .userAgent(User.USER_AGENT)
                         .cookies(cookies)
                         .execute();
 
@@ -327,10 +319,8 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                 Connection.Response reportActionResponse = form.submit()
                         .data(commentReport, comments)
                         .cookies(cookies)
-                        .userAgent(USER_AGENT)
+                        .userAgent(User.USER_AGENT)
                         .execute();
-
-                System.out.println("DONE! ");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -341,7 +331,6 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
 
     private void setSelection(Element selectTag, String option){
         //remove selected attribute
-        System.out.println("SELECTING FOR: "+selectTag.attr("name"));
         Element selectedOption = selectTag.children().select("[selected]").first();
         if (selectedOption != null) {
             selectedOption.removeAttr("selected");
@@ -349,7 +338,6 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
         //set correct selected option
         for (Element op : selectTag.children()) {
             if (op.text().contains(option)) {
-                System.out.println("Selected: "+option);
                 op.attr("selected", "selected");
             }
         }
@@ -357,7 +345,6 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
 
     private Future<ReportFormState> getReportFormState(Map<String, String> cookies, String link){
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com"+link;
 
 
@@ -371,7 +358,7 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
+                        .userAgent(User.USER_AGENT)
                         .cookies(cookies)
                         .execute();
 
@@ -444,14 +431,12 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                                 femaleMVPs.add(option.text());
                             }
                         }
-                        System.out.println("FEMALE MVP");
                     }
                     if (mvpForm.child(3).attr("value").equals("male_mvp")) {
                         for (Element option : mvpForm.getElementsByTag("select").last().children()) {
                             if (option.attr("selected").equals("selected")) {
                                 maleMVPs.add(option.text());
                             }
-                            System.out.println("MALE MVP");
                         }
                     }
                 }
@@ -465,7 +450,6 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
 
     @Override
     public void processResult(Object Result, boolean finished) {
-        System.out.println("FINISHED?: "+finished);
         if(finished){
             if(Result instanceof ReportFormState){
                 formState = (ReportFormState) Result;

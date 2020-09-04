@@ -30,6 +30,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,21 +41,19 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 
 public class MainActivity extends AppCompatActivity implements LoadingScreen.loadableActivity{
     public static final String MESSAGE_COOKIES="LOGINCOOKIE";
-    public static final String MESSAGE_LINKS="USERLINKS";
+    public static final String MESSAGE_LOGINTOKEN = "LOGINTOKEN";
 
-    Button b1,b2;
+    Button b1;
     EditText ed1,ed2;
 
-    TextView tx1;
-    int counter = 3;
-
-    public void newlogin(View view){
+    public void login(View view){
         //Collect users login info
 
         b1 = (Button)findViewById(R.id.button);
@@ -74,44 +73,31 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
         transaction.commit();
     }
 
-    public void login(HashMap<String, String> cookies){
-        Future<UserLoginToken> flt = User.loginUser(cookies);
-
-        LoadingScreen loadingScreen = new LoadingScreen();
-        loadingScreen.load("Loading User Details", flt, this);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_view, loadingScreen);
-        transaction.commit();
+    public void login(HashMap<String, String> cookies, HashMap<String, String> links){
+        processResult(new UserLoginToken(cookies, links), true);
     }
 
     private void finishLogin(UserLoginToken lt){
-        if(lt==null){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_view, new LoginFragment());
-            transaction.commit();
-            Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();
-            System.out.println("LOGIN FAILED");
-        } else {
             //save login
-
-                File file = new File(getApplicationContext().getFilesDir(), "login.txt");
-                if (!file.exists()) {
-                    try {
-                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("login.txt", Context.MODE_PRIVATE));
-                        String output = String.format("tsid:%s", lt.getCookies().get("tsid"));
-                        outputStreamWriter.write(output);
-                        outputStreamWriter.close();
-                    } catch (IOException e) {
-                        Log.e("Exception", "File write failed: " + e.toString());
-                    }
-                }
-
-            Intent intent = new Intent(this, DisplayUserActivity.class);
-            intent.putExtra(MESSAGE_COOKIES, lt.getCookies());
-            intent.putExtra(MESSAGE_LINKS, lt.getLinks());
-            startActivity(intent);
+        File file = new File(getApplicationContext().getFilesDir(), "login.txt");
+        if (!file.exists()) {
+            try {
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("login.txt", Context.MODE_PRIVATE));
+                BufferedWriter writer = new BufferedWriter(outputStreamWriter);
+                String output = String.format("tsid:%s", lt.getCookies().get("tsid"));
+                writer.write(output);
+                writer.newLine();
+                writer.write(lt.getLinks().toString());
+                writer.close();
+                outputStreamWriter.close();
+            } catch (IOException e) {
+                Log.e("Exception", "File write failed: " + e.toString());
+            }
         }
+
+        Intent intent = new Intent(this, DisplayUserActivity.class);
+        intent.putExtra(MESSAGE_LOGINTOKEN, lt);
+        startActivity(intent);
     }
 
     @Override
@@ -123,19 +109,21 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
         transaction.add(R.id.fragment_view, new LoginFragment());
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
-        String result = "";
+        String cookieString = "";
+        String linkString = "";
+        HashMap<String,String> links = new HashMap<>();
+        HashMap<String,String> cookies = new HashMap<>();
         try {
             InputStream inputStream = getApplicationContext().openFileInput("login.txt");
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                result = bufferedReader.readLine();
+                cookieString = bufferedReader.readLine();
+                linkString = bufferedReader.readLine();
 
                 inputStream.close();
             }
@@ -143,20 +131,31 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(result.length() != 0){
-            System.out.println("LOGIN FOUND");
-            HashMap cookies = new HashMap<String, String>();
-            cookies.put("tsid", result.split(":")[1]);
-            login(cookies);
-            return;
+        if(cookieString.length() != 0 && linkString.length() != 0){
+            linkString = linkString.substring(1, linkString.length()-1);           //remove curly brackets
+            String[] keyValuePairs = linkString.split(",");              //split the string to create key-value pairs
+
+            for(String pair : keyValuePairs)                        //iterate over the pairs
+            {
+                String[] entry = pair.split("=");                   //split the pairs to get key and value
+                links.put(entry[0].trim(), entry[1].trim());          //add them to the hashmap and trim whitespaces
+            }
+            cookies.put("tsid", cookieString.split(":")[1]);
+            login(cookies, links);
         }
-        System.out.println("NO LOGIN FOUND");
     }
 
     @Override
     public void processResult(Object Result, boolean finished) {
         if(finished){
-            finishLogin((UserLoginToken) Result);
+            if(Result == null){ //Login failed
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_view, new LoginFragment());
+                transaction.commit();
+                Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();
+            } else {
+                finishLogin((UserLoginToken) Result);
+            }
         }
     }
 }

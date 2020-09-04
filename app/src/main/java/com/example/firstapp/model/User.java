@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class User {
+public class User{
 
+        public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         public static final String UPCOMINGGAMESLINK = "upcomingGamesLink";
         public static final String MISSINGRESULTSLINK = "missingResultsLink";
         public static final String USERPAGELINK = "userPageLink";
@@ -30,24 +32,18 @@ public class User {
         private HashMap<String, String> links;
         private HashMap<String, String> cookies;
 
-    public User(HashMap<String, String> cookies, HashMap<String, String> links){
-        //Load user data from wds.usetopscore.com with cookies
-
-        this.links = links;
-        this.cookies = cookies;
+    public User(UserLoginToken loginToken, String name, String profileImgUrl, String aboutText, Map<String, String> profileInfo){
+        this.cookies = loginToken.getCookies();
+        this.links = loginToken.getLinks();
+        this.name = name;
+        this.profileImgUrl = profileImgUrl;
+        this.aboutText = aboutText;
+        this.profileInfo = profileInfo;
 
         loadExtras();
-        try {
-            loadUser().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void loadExtras(){
-        System.out.println("BIG L: "+links);
         futureEvents = Event.LoadEvents(cookies);
         futureUpcomingGames = Game.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
         futureMissingResultGames = Game.LoadMissingResultsGames(cookies, links.get(User.MISSINGRESULTSLINK));
@@ -57,8 +53,6 @@ public class User {
         ArrayList<Event> eventsAsList = null;
         try {
             eventsAsList = (ArrayList<Event>) futureEvents.get();
-            System.out.println("EVENTS LOADED");
-
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -81,7 +75,6 @@ public class User {
         ArrayList<Game> gameAsList = null;
         try {
             gameAsList = (ArrayList<Game>) futureUpcomingGames.get();
-            System.out.println("UPCOMING GAMES LOADED");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -94,7 +87,6 @@ public class User {
         ArrayList<Game> gameAsList = new ArrayList<>();
         try {
             gameAsList = (ArrayList<Game>) futureMissingResultGames.get();
-            System.out.println("MISSING RESULT GAMES LOADED");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -154,43 +146,19 @@ public class User {
         });
     }
 
-    public static Future<UserLoginToken> loginUser(HashMap<String, String> cookies){
+
+    public static Future<?> loadUser(UserLoginToken loginToken) {
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
-        HashMap<String, String> links = new HashMap<>();
-        ExecutorService executor = Executors.newCachedThreadPool();
-        return executor.submit(() -> {
-            try {
-                Connection.Response loginFormResponse = Jsoup.connect(WEB_URL)
-                        .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
-                        .cookies(cookies)
-                        .execute();
-
-                Document doc = loginFormResponse.parse();
-                Element userpageLink = doc.getElementsByClass("global-toolbar-user-btn ").first();
-
-                //Collect link to upcoming schedule for later web scraping
-                links.put(User.USERPAGELINK, userpageLink.attr("href"));
-                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
-                links.put(User.MISSINGRESULTSLINK, userpageLink.attr("href") + "/schedule/game_type/missing_result");
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-            return new UserLoginToken(cookies, links);
-        });
-    }
-
-
-    private Future<?> loadUser() {
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
-        final String WEB_URL = "https://wds.usetopscore.com";
+        HashMap<String, String> links = loginToken.getLinks();
+        HashMap<String, String> cookies = loginToken.getCookies();
         ExecutorService executor = Executors.newCachedThreadPool();
 
         return executor.submit(() -> {
             String NEW_URL = WEB_URL + links.get(User.USERPAGELINK);
             Connection.Response loadPageResponse = null;
+            Map<String, String> profileInfo = new HashMap<String, String>();;
+            String name = "", profileImgUrl = "", aboutText = "";
             try {
                 loadPageResponse = Jsoup.connect(NEW_URL)
                         .method(Connection.Method.GET)
@@ -199,33 +167,34 @@ public class User {
                         .execute();
 
 
-            Document doc = loadPageResponse.parse();
+                Document doc = loadPageResponse.parse();
 
-            //Collect username from page
-            Element profileNameDiv = doc.getElementsByClass("profile-name").first();
-            Element profileName = profileNameDiv.child(0);
-            name = profileName.text().trim();
+                //Collect username from page
+                Element profileNameDiv = doc.getElementsByClass("profile-name").first();
+                Element profileName = profileNameDiv.child(0);
+                name = profileName.text().trim();
 
-            //collect profile info
-            Element profileInfoElem = doc.getElementsByClass("profile-info").first().child(0);
-            for(int i = 0; i < profileInfoElem.children().size(); i++){
-                profileInfo.put(profileInfoElem.child(i).text(), profileInfoElem.child(++i).text());
-            }
+                //collect profile info
+                Element profileInfoElem = doc.getElementsByClass("profile-info").first().child(0);
+                for(int i = 0; i < profileInfoElem.children().size(); i++){
+                    profileInfo.put(profileInfoElem.child(i).text(), profileInfoElem.child(++i).text());
+                }
 
-            //Collect user image url from page
-            Element profilePicDiv = doc.getElementsByClass("profile-image").first();
-            Element profilePic = profilePicDiv.child(0);
-            profileImgUrl = profilePic.attr("src");
+                //Collect user image url from page
+                Element profilePicDiv = doc.getElementsByClass("profile-image").first();
+                Element profilePic = profilePicDiv.child(0);
+                profileImgUrl = profilePic.attr("src");
 
-            Element profileAboutDiv = doc.getElementsByClass("profile-about").first();
-            Element profileAboutText = profileAboutDiv.getElementsByClass("rich-text").first();
-            aboutText = profileAboutText.text();
+                Element profileAboutDiv = doc.getElementsByClass("profile-about").first();
+                Element profileAboutText = profileAboutDiv.getElementsByClass("rich-text").first();
+                aboutText = profileAboutText.text();
 
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
-            return;
+            return new User(loginToken, name, profileImgUrl, aboutText, profileInfo);
         });
     }
 

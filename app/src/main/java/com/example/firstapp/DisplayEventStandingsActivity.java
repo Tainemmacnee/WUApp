@@ -44,25 +44,21 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
         standingsLink = (String) intent.getSerializableExtra(DisplayEventStandingsActivity.MESSAGESTANDINGSLINK);
         cookies = (Map<String, String>) intent.getSerializableExtra(MainActivity.MESSAGE_COOKIES);
 
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_event_standings);
         Toolbar toolbar = findViewById(R.id.toolbar2);
         toolbar.setTitle("Standings");
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Future fs = getStandings(cookies, standingsLink);
-
         LoadingScreen loadingScreen = new LoadingScreen();
-        loadingScreen.load("Loading Standings", fs, this);
+        loadingScreen.load("Loading Standings", getStandings(cookies, standingsLink), this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_view, loadingScreen);

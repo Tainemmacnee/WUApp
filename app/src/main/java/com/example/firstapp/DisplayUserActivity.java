@@ -9,9 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.firstapp.model.User;
+import com.example.firstapp.model.UserLoginToken;
+import com.example.firstapp.ui.RefreshableFragment;
+import com.example.firstapp.ui.loading.LoadingScreen;
+import com.example.firstapp.ui.login.LoginFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,7 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.io.File;
 import java.util.HashMap;
 
-public class DisplayUserActivity extends AppCompatActivity {
+public class DisplayUserActivity extends AppCompatActivity implements LoadingScreen.loadableActivity {
 
     public static final String MESSAGEEVENTNAME = "messageeventname";
     public static final String MESSAGEEVENTTEAMS = "messageeventteams";
@@ -34,30 +40,50 @@ public class DisplayUserActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private User user;
+    private NavController navController;
+    private UserLoginToken loginToken;
+    private boolean loaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //Load User
+        Intent intent = getIntent();
+        this.loginToken = (UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN);
+
+        loadUser(loginToken);
+    }
+
+    private void loadUser(UserLoginToken loginToken){
+        LoadingScreen loadingScreen = new LoadingScreen();
+        loadingScreen.load("Loading User", User.loadUser(loginToken), this);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_view, loadingScreen);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void lateOnCreate(){
         setContentView(R.layout.acivity_display_user);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_events, R.id.nav_upcoming_games, R.id.nav_missing_result_games)
+        this.navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        mAppBarConfiguration = new AppBarConfiguration.Builder
+                (R.id.nav_home, R.id.nav_events, R.id.nav_upcoming_games, R.id.nav_missing_result_games)
                 .setDrawerLayout(drawer)
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        Intent intent = getIntent();
-        HashMap<String, String> cookies = (HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.MESSAGE_COOKIES);
-        HashMap<String, String> links = (HashMap<String, String>) intent.getExtras().getSerializable(MainActivity.MESSAGE_LINKS);
-        this.user = new User(cookies, links);
 
         View hview = navigationView.getHeaderView(0);
         Picasso.get().load(this.user.getProfileImgUrl()).into((ImageView) hview.findViewById(R.id.nav_header_profile_image));
@@ -95,11 +121,11 @@ public class DisplayUserActivity extends AppCompatActivity {
     }
 
     private void refresh(){
-        Intent intent = new Intent(this, DisplayUserActivity.class);//DisplayUserActivity.class);
-        intent.putExtra(MainActivity.MESSAGE_COOKIES, user.getCookies());
-        intent.putExtra(MainActivity.MESSAGE_LINKS, user.getLinks());
-        startActivity(intent);
-        finish();
+        Fragment fragment =  getSupportFragmentManager().getFragments().get(1).getChildFragmentManager().getFragments().get(0);
+        if(fragment instanceof RefreshableFragment){
+            RefreshableFragment refreshableFragment = (RefreshableFragment) fragment;
+            refreshableFragment.refresh();
+        }
     }
 
     public void logout(View view){
@@ -112,5 +138,11 @@ public class DisplayUserActivity extends AppCompatActivity {
         finish();
     }
 
-
+    @Override
+    public void processResult(Object Result, boolean finished) {
+        if(finished){
+            this.user = (User) Result;
+            lateOnCreate();
+        }
+    }
 }
