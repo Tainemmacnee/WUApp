@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffdd00</color>
-    <color name="colorPrimaryDark">#2C2C2E</color>
+    <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#ffdd00</color>
     <color name="colorTest">#003180</color>
+    <color name="colorOldDark">#2C2C2E</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="logoutred">#b23b3b</color>
+    <color name="logout_red">#b23b3b</color>
     <color name="red">#FF0000</color>
     <color name="grey">#808080</color>
     <color name="victory_green">#00b140</color>
-    <color name="colorSecondaryDark">#353537</color>
+    <color name="colorSecondaryDark">#424242</color>
 </resources>

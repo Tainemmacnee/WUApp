@@ -16,26 +16,23 @@
         android:id="@+id/cardView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="5dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="250dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
-            app:cardCornerRadius="250dp">
-
-            <ImageView
-                android:id="@+id/nav_header_profile_image"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:contentDescription="@string/nav_header_desc"
-                android:scaleType="centerCrop"
-                android:src="@drawable/default_profile_picture" />
-        </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/nav_header_profile_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/nav_header_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -43,13 +40,15 @@
         android:id="@+id/username"
         android:layout_width="261dp"
         android:layout_height="27dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="parent" />
 

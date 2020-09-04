@@ -3,27 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="1dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginRight="1dp"
-    android:layout_marginBottom="2dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginBottom="3dp"
     android:background="@drawable/rounded_background_dark"
+    android:elevation="2dp"
     android:paddingBottom="20dp"
     tools:context=".ui.home.HomeFragment">
 
-
-    <ImageView
-        android:id="@+id/profile_image_main"
-        android:layout_width="134dp"
-        android:layout_height="138dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/image_main_card"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_profile_picture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        android:elevation="10dp"
+        app:cardCornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_image_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/username_display_main"
@@ -38,7 +49,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_image_main"
+        app:layout_constraintStart_toEndOf="@id/image_main_card"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -47,7 +58,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_info_display"
         tools:ignore="MissingConstraints" />
@@ -90,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:text="Man/Boy"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 
@@ -100,9 +111,9 @@
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image_main"
+        app:layout_constraintTop_toBottomOf="@id/image_main_card"
         tools:ignore="MissingConstraints" />
 
     <TextView

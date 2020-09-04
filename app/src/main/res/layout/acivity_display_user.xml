@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorPrimaryDark"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
@@ -13,7 +13,7 @@
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white" />
+        android:background="@color/colorPrimaryDark" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -23,8 +23,8 @@
         android:background="#353537"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer"
-        app:itemTextColor="@color/colorPrimary">
+        app:itemTextColor="@color/colorPrimary"
+        app:menu="@menu/activity_main_drawer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
