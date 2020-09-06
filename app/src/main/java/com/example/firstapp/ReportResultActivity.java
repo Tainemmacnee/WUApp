@@ -55,8 +55,6 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
         cookies = (Map<String, String>) intent.getSerializableExtra(MainActivity.MESSAGE_COOKIES);
         userName = (String) intent.getStringExtra(DisplayUserActivity.MESSAGEUSERNAME);
 
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_result);
         Toolbar toolbar = findViewById(R.id.toolbar2);
@@ -409,7 +407,6 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                 for(Element option : selectPAS.children()){
                     if(option.attr("selected").equals("selected")){
                         PAS = option.text();
-                        System.out.println("IN: "+PAS);
                     }
                 }
 
@@ -429,6 +426,7 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                         for (Element option : mvpForm.getElementsByTag("select").last().children()) {
                             if (option.attr("selected").equals("selected")) {
                                 femaleMVPs.add(option.text());
+                                continue;
                             }
                         }
                     }
@@ -436,6 +434,7 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                         for (Element option : mvpForm.getElementsByTag("select").last().children()) {
                             if (option.attr("selected").equals("selected")) {
                                 maleMVPs.add(option.text());
+                                continue;
                             }
                         }
                     }
