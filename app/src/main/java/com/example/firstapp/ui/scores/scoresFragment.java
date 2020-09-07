@@ -14,6 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.firstapp.DisplayEventStandingsActivity;
@@ -50,6 +51,7 @@ public class scoresFragment extends Fragment {
     private void loadTable(View view){
         TableRow exampleTableRow = view.findViewById(R.id.scores_example_tablerow);
         LinearLayout exampleTeamBox = view.findViewById(R.id.scores_example_teambox);
+        CardView exampleImageCard = view.findViewById(R.id.example_image_card);
         ImageView exampleTeamImage = view.findViewById(R.id.scores_example_team_image);
         TextView exampleTeamName = view.findViewById(R.id.scores_example_team_name);
         TextView exampleTeamRecord = view.findViewById(R.id.scores_example_record);
@@ -61,6 +63,7 @@ public class scoresFragment extends Fragment {
         for(Map<String, String> info : activity.getStandings()){
             TableRow tableRow = new TableRow(getContext());
             LinearLayout teamBox = new LinearLayout(getContext());
+            CardView imageCard = new CardView(getContext());
             ImageView teamImage = new ImageView(getContext());
             TextView teamName = new TextView(getContext());
             TextView teamRecord = new TextView(getContext());
@@ -69,7 +72,10 @@ public class scoresFragment extends Fragment {
 
             tableRow.setLayoutParams(exampleTableRow.getLayoutParams());
             teamBox.setLayoutParams(exampleTeamBox.getLayoutParams());
+            imageCard.setLayoutParams(exampleImageCard.getLayoutParams());
+            imageCard.setRadius(exampleImageCard.getRadius());
             teamImage.setLayoutParams(exampleTeamImage.getLayoutParams());
+            teamImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             teamName.setLayoutParams(exampleTeamName.getLayoutParams());
             teamRecord.setLayoutParams(exampleTeamRecord.getLayoutParams());
             teamSpirit.setLayoutParams(exampleTeamSpirit.getLayoutParams());
@@ -82,6 +88,7 @@ public class scoresFragment extends Fragment {
             teamPointDiff.setText(info.get("pointDiff"));
 
             tableRow.setGravity(Gravity.CENTER);
+            teamName.setGravity(exampleTeamName.getGravity());
             teamRecord.setGravity(exampleTeamRecord.getGravity());
             teamSpirit.setGravity(exampleTeamSpirit.getGravity());
             teamPointDiff.setGravity(exampleTeamPointDiff.getGravity());
@@ -98,7 +105,8 @@ public class scoresFragment extends Fragment {
 
             tableRow.setBackground(exampleTableRow.getBackground());
 
-            teamBox.addView(teamImage);
+            imageCard.addView(teamImage);
+            teamBox.addView(imageCard);
             teamBox.addView(teamName);
             tableRow.addView(teamBox);
             tableRow.addView(getSpace(view));

@@ -8,13 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ReportResultActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ReportResultActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/ReportFormState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/model/ReportFormState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/reportresult/ReportResultFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/reportresult/ReportResultFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_report_result.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_report_result.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_team_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_event_teams.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_event_teams.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_report_result.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_report_result.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/scores/scoresFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/firstapp/ui/scores/scoresFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_scores.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_scores.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
