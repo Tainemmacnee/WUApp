@@ -78,7 +78,7 @@ public class DisplayUserActivity extends AppCompatActivity implements LoadingScr
         // menu should be considered as top level destinations.
         this.navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mAppBarConfiguration = new AppBarConfiguration.Builder
-                (R.id.nav_home, R.id.nav_events, R.id.nav_upcoming_games, R.id.nav_missing_result_games)
+                (R.id.nav_dashboard, R.id.nav_home, R.id.nav_events, R.id.nav_upcoming_games, R.id.nav_missing_result_games)
                 .setDrawerLayout(drawer)
                 .build();
 
