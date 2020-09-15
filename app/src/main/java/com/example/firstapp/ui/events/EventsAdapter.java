@@ -61,6 +61,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         holder.textView.setText(events[position].getName());
         Picasso.get().load(events[position].getEventImg()).into(holder.imageView);
+
         holder.eventTeamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

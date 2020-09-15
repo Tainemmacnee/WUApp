@@ -69,7 +69,6 @@ public class Game {
 
     public static Future<List<Game>> LoadMissingResultsGames(Map<String, String> cookies, String link) {
         ExecutorService executor = Executors.newCachedThreadPool();
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com"+link;
         List<Game> output = new ArrayList<>();
 
@@ -77,7 +76,7 @@ public class Game {
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
+                        .userAgent(User.USER_AGENT)
                         .cookies(cookies)
                         .execute();
 
@@ -195,13 +194,15 @@ public class Game {
                     league = LeagueElem.text().trim();
 
                     Element homeTeamElem = e.getElementsByClass("game-participant").first();
-                    homeTeamName = homeTeamElem.text().trim();
+                    Element homeTeamNameElem = homeTeamElem.getElementsByClass("schedule-team-name").first();
+                    homeTeamName = homeTeamNameElem.text().trim();
 
                     Element homeTeamImgElem = homeTeamElem.child(0);
                     homeTeamImg = homeTeamImgElem.attr("src");
 
                     Element awayTeamElem = e.getElementsByClass("game-participant").last();
-                    awayTeamName = awayTeamElem.text().trim();
+                    Element awayTeamNameElem = awayTeamElem.getElementsByClass("schedule-team-name").first();
+                    awayTeamName = awayTeamNameElem.text().trim();
 
                     Element awayTeamImgElem = awayTeamElem.child(0);
                     awayTeamImg = awayTeamImgElem.attr("src");

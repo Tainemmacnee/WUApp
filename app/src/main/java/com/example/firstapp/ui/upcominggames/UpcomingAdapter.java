@@ -54,6 +54,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
 
     @Override
     public void onBindViewHolder(@NonNull UpcomingViewHolder holder, int position) {
+        System.out.println(games.length);
         holder.homeTeamName.setText(games[position].getHomeTeamName());
         holder.awayTeamName.setText(games[position].getAwayTeamName());
         holder.date.setText(games[position].getDate());

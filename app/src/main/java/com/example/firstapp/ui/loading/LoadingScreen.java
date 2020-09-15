@@ -72,7 +72,6 @@ public class LoadingScreen extends Fragment {
             public void run(){
                 //do something
                 if(current.getLoad().isDone()){
-                    System.out.println("FINISHED: "+current.getLoadingMessage());
                     try {
                         if(queue.isEmpty()){ //finished loading
                             current.getActivity().processResult(current.getLoad().get(), true);
@@ -80,13 +79,10 @@ public class LoadingScreen extends Fragment {
                             current.getActivity().processResult(current.getLoad().get(), false);
                             startNextLoad();
                         }
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        current.getActivity().processResult(null, true);
                     }
                 } else {
-                    System.out.println("NOT FINISHED: "+current.getLoadingMessage());
                     handler.postDelayed(this, delay);
                 }
             }

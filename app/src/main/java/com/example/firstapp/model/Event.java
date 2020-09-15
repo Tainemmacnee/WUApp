@@ -35,7 +35,6 @@ public class Event implements Serializable{
 
     public static Future<List<Event>> LoadEvents(Map<String, String> cookies){
         ExecutorService executor = Executors.newCachedThreadPool();
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         final String WEB_URL = "https://wds.usetopscore.com";
         List<Event> output = new ArrayList<>();
 
@@ -43,7 +42,7 @@ public class Event implements Serializable{
             try {
                 Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
                         .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
+                        .userAgent(User.USER_AGENT)
                         .cookies(cookies)
                         .execute();
 
@@ -55,7 +54,7 @@ public class Event implements Serializable{
                 for(Element e: eventLinks){
                     if(e.attr("href").startsWith("/e/")) {
                         eventTeams = Team.loadTeams(e.attr("href"), cookies);
-                        standingsLink = "https://wds.usetopscore.com"+e.attr("href");
+                        standingsLink = WEB_URL+e.attr("href");
                     } else {
                         continue;
                     }

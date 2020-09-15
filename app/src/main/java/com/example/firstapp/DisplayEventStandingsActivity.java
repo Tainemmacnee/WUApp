@@ -1,13 +1,17 @@
 package com.example.firstapp;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.firstapp.model.ReportFormState;
 import com.example.firstapp.ui.loading.LoadingScreen;
 import com.example.firstapp.ui.scores.scoresFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -58,7 +63,11 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         LoadingScreen loadingScreen = new LoadingScreen();
-        loadingScreen.load("Loading Standings", getStandings(cookies, standingsLink), this);
+        try {
+            loadingScreen.load("Loading Standings", getStandings(cookies, standingsLink), this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_view, loadingScreen);
@@ -81,12 +90,11 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
         return true;
     }
 
-    private static Future<List<Map<String, String>>> getStandings(Map<String, String> cookies, String link){
+    private static Future<List<Map<String, String>>> getStandings(Map<String, String> cookies, String link) throws Exception{
         final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         ExecutorService executor = Executors.newSingleThreadExecutor();
         return executor.submit(() -> {
             ArrayList<Map<String, String>> output = new ArrayList<>();
-            try {
                 Connection.Response response = Jsoup.connect(link+"/standings")
                         .method(Connection.Method.GET)
                         .userAgent(USER_AGENT)
@@ -94,6 +102,7 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
                         .execute();
 
                 Element doc = response.parse().getElementsByClass("striped-blocks spacer1").first();
+                if(doc.children() == null) { throw new Exception(); }
                 for(Element team : doc.children()){
                     HashMap<String, String> info = new HashMap<>();
                     Element img = team.getElementsByTag("img").first();
@@ -113,18 +122,29 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
                     output.add(info);
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
             return output;
         });
     }
 
     @Override
-    public void processResult(Object Result, boolean finished) {
+    public void processResult(Object result, boolean finished) {
+        if(result == null){
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom))
+                    .setTitle("ERROR")
+                    .setMessage("Unable to load standings: This is probably because they are unavailable for this event at this time.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+//            Snackbar.make(findViewById(R.id.fragment_view), "Failed to load standings", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
         if(finished){
-            standings = (List<Map<String, String>>) Result;
+            standings = (List<Map<String, String>>) result;
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_view, new scoresFragment());
             transaction.commit();
