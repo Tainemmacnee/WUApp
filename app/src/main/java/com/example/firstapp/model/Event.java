@@ -33,49 +33,6 @@ public class Event implements Serializable{
         this.cookies = cookies;
     }
 
-    public static Future<List<Event>> LoadEvents(Map<String, String> cookies){
-        ExecutorService executor = Executors.newCachedThreadPool();
-        final String WEB_URL = "https://wds.usetopscore.com";
-        List<Event> output = new ArrayList<>();
-
-        return executor.submit(() -> {
-            try {
-                Connection.Response loadPageResponse = Jsoup.connect(WEB_URL)
-                        .method(Connection.Method.GET)
-                        .userAgent(User.USER_AGENT)
-                        .cookies(cookies)
-                        .execute();
-
-                Document doc = loadPageResponse.parse();
-                String eventName, eventImg, standingsLink;
-                Future<List<Team>> eventTeams;
-
-                Elements eventLinks = doc.getElementsByClass("global-toolbar-subnav-img-item plain-link");
-                for(Element e: eventLinks){
-                    if(e.attr("href").startsWith("/e/")) {
-                        eventTeams = Team.loadTeams(e.attr("href"), cookies);
-                        standingsLink = WEB_URL+e.attr("href");
-                    } else {
-                        continue;
-                    }
-
-                    //Collect event image url from page
-                    Element eventImgElem = e.child(0);
-                    eventImg = eventImgElem.attr("src");
-
-                    //Collect event name from page
-                    Element eventNameElem = e.child(1);
-                    eventName = eventNameElem.text();
-
-                    output.add(new Event(eventName, eventImg, eventTeams, standingsLink, cookies));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return output;
-        });
-    }
-
     public String getName() {
         return this.eventName;
     }

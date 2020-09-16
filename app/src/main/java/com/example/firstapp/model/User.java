@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +43,9 @@ public class User{
     }
 
     public void loadExtras(){
-        futureEvents = Event.LoadEvents(cookies);
-        futureUpcomingGames = Game.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
-        futureMissingResultGames = Game.LoadMissingResultsGames(cookies, links.get(User.MISSINGRESULTSLINK));
+        futureEvents = WebLoader.LoadEvents(cookies);
+        futureUpcomingGames = WebLoader.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
+        futureMissingResultGames = WebLoader.LoadMissingResultsGames(cookies, links.get(User.MISSINGRESULTSLINK));
     }
 
     public Event[] getEvents(){
@@ -146,58 +145,6 @@ public class User{
         });
     }
 
-
-    public static Future<?> loadUser(UserLoginToken loginToken) {
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
-        final String WEB_URL = "https://wds.usetopscore.com";
-        HashMap<String, String> links = loginToken.getLinks();
-        HashMap<String, String> cookies = loginToken.getCookies();
-        ExecutorService executor = Executors.newCachedThreadPool();
-
-        return executor.submit(() -> {
-            String NEW_URL = WEB_URL + links.get(User.USERPAGELINK);
-            Connection.Response loadPageResponse = null;
-            Map<String, String> profileInfo = new HashMap<String, String>();;
-            String name = "", profileImgUrl = "", aboutText = "";
-            try {
-                loadPageResponse = Jsoup.connect(NEW_URL)
-                        .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
-                        .cookies(cookies)
-                        .execute();
-
-
-                Document doc = loadPageResponse.parse();
-
-                //Collect username from page
-                Element profileNameDiv = doc.getElementsByClass("profile-name").first();
-                Element profileName = profileNameDiv.child(0);
-                name = profileName.text().trim();
-
-                //collect profile info
-                Element profileInfoElem = doc.getElementsByClass("profile-info").first().child(0);
-                for(int i = 0; i < profileInfoElem.children().size(); i++){
-                    profileInfo.put(profileInfoElem.child(i).text(), profileInfoElem.child(++i).text());
-                }
-
-                //Collect user image url from page
-                Element profilePicDiv = doc.getElementsByClass("profile-image").first();
-                Element profilePic = profilePicDiv.child(0);
-                profileImgUrl = profilePic.attr("src");
-
-                Element profileAboutDiv = doc.getElementsByClass("profile-about").first();
-                Element profileAboutText = profileAboutDiv.getElementsByClass("rich-text").first();
-                aboutText = profileAboutText.text();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            return new User(loginToken, name, profileImgUrl, aboutText, profileInfo);
-        });
-    }
-
     public String getName() {
         return this.name;
     }
@@ -221,9 +168,11 @@ public class User{
     public String getProfileImgUrl() {
         return this.profileImgUrl;
     }
+
     public HashMap<String, String> getCookies() {
         return this.cookies;
     }
+
     public HashMap<String, String> getLinks() {
         return this.links;
     }

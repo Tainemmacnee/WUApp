@@ -12,7 +12,7 @@ import com.example.firstapp.model.User;
 import com.example.firstapp.model.UserLoginToken;
 import com.example.firstapp.ui.RefreshableFragment;
 import com.example.firstapp.ui.loading.LoadingScreen;
-import com.example.firstapp.ui.login.LoginFragment;
+import com.example.firstapp.model.WebLoader;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.io.File;
-import java.util.HashMap;
 
 public class DisplayUserActivity extends AppCompatActivity implements LoadingScreen.loadableActivity {
 
@@ -58,7 +57,7 @@ public class DisplayUserActivity extends AppCompatActivity implements LoadingScr
 
     private void loadUser(UserLoginToken loginToken){
         LoadingScreen loadingScreen = new LoadingScreen();
-        loadingScreen.load("Loading User", User.loadUser(loginToken), this);
+        loadingScreen.load("Loading User", WebLoader.loadUser(loginToken), this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_view, loadingScreen);
