@@ -44,8 +44,8 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         public TextView location;
         public ImageView homeTeamImage;
         public ImageView awayTeamImage;
-
         public Button reportResultButton;
+
         public UpcomingViewHolder(@NonNull View itemView) {
             super(itemView);
             this.homeTeamName = itemView.findViewById(R.id.event_team_name);
@@ -68,8 +68,7 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         this.games = games;
     }
 
-    public UpcomingViewHolder onCreateViewHolder(ViewGroup parent,
-                                                 int viewType) {
+    public UpcomingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.missing_result_game_view, parent, false);
@@ -88,10 +87,10 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         Picasso.get().load(games[position].getHomeTeamImg()).into(holder.homeTeamImage);
         Picasso.get().load(games[position].getAwayTeamImg()).into(holder.awayTeamImage);
 
-        holder.homeTeamScore.setText(games[position].homeTeamScore);
-        holder.awayTeamScore.setText(games[position].awayTeamScore);
-        holder.awayTeamSpirit.setText(games[position].awayTeamSpirit);
-        holder.homeTeamSpirit.setText(games[position].homeTeamSpirit);
+        holder.homeTeamScore.setText(games[position].getHomeTeamScore());
+        holder.awayTeamScore.setText(games[position].getAwayTeamScore());
+        holder.awayTeamSpirit.setText(games[position].getAwayTeamSpirit());
+        holder.homeTeamSpirit.setText(games[position].getHomeTeamSpirit());
 
         holder.reportResultButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +102,7 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
                 Intent intent = new Intent(view.getContext(), ReportResultActivity.class);
                 intent.putExtra(DisplayUserActivity.MESSAGEHOMETEAM, homeTeam);
                 intent.putExtra(DisplayUserActivity.MESSAGEAWAYTEAM, awayTeam);
-                intent.putExtra(DisplayUserActivity.MESSAGEREPORTLINK, games[position].reportLink);
+                intent.putExtra(DisplayUserActivity.MESSAGEREPORTLINK, games[position].getReportLink());
                 intent.putExtra(DisplayUserActivity.MESSAGEUSERNAME, a.getUserData().getName());
                 intent.putExtra(MainActivity.MESSAGE_COOKIES, a.getUserData().getCookies());
                 view.getContext().startActivity(intent);
@@ -113,18 +112,18 @@ public class MissingResultAdapter extends RecyclerView.Adapter<MissingResultAdap
         int red = Color.rgb(255, 0, 0);
         int green = Color.rgb(0, 177, 64);
 
-        if(games[position].homeTeamScore.contains("W")){
+        if(games[position].getHomeTeamScore().contains("W")){
             holder.homeTeamScore.setTextColor(green);
             holder.awayTeamScore.setTextColor(red);
-        } else if(games[position].awayTeamScore.contains("W")) {
+        } else if(games[position].getAwayTeamScore().contains("W")) {
             holder.awayTeamScore.setTextColor(green);
             holder.homeTeamScore.setTextColor(red);
-        } else if(games[position].homeTeamScore.contains("?")){
+        } else if(games[position].getHomeTeamScore().contains("?")){
             holder.homeTeamScore.setTextColor(Color.BLACK);
             holder.awayTeamScore.setTextColor(Color.BLACK);
         } else {
-            int homeTeamScore = Integer.parseInt(games[position].homeTeamScore);
-            int awayTeamScore = Integer.parseInt(games[position].awayTeamScore);
+            int homeTeamScore = Integer.parseInt(games[position].getHomeTeamScore());
+            int awayTeamScore = Integer.parseInt(games[position].getAwayTeamScore());
             if(homeTeamScore == awayTeamScore){
                 holder.homeTeamScore.setTextColor(Color.BLACK);
                 holder.awayTeamScore.setTextColor(Color.BLACK);

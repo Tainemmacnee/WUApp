@@ -1,9 +1,11 @@
 package com.example.firstapp.model;
 
+import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -24,12 +27,14 @@ public class WebLoader {
 
     public static Document loadWebPage(Map<String, String> cookies, String link){
         Document result = null;
+        long t1 = System.currentTimeMillis();
         try {
             Connection.Response loadPageResponse = Jsoup.connect(link)
                     .method(Connection.Method.GET)
                     .userAgent(User.USER_AGENT)
                     .cookies(cookies)
                     .execute();
+            System.out.println("Time to load"+link+": "+(System.currentTimeMillis()-t1));
             result = loadPageResponse.parse();
         } catch (IOException e) {}
         return result;
@@ -74,7 +79,18 @@ public class WebLoader {
                     Element awayTeamImgElem = awayTeamElem.child(0);
                     awayTeamImg = awayTeamImgElem.attr("src");
 
-                    output.add(new Game(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location));
+                    output.add(new Game.Builder()
+                                    .setHomeTeamName(homeTeamName)
+                                    .setHomeTeamImg(homeTeamImg)
+                                    .setAwayTeamName(awayTeamName)
+                                    .setAwayTeamImg(awayTeamImg)
+                                    .setLeague(league)
+                                    .setDate(date)
+                                    .setTime(time)
+                                    .setLocation(location)
+                                    .build());
+
+                    //output.add(new Game(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location));
                 }
             return output;
         });
@@ -149,13 +165,30 @@ public class WebLoader {
                     Element awayTeamImgElem = awayTeamElem.child(0);
                     awayTeamImg = awayTeamImgElem.attr("src");
 
-                    Game game = new Game(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location);
-                    game.homeTeamScore = homeTeamScore;
-                    game.awayTeamScore = awayTeamScore;
-                    game.homeTeamSpirit = homeTeamSpirit;
-                    game.awayTeamSpirit = awayTeamSpirit;
-                    game.reportLink = reportLink;
-                    output.add(game);
+                    output.add(new Game.Builder()
+                            .setHomeTeamName(homeTeamName)
+                            .setHomeTeamImg(homeTeamImg)
+                            .setHomeTeamScore(homeTeamScore)
+                            .setHomeTeamSpirit(homeTeamSpirit)
+                            .setAwayTeamName(awayTeamName)
+                            .setAwayTeamImg(awayTeamImg)
+                            .setAwayTeamScore(awayTeamScore)
+                            .setAwayTeamSpirit(awayTeamSpirit)
+                            .setLeague(league)
+                            .setDate(date)
+                            .setTime(time)
+                            .setLocation(location)
+                            .setReportLink(reportLink)
+                            .build());
+
+
+//                    Game game = new Game(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location);
+//                    game.homeTeamScore = homeTeamScore;
+//                    game.awayTeamScore = awayTeamScore;
+//                    game.homeTeamSpirit = homeTeamSpirit;
+//                    game.awayTeamSpirit = awayTeamSpirit;
+//                    game.reportLink = reportLink;
+//                    output.add(game);
                 }
             return output;
         });
@@ -297,5 +330,252 @@ public class WebLoader {
 
             return new User(loginToken, name, profileImgUrl, aboutText, profileInfo);
         });
+    }
+
+    public static Future<String> getOAuthToken(Map<String, String> cookies) {
+        final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
+
+        return executor.submit(() -> {
+            List<String> credentials = executor.submit(() -> {
+                List<String> output = new ArrayList<>();
+
+                Document doc = loadWebPage(cookies, WEB_URL);
+                Element table = doc.getElementsByClass("table no-border").first();
+
+                for(Element row : table.getElementsByTag("tr")){ //find id and secret
+                    output.add(row.getElementsByTag("td").first().text());
+                }
+
+                output.remove(2); //remove useless string
+
+                return  output;
+            }).get();
+
+            String output = (String) executor.submit(() -> {
+                Document response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
+                        .userAgent(User.USER_AGENT)
+                        .data("grant_type", "client_credentials")
+                        .data("client_id", credentials.get(0))
+                        .data("client_secret", credentials.get(1))
+                        .ignoreContentType(true)
+                        .post();
+                JSONObject result = new JSONObject(response.body().text());
+
+                return result.get("access_token");
+            }).get();
+
+            return output;
+        });
+    }
+
+    public static Future<ReportFormState> getReportFormState(Map<String, String> cookies, String link){
+
+        return executor.submit(() -> {
+            String homeTeamScore = null;
+            String awayTeamScore = null;
+            String RKU = null, FBC = null, FM = null, PAS = null, COM = null, comments = null;
+            List<String> maleMVPs = new ArrayList<>();
+            List<String> femaleMVPs = new ArrayList<>();
+
+            Document doc = loadWebPage(cookies, WEB_URL+link);
+
+                Element select = doc.getElementById("game_home_score");
+                for(Element option : select.children()){
+                    if(option.attr("selected").equals("selected")){
+                        homeTeamScore = option.text().trim();
+                    }
+                }
+                select = doc.getElementById("game_away_score");
+                for(Element option : select.children()){
+                    if(option.attr("selected").equals("selected")){
+                        awayTeamScore = option.text().trim();
+                    }
+                }
+
+                //Check if were reporting for a home or away game
+                //ids start with home/away so need to fix
+                Element selectRKU = (doc.getElementById("game_home_game_report_survey_1_answer"));
+                String start = "game_home_";
+                if(selectRKU == null){
+                    selectRKU = doc.getElementById("game_away_game_report_survey_1_answer");
+                    start = "game_away_";
+                }
+                for(Element option : selectRKU.children()){
+                    if(option.attr("selected").equals("selected")){
+                        RKU = option.text().trim();
+                    }
+                }
+
+                Element selectFBC =  doc.getElementById(start+"game_report_survey_2_answer");
+                for(Element option : selectFBC.children()){
+                    if(option.attr("selected").equals("selected")){
+                        FBC = option.text().trim();
+                    }
+                }
+
+                Element selectFM =  doc.getElementById(start+"game_report_survey_3_answer");
+                for(Element option : selectFM.children()){
+                    if(option.attr("selected").equals("selected")){
+                        FM = option.text().trim();
+                    }
+                }
+
+                Element selectPAS =  doc.getElementById(start+"game_report_survey_4_answer");
+                for(Element option : selectPAS.children()){
+                    if(option.attr("selected").equals("selected")){
+                        PAS = option.text();
+                    }
+                }
+
+                Element selectCOM =  doc.getElementById(start+"game_report_survey_5_answer");
+                for(Element option : selectCOM.children()){
+                    if(option.attr("selected").equals("selected")){
+                        COM = option.text().trim();
+                    }
+                }
+
+                Element commentsElem =  doc.getElementById(start+"game_report_survey_6_answer");
+                comments = commentsElem.text();
+
+                //Collect MVPS
+                for(Element mvpForm : doc.getElementsByClass("form-api live spacer-half keep-popup-open person-award-form")) {
+                    if (mvpForm.child(3).attr("value").equals("female_mvp")) {
+                        for (Element option : mvpForm.getElementsByTag("select").last().children()) {
+                            if (option.attr("selected").equals("selected")) {
+                                femaleMVPs.add(option.text());
+                                continue;
+                            }
+                        }
+                    }
+                    if (mvpForm.child(3).attr("value").equals("male_mvp")) {
+                        for (Element option : mvpForm.getElementsByTag("select").last().children()) {
+                            if (option.attr("selected").equals("selected")) {
+                                maleMVPs.add(option.text());
+                                continue;
+                            }
+                        }
+                    }
+                }
+            return new ReportFormState(doc, homeTeamScore, awayTeamScore, RKU, FBC, FM, PAS, COM, comments, maleMVPs, femaleMVPs);
+        });
+    }
+
+    public static Future<Boolean> reportMVPs(Map<String, String> cookies, List<String> mvps, String OAuthToken, String link) {
+
+        return executor.submit(() -> {
+
+                Document doc = loadWebPage(cookies, WEB_URL+link);
+                int count = 0; //counts the nth mvp being reported
+                String URL = "https://wds.usetopscore.com/api/person-award/edit";
+
+            //find mvp box(s)
+                for(Element mvpForm : doc.getElementsByClass("form-api live spacer-half keep-popup-open person-award-form")){
+                    String playerID = null;
+                    Element select = mvpForm.getElementsByTag("select").first();
+
+                    for(Element option : select.children()){
+                        if(option.text().contains(mvps.get(count))){ //get mvp id from options
+                            playerID = option.attr("value");
+                        }
+                    }
+
+                    Elements inputs = mvpForm.getElementsByTag("input");
+                    String gameID = inputs.get(0).attr("value");
+                    String teamID = inputs.get(1).attr("value");
+                    String rank = inputs.get(2).attr("value");
+                    String award = inputs.get(3).attr("value");
+
+                    Map<String, String> data = new HashMap<>();
+                    data.put("person_id", playerID);
+                    data.put("game_id", gameID);
+                    data.put("team_id", teamID);
+                    data.put("rank", rank);
+                    data.put("award", award);
+
+                    if(select.child(0).attr("selected").equals("selected")){ //create award if value changed from blank to a name
+                        URL = "https://wds.usetopscore.com/api/person-award/new";
+
+                    } else if (mvps.get(count).equals("")) { //Delete award if value changed from a name to blank
+                        data.put("id", inputs.get(4).attr("value"));
+                        data.remove("person_id");
+                        URL = "https://wds.usetopscore.com/api/person-award/delete";
+
+                    }
+                    Document reportResponse = Jsoup.connect(URL)
+                            .userAgent(User.USER_AGENT)
+                            .ignoreContentType(true)
+                            .header("Authorization", "Bearer " + OAuthToken)
+                            .data(data)
+                            .post();
+
+                    count++;
+                }
+            return true;
+        });
+    }
+
+    public static Future<Boolean> report(Map<String, String> cookies, String link, String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments){
+        return executor.submit(() -> {
+
+                Document doc = loadWebPage(cookies, WEB_URL+link);
+
+                Element reportForm = doc.getElementById("game-report-score-form"); //find report form
+
+                Element gameHomeScore = doc.getElementById("game_home_score");
+                setSelection(gameHomeScore, homeScore); //set home score
+
+                Element gameAwayScore = doc.getElementById("game_away_score");
+                setSelection(gameAwayScore, awayScore); //set away score
+
+
+                Element gameSpirit1 = doc.getElementById("game_home_game_report_survey_1_answer"); //work out if reporting for home or away team
+                String start = "game_home_"; //set prefix for element ids
+                if(gameSpirit1 == null){
+                    gameSpirit1 = doc.getElementById("game_away_game_report_survey_1_answer");
+                    start = "game_away_";
+                }
+                setSelection(gameSpirit1, RKU);
+
+                Element gameSpirit2 = doc.getElementById(start+"game_report_survey_2_answer");
+                setSelection(gameSpirit2, FBC);
+
+                Element gameSpirit3 = doc.getElementById(start+"game_report_survey_3_answer");
+                setSelection(gameSpirit3, FM);
+
+                Element gameSpirit4 = doc.getElementById(start+"game_report_survey_4_answer");
+                setSelection(gameSpirit4, PAC);
+
+                Element gameSpirit5 = doc.getElementById(start+"game_report_survey_5_answer");
+                setSelection(gameSpirit5, COM);
+
+                String commentReport = "";
+                if(start.equals("game_home_")){
+                    commentReport = "game[home_game_report_survey][6][answer]";
+                } else {
+                    commentReport = "game[away_game_report_survey][6][answer]";
+                }
+
+                FormElement form = (FormElement) reportForm;
+                Connection.Response reportActionResponse = form.submit()
+                        .data(commentReport, comments)
+                        .cookies(cookies)
+                        .userAgent(User.USER_AGENT)
+                        .execute();
+            return true;
+        });
+    }
+
+    private static void setSelection(Element selectTag, String option){
+        //remove selected attribute
+        Element selectedOption = selectTag.children().select("[selected]").first();
+        if (selectedOption != null) {
+            selectedOption.removeAttr("selected");
+        }
+        //set correct selected option
+        for (Element op : selectTag.children()) {
+            if (op.text().contains(option)) {
+                op.attr("selected", "selected");
+            }
+        }
     }
 }
