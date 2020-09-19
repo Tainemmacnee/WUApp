@@ -3,6 +3,10 @@ package com.example.firstapp.model;
 import java.io.Serializable;
 import java.util.HashMap;
 
+/**
+ * The UserLoginToken class is used to store the cookies and web page links generated when the user
+ * logs in.
+ */
 public class UserLoginToken implements Serializable {
 
     private HashMap<String ,String> cookies;

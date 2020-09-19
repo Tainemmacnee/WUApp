@@ -16,6 +16,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * The User class is used to store and manage all of the user related information that is gathered
+ * from the website
+ */
 public class User{
 
         public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
@@ -42,12 +46,21 @@ public class User{
         loadExtras();
     }
 
+    /**
+     * This function is used to start the concurrent loading of data that may be used later. This
+     * function may also be called to restart/reload this data
+     */
     public void loadExtras(){
         futureEvents = WebLoader.LoadEvents(cookies);
         futureUpcomingGames = WebLoader.LoadUpcomingGames(cookies, links.get(User.UPCOMINGGAMESLINK));
         futureMissingResultGames = WebLoader.LoadMissingResultsGames(cookies, links.get(User.MISSINGRESULTSLINK));
     }
 
+    /**
+     * This function retrieves the Event objects from the future object and converts them from a list
+     * to an array for use in adapters.
+     * @return An Array of the users Events
+     */
     public Event[] getEvents(){
         ArrayList<Event> eventsAsList = null;
         try {
@@ -60,6 +73,13 @@ public class User{
         return eventsAsList.toArray(new Event[eventsAsList.size()]);
     }
 
+    /**
+     * This function finds the event object matching the given name assuming the user is apart of
+     * said event.
+     * @param eventName The name of the event to find
+     * @return This function returns a specific event matching the given name or null if no event is
+     *          found
+     */
     public Event getEvent(String eventName){
         Event[] events = getEvents();
         for(Event e : events){
@@ -70,6 +90,10 @@ public class User{
         return null;
     }
 
+    /**
+     * This function is the same as getEvents but for upcoming games.
+     * @return An array of the users upcoming games
+     */
     public Game[] getUpcomingGames(){
         ArrayList<Game> gameAsList = null;
         try {
@@ -82,6 +106,10 @@ public class User{
         return gameAsList.toArray(new Game[gameAsList.size()]);
     }
 
+    /**
+     * This function is the same as getEvents but for games with missing results
+     * @return An array of the users games with missing results
+     */
     public Game[] getMissingResultGames() {
         ArrayList<Game> gameAsList = new ArrayList<>();
         try {
@@ -92,57 +120,6 @@ public class User{
             e.printStackTrace();
         }
         return gameAsList.toArray(new Game[gameAsList.size()]);
-    }
-
-    public static Future<UserLoginToken> loginUser(String username, String password) {
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
-        final String WEB_URL = "https://wds.usetopscore.com";
-        ExecutorService executor = Executors.newCachedThreadPool();
-
-        return executor.submit(() -> {
-            HashMap<String, String> cookies = null;
-            HashMap<String, String> links = new HashMap<>();
-            String name = null;
-            String profileImgUrl = null;
-            String gId, age, dHand;
-
-            try {
-                Connection.Response loginFormResponse = Jsoup.connect(WEB_URL)
-                        .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
-                        .execute();
-
-                //log user in
-                Element loginForm = loginFormResponse.parse()
-                        .getElementsByClass("form-vertical signin exists spacer1").first();
-
-                Element emailField = loginForm.getElementsByClass("span3 full initial-focus span3 mailcheck").first();
-                emailField.val(username);
-
-                Element passwordField = loginForm.getElementById("signin_password");
-                passwordField.val(password);
-
-                FormElement form = (FormElement) loginForm;
-                Connection.Response loginActionResponse = form.submit()
-                        .cookies(loginFormResponse.cookies())
-                        .userAgent(USER_AGENT)
-                        .execute();
-
-                cookies = (HashMap) loginActionResponse.cookies();
-
-                Document doc = loginActionResponse.parse();
-                Element userpageLink = doc.getElementsByClass("global-toolbar-user-btn ").first();
-
-                //Collect link to upcoming schedule for later web scraping
-                links.put(User.USERPAGELINK, userpageLink.attr("href"));
-                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
-                links.put(User.MISSINGRESULTSLINK, userpageLink.attr("href") + "/schedule/game_type/missing_result");
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-            return new UserLoginToken(cookies, links);
-        });
     }
 
     public String getName() {

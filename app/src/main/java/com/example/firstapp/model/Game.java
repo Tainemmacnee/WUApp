@@ -14,6 +14,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * The Game class is used to represent and store the data for a Game
+ */
 public class Game {
 
     private String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time,

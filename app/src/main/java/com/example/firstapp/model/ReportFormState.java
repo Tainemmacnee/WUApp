@@ -6,6 +6,9 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
+/**
+ * The ReportFormState class is used to store the state of the report form
+ */
 public class ReportFormState{
 
     public String homeTeamScore, awayTeamScore, RKU, FBC, FM, PAS, COM, comments;

@@ -15,16 +15,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+* The WebLoader class is used to do all of the required interaction with the website
+*/
 public class WebLoader {
 
     private static ExecutorService executor = Executors.newCachedThreadPool();
     private static final String WEB_URL = "https://wds.usetopscore.com";
 
+    /**
+     * This function is used to load and parse a given web page, the cookies are used to
+     * authenticate the user so that they can access the page.
+     * @param cookies Contains the needed cookies for authentication
+     * @param link This is the link the the web page to the loaded and parsed
+     * @return the web page parsed as A JSoup Document
+     */
     public static Document loadWebPage(Map<String, String> cookies, String link){
         Document result = null;
         long t1 = System.currentTimeMillis();
@@ -40,6 +49,13 @@ public class WebLoader {
         return result;
     }
 
+    /**
+     * This function is used to scrape all of the upcoming games from the users schedule page.
+     * This is done using futures so that the data can be loaded concurrently and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @param link This is the link to the page containing the upcoming games
+     * @return A Future list of Game objects collected from the web page
+     */
     public static Future<List<Game>> LoadUpcomingGames(Map<String, String> cookies, String link){
         List<Game> output = new ArrayList<>();
 
@@ -96,6 +112,14 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function is used to scrape all of the games that are missing results from the users
+     * schedule page. This is done using futures so that the data can be loaded concurrently
+     * and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @param link This is the link to the page containing the games missing results
+     * @return A Future list of Game objects collected from the web page
+     */
     public static Future<List<Game>> LoadMissingResultsGames(Map<String, String> cookies, String link) {
         List<Game> output = new ArrayList<>();
 
@@ -194,6 +218,12 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function is used to scrape all of the users events from the home page. This is done
+     * using futures so that the data can be loaded concurrently and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @return A Future list of Event objects collected from the web page
+     */
     public static Future<List<Event>> LoadEvents(Map<String, String> cookies){
         List<Event> output = new ArrayList<>();
 
@@ -226,6 +256,14 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function is used to collect all of the teams on the first 5 pages from a given event.
+     * This function uses the loadTeamsTask to load each page concurrently.
+     * This is done using futures so that the data can be loaded concurrently and not freeze the app.
+     * @param eventTeamUrl This is the link to the event page
+     * @param cookies Contains the needed cookies for authentication
+     * @return A Future list of Team objects collected from the first 5 pages of teams
+     */
     public static Future<List<Team>> loadTeams(String eventTeamUrl, Map<String, String> cookies){
         List<Future<List<Team>>> futures = new ArrayList<>();
 
@@ -244,9 +282,11 @@ public class WebLoader {
         //Load the first 5 pages of teams (THIS SHOUlD BE ALL OF THEM (MAX 70TEAMS LOL))
     }
 
+    /**
+     * This class is a helper class for loadTeams that is used to load team objects from a web page
+     */
     private static class loadTeamsTask implements Callable<List<Team>> {
 
-        private final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
         private String URL;
         private Map<String, String> cookies;
 
@@ -255,14 +295,13 @@ public class WebLoader {
             this.cookies = cookies;
         }
 
+        /**
+         * This function is used to execute the task of loading the teams from URL
+         * @return a List of Team objects taken from the web page
+         */
         @Override
-        public List<Team> call() throws Exception {
-            Connection.Response loadPageResponse = Jsoup.connect(URL)
-                    .method(Connection.Method.GET)
-                    .userAgent(USER_AGENT)
-                    .cookies(cookies)
-                    .execute();
-            Document doc = loadPageResponse.parse();
+        public List<Team> call(){
+            Document doc = loadWebPage(cookies, URL);
 
             List<Team> teams = new ArrayList<>();
             for(Element teamDiv : doc.getElementsByClass("span4 media-item-wrapper spacer1 ")){
@@ -296,6 +335,13 @@ public class WebLoader {
         }
     }
 
+    /**
+     * This function is used to load some important user related information e.g. Name,
+     * profile image, ect. This is done using futures so that the data can be loaded concurrently
+     * and not freeze the app.
+     * @param loginToken This is the token created when the user logs in
+     * @return A Future User object
+     */
     public static Future<?> loadUser(UserLoginToken loginToken) {
         HashMap<String, String> links = loginToken.getLinks();
         HashMap<String, String> cookies = loginToken.getCookies();
@@ -332,6 +378,13 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function uses the websites api to generate an OAuth2 authentication token that is needed
+     * for any api requests. This is done using futures so that the data can be loaded concurrently
+     * and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @return a Future String representation of an OAuth2 token
+     */
     public static Future<String> getOAuthToken(Map<String, String> cookies) {
         final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
 
@@ -368,6 +421,13 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function is used to load the current state of a games report form. This is done using
+     * futures so that the data can be loaded concurrently and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @param link this is a link to the page where the report form is
+     * @return A Future ReportFormState containing all of the relevant information about the report form
+     */
     public static Future<ReportFormState> getReportFormState(Map<String, String> cookies, String link){
 
         return executor.submit(() -> {
@@ -460,6 +520,16 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function is used to submit the changes to the mvps on the report form. This is done
+     * using the websites api as that is how the website does it. This is done using futures so that
+     * the data can be loaded concurrently and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @param mvps This is A list of the new mvps to be set
+     * @param OAuthToken This is the OAuth2 token needed to authenticate for the api
+     * @param link This is a link to the report form
+     * @return A Future Boolean indicating if the report was a success
+     */
     public static Future<Boolean> reportMVPs(Map<String, String> cookies, List<String> mvps, String OAuthToken, String link) {
 
         return executor.submit(() -> {
@@ -514,6 +584,21 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This function is used to report the scores and spirit for a given game. This is done using
+     * futures so that the data can be loaded concurrently and not freeze the app.
+     * @param cookies Contains the needed cookies for authentication
+     * @param link This is a link to the report form
+     * @param homeScore This is the new score for the home team
+     * @param awayScore This is the new score for the away team
+     * @param RKU This is the spirit score given for "Rules Knowledge and Use"
+     * @param FBC This is the spirit score given for "Fouls and Body Contact"
+     * @param FM This is the spirit score given for "Fair Mindedness"
+     * @param PAC This is the spirit score given for "Positive Attitude and Self Control"
+     * @param COM This is the spirit score given for "Communication"
+     * @param comments These are the comments added to the report
+     * @return A Future Boolean indicating if the report was a success
+     */
     public static Future<Boolean> report(Map<String, String> cookies, String link, String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments){
         return executor.submit(() -> {
 
@@ -565,6 +650,12 @@ public class WebLoader {
         });
     }
 
+    /**
+     * This is a helper function for the report function. It is used to set the selected option of
+     * the html select tags.
+     * @param selectTag The html select tag which needs to have its option set
+     * @param option the option to set the select tag to
+     */
     private static void setSelection(Element selectTag, String option){
         //remove selected attribute
         Element selectedOption = selectTag.children().select("[selected]").first();
@@ -577,5 +668,50 @@ public class WebLoader {
                 op.attr("selected", "selected");
             }
         }
+    }
+
+    /**
+     * This function is used to login the user on the website and collect the cookies and links to
+     * relevant web pages
+     * @param username the users username
+     * @param password the users password
+     * @return A UserLoginToken upon a successful login, null otherwise.
+     */
+    public static Future<UserLoginToken> loginUser(String username, String password) {
+        return executor.submit(() -> {
+            HashMap<String, String> cookies;
+            HashMap<String, String> links = new HashMap<>();
+
+                //log user in
+                Element loginForm = loadWebPage(new HashMap<String, String>(), WEB_URL)
+                        .getElementsByClass("form-vertical signin exists spacer1").first();
+
+            Element emailField = loginForm.getElementsByClass("span3 full initial-focus span3 mailcheck").first();
+                emailField.val(username);
+
+                Element passwordField = loginForm.getElementById("signin_password");
+                passwordField.val(password);
+
+                FormElement form = (FormElement) loginForm;
+            try {
+                Connection.Response loginActionResponse = form.submit()
+                        .userAgent(User.USER_AGENT)
+                        .execute();
+
+                cookies = (HashMap) loginActionResponse.cookies();
+
+                Document doc = loginActionResponse.parse();
+                Element userpageLink = doc.getElementsByClass("global-toolbar-user-btn ").first();
+
+                //Collect link to upcoming schedule for later web scraping
+                links.put(User.USERPAGELINK, userpageLink.attr("href"));
+                links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
+                links.put(User.MISSINGRESULTSLINK, userpageLink.attr("href") + "/schedule/game_type/missing_result");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return new UserLoginToken(cookies, links);
+        });
     }
 }

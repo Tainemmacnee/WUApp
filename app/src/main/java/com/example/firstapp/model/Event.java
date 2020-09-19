@@ -17,6 +17,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * The Event class is used to represent and store the data for a users events
+ */
 public class Event implements Serializable{
 
     String eventName, eventImg, standingsLink;
