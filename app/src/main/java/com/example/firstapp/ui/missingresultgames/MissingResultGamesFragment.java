@@ -5,20 +5,21 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firstapp.DisplayUserActivity;
 import com.example.firstapp.R;
-import com.example.firstapp.model.Event;
 import com.example.firstapp.model.Game;
 import com.example.firstapp.model.User;
 import com.example.firstapp.ui.RefreshableFragment;
-import com.example.firstapp.ui.events.EventsAdapter;
 
 public class MissingResultGamesFragment extends Fragment implements RefreshableFragment {
 
@@ -41,7 +42,7 @@ public class MissingResultGamesFragment extends Fragment implements RefreshableF
     }
 
     private void loadDisplay(View v){
-        if(user.getMissingResultGames().length == 0){
+        if(user.getMissingResultGamesAsArray().length == 0){
             TextView textView = v.findViewById(R.id.empty_games_text); //display text showing no games
             textView.setVisibility(View.VISIBLE);
         } else {
@@ -52,23 +53,37 @@ public class MissingResultGamesFragment extends Fragment implements RefreshableF
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
 
-            mAdapter = new MissingResultAdapter(user.getMissingResultGames());
+            mAdapter = new MissingResultAdapter(user.getMissingResultGamesAsArray());
             recyclerView.setAdapter(mAdapter);
         }
     }
 
     @Override
     public void refresh() {
-        recyclerView.setAdapter(new MissingResultAdapter(new Game[0])); //clear current displayed events
-        TextView textView = getView().findViewById(R.id.empty_games_text);
-        textView.setVisibility(View.GONE);
         user.loadExtras();
+
+        //animate refresh button
+        ActionMenuItemView image = getActivity().findViewById(R.id.action_refresh);
+        Animation rotateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+        rotateAnimation.setFillAfter(true);
+        image.startAnimation(rotateAnimation);
+
+        //Clear text and recycler to show they are being reloaded
+        recyclerView.setAdapter(new MissingResultAdapter(new Game[0])); //clear current displayed events
+        getView().findViewById(R.id.empty_games_text).setVisibility(View.GONE);
+
+        //wait for data to load and display once done
         Handler handler = new Handler();
         int delay = 100; //milliseconds
 
         handler.postDelayed(new Runnable(){ //show new events after they are loaded
             public void run(){
-                loadDisplay(getView());
+                if(user.missingResultGamesDone()){
+                    loadDisplay(getView());
+                    image.clearAnimation(); //finish animation
+                } else {
+                    handler.postDelayed(this, delay);
+                }
             }}, delay);
     }
 }

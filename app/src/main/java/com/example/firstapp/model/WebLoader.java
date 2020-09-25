@@ -105,8 +105,6 @@ public class WebLoader {
                                     .setTime(time)
                                     .setLocation(location)
                                     .build());
-
-                    //output.add(new Game(homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time, location));
                 }
             return output;
         });
@@ -372,7 +370,7 @@ public class WebLoader {
 
                 Element profileAboutDiv = doc.getElementsByClass("profile-about").first();
                 Element profileAboutText = profileAboutDiv.getElementsByClass("rich-text").first();
-                aboutText = profileAboutText.text();
+                aboutText = profileAboutText != null ? profileAboutText.text() : null;
 
             return new User(loginToken, name, profileImgUrl, aboutText, profileInfo);
         });
@@ -469,7 +467,8 @@ public class WebLoader {
                 Element selectFBC =  doc.getElementById(start+"game_report_survey_2_answer");
                 for(Element option : selectFBC.children()){
                     if(option.attr("selected").equals("selected")){
-                        FBC = option.text().trim();
+                        //This is done differently to fix and issue where the G in good is upper case for this Element only
+                        FBC = option.text().trim().toLowerCase().replaceFirst("v", "V");
                     }
                 }
 
@@ -516,7 +515,20 @@ public class WebLoader {
                         }
                     }
                 }
-            return new ReportFormState(doc, homeTeamScore, awayTeamScore, RKU, FBC, FM, PAS, COM, comments, maleMVPs, femaleMVPs);
+
+                return new ReportFormState.Builder()
+                        .setHomeTeamScore(homeTeamScore)
+                        .setAwayTeamScore(awayTeamScore)
+                        .setRKU(RKU)
+                        .setFBC(FBC)
+                        .setFM(FM)
+                        .setPAS(PAS)
+                        .setCOM(COM)
+                        .setComments(comments)
+                        .setMaleMVPs(maleMVPs)
+                        .setFemaleMVPs(femaleMVPs)
+                        .setDocument(doc)
+                        .build();
         });
     }
 
@@ -589,17 +601,10 @@ public class WebLoader {
      * futures so that the data can be loaded concurrently and not freeze the app.
      * @param cookies Contains the needed cookies for authentication
      * @param link This is a link to the report form
-     * @param homeScore This is the new score for the home team
-     * @param awayScore This is the new score for the away team
-     * @param RKU This is the spirit score given for "Rules Knowledge and Use"
-     * @param FBC This is the spirit score given for "Fouls and Body Contact"
-     * @param FM This is the spirit score given for "Fair Mindedness"
-     * @param PAC This is the spirit score given for "Positive Attitude and Self Control"
-     * @param COM This is the spirit score given for "Communication"
-     * @param comments These are the comments added to the report
+     * @param state This is the new state of the report form to be set
      * @return A Future Boolean indicating if the report was a success
      */
-    public static Future<Boolean> report(Map<String, String> cookies, String link, String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments){
+    public static Future<Boolean> report(Map<String, String> cookies, String link, ReportFormState state){
         return executor.submit(() -> {
 
                 Document doc = loadWebPage(cookies, WEB_URL+link);
@@ -607,10 +612,10 @@ public class WebLoader {
                 Element reportForm = doc.getElementById("game-report-score-form"); //find report form
 
                 Element gameHomeScore = doc.getElementById("game_home_score");
-                setSelection(gameHomeScore, homeScore); //set home score
+                setSelection(gameHomeScore, state.homeTeamScore); //set home score
 
                 Element gameAwayScore = doc.getElementById("game_away_score");
-                setSelection(gameAwayScore, awayScore); //set away score
+                setSelection(gameAwayScore, state.awayTeamScore); //set away score
 
 
                 Element gameSpirit1 = doc.getElementById("game_home_game_report_survey_1_answer"); //work out if reporting for home or away team
@@ -619,19 +624,19 @@ public class WebLoader {
                     gameSpirit1 = doc.getElementById("game_away_game_report_survey_1_answer");
                     start = "game_away_";
                 }
-                setSelection(gameSpirit1, RKU);
+                setSelection(gameSpirit1, state.RKU);
 
                 Element gameSpirit2 = doc.getElementById(start+"game_report_survey_2_answer");
-                setSelection(gameSpirit2, FBC);
+                setSelection(gameSpirit2, state.FBC);
 
                 Element gameSpirit3 = doc.getElementById(start+"game_report_survey_3_answer");
-                setSelection(gameSpirit3, FM);
+                setSelection(gameSpirit3, state.FM);
 
                 Element gameSpirit4 = doc.getElementById(start+"game_report_survey_4_answer");
-                setSelection(gameSpirit4, PAC);
+                setSelection(gameSpirit4, state.PAS);
 
                 Element gameSpirit5 = doc.getElementById(start+"game_report_survey_5_answer");
-                setSelection(gameSpirit5, COM);
+                setSelection(gameSpirit5, state.COM);
 
                 String commentReport = "";
                 if(start.equals("game_home_")){
@@ -642,7 +647,7 @@ public class WebLoader {
 
                 FormElement form = (FormElement) reportForm;
                 Connection.Response reportActionResponse = form.submit()
-                        .data(commentReport, comments)
+                        .data(commentReport, state.comments)
                         .cookies(cookies)
                         .userAgent(User.USER_AGENT)
                         .execute();
@@ -712,6 +717,44 @@ public class WebLoader {
                 return null;
             }
             return new UserLoginToken(cookies, links);
+        });
+    }
+
+    /**
+     * This function is used to load the current standings of an event.
+     * @param cookies Contains the needed cookies for authentication
+     * @param link This is a to the event page
+     * @return A list of maps containing the relevant standing information or null if none could be found.
+     */
+    public static Future<List<Map<String, String>>> getStandings(Map<String, String> cookies, String link){
+        return executor.submit(() -> {
+            ArrayList<Map<String, String>> output = new ArrayList<>();
+
+            Document doc = loadWebPage(cookies, link+"/standings");
+
+            Element table = doc.getElementsByClass("filter-list").first();
+            Element list = table.getElementsByClass("striped-blocks spacer1").first();
+            if(list.children() == null) { return null; }
+            for(Element team : list.children()){
+                HashMap<String, String> info = new HashMap<>();
+                Element img = team.getElementsByTag("img").first();
+                info.put("image", img.attr("src"));
+
+                Element name = team.getElementsByTag("a").first();
+                info.put("name", name.text());
+
+                Element record = team.getElementsByClass("plain-link plain-link").first();
+                info.put("record", record.text());
+
+                Element spirit = team.getElementsByClass("plain-link plain-link").last();
+                info.put("spirit", spirit.text());
+
+                Element pointDiff = team.getElementsByClass("row-fluid-always").last().child(0);
+                info.put("pointDiff", pointDiff.text());
+                output.add(info);
+            }
+
+            return output;
         });
     }
 }

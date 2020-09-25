@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.firstapp.model.ReportFormState;
+import com.example.firstapp.model.WebLoader;
 import com.example.firstapp.ui.loading.LoadingScreen;
 import com.example.firstapp.ui.scores.scoresFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -64,7 +65,7 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
 
         LoadingScreen loadingScreen = new LoadingScreen();
         try {
-            loadingScreen.load("Loading Standings", getStandings(cookies, standingsLink), this);
+            loadingScreen.load("Loading Standings", WebLoader.getStandings(cookies, standingsLink), this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,41 +91,41 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
         return true;
     }
 
-    private static Future<List<Map<String, String>>> getStandings(Map<String, String> cookies, String link) throws Exception{
-        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        return executor.submit(() -> {
-            ArrayList<Map<String, String>> output = new ArrayList<>();
-                Connection.Response response = Jsoup.connect(link+"/standings")
-                        .method(Connection.Method.GET)
-                        .userAgent(USER_AGENT)
-                        .cookies(cookies)
-                        .execute();
-
-                Element doc = response.parse().getElementsByClass("striped-blocks spacer1").first();
-                if(doc.children() == null) { throw new Exception(); }
-                for(Element team : doc.children()){
-                    HashMap<String, String> info = new HashMap<>();
-                    Element img = team.getElementsByTag("img").first();
-                    info.put("image", img.attr("src"));
-
-                    Element name = team.getElementsByTag("a").first();
-                    info.put("name", name.text());
-
-                    Element record = team.getElementsByClass("plain-link plain-link").first();
-                    info.put("record", record.text());
-
-                    Element spirit = team.getElementsByClass("plain-link plain-link").last();
-                    info.put("spirit", spirit.text());
-
-                    Element pointDiff = team.getElementsByClass("row-fluid-always").last().child(0);
-                    info.put("pointDiff", pointDiff.text());
-                    output.add(info);
-                }
-
-            return output;
-        });
-    }
+//    private static Future<List<Map<String, String>>> getStandings(Map<String, String> cookies, String link) throws Exception{
+//        final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        return executor.submit(() -> {
+//            ArrayList<Map<String, String>> output = new ArrayList<>();
+//                Connection.Response response = Jsoup.connect(link+"/standings")
+//                        .method(Connection.Method.GET)
+//                        .userAgent(USER_AGENT)
+//                        .cookies(cookies)
+//                        .execute();
+//
+//                Element doc = response.parse().getElementsByClass("striped-blocks spacer1").first();
+//                if(doc.children() == null) { throw new Exception(); }
+//                for(Element team : doc.children()){
+//                    HashMap<String, String> info = new HashMap<>();
+//                    Element img = team.getElementsByTag("img").first();
+//                    info.put("image", img.attr("src"));
+//
+//                    Element name = team.getElementsByTag("a").first();
+//                    info.put("name", name.text());
+//
+//                    Element record = team.getElementsByClass("plain-link plain-link").first();
+//                    info.put("record", record.text());
+//
+//                    Element spirit = team.getElementsByClass("plain-link plain-link").last();
+//                    info.put("spirit", spirit.text());
+//
+//                    Element pointDiff = team.getElementsByClass("row-fluid-always").last().child(0);
+//                    info.put("pointDiff", pointDiff.text());
+//                    output.add(info);
+//                }
+//
+//            return output;
+//        });
+//    }
 
     @Override
     public void processResult(Object result, boolean finished) {
@@ -140,7 +141,6 @@ public class DisplayEventStandingsActivity extends AppCompatActivity implements 
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-//            Snackbar.make(findViewById(R.id.fragment_view), "Failed to load standings", Snackbar.LENGTH_SHORT).show();
             return;
         }
         if(finished){

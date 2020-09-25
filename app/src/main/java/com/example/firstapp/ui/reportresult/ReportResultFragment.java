@@ -28,35 +28,14 @@ import com.example.firstapp.model.ReportFormState;
 import com.example.firstapp.model.Team;
 import com.squareup.picasso.Picasso;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 
 public class ReportResultFragment extends Fragment {
-
-    private int mspCount = 1;
-
-    public ReportResultFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     public List<String> getScoreValues(){
         ArrayList<String> list = new ArrayList<>(Arrays.asList("Unreported", "Win", "Loss", "Tie(Unplayed)"));
@@ -74,7 +53,6 @@ public class ReportResultFragment extends Fragment {
         ArrayList list =  new ArrayList<>();
         list.add("");
         list.addAll(team.getMaleMatchups());
-        System.out.println("MALE ADAPTER: "+list);
         return list;
     }
 
@@ -82,7 +60,6 @@ public class ReportResultFragment extends Fragment {
         ArrayList list =  new ArrayList<>();
         list.add("");
         list.addAll(team.getFemaleMatchups());
-        System.out.println("FEMALE ADAPTER: "+list);
         return list;
     }
 
@@ -107,15 +84,36 @@ public class ReportResultFragment extends Fragment {
         String spiritCom = (String) spiritComSpinner.getSelectedItem();
 
         //get mvps
-        List<String> mvpList = new ArrayList<>();
-        LinearLayout mvpBox = activity.findViewById(R.id.mvpBox);
-        for(int i = 0; i < mvpBox.getChildCount(); i++){
-            LinearLayout mvpLayout = (LinearLayout) mvpBox.getChildAt(i);
+        List<String> femaleMVPs = new ArrayList<>();
+        LinearLayout female_mvpBox = activity.findViewById(R.id.female_mvpbox);
+        for(int i = 0; i < female_mvpBox.getChildCount(); i++){
+            LinearLayout mvpLayout = (LinearLayout) female_mvpBox.getChildAt(i);
             Spinner mvpSpinner = (Spinner) mvpLayout.getChildAt(1);
-            mvpList.add((String) mvpSpinner.getSelectedItem());
+            femaleMVPs.add((String) mvpSpinner.getSelectedItem());
         }
 
-        activity.submit(homeScore, awayScore, spiritRules, spiritFouls, spiritFair, spiritPos, spiritCom, comments.getText().toString(), mvpList);
+        List<String> maleMVPs = new ArrayList<>();
+        LinearLayout male_mvpBox = activity.findViewById(R.id.male_mvpbox);
+        for(int i = 0; i < male_mvpBox.getChildCount(); i++){
+            LinearLayout mvpLayout = (LinearLayout) male_mvpBox.getChildAt(i);
+            Spinner mvpSpinner = (Spinner) mvpLayout.getChildAt(1);
+            maleMVPs.add((String) mvpSpinner.getSelectedItem());
+        }
+
+        ReportFormState state = new ReportFormState.Builder()
+                .setHomeTeamScore(homeScore)
+                .setAwayTeamScore(awayScore)
+                .setRKU(spiritRules)
+                .setFBC(spiritFouls)
+                .setFM(spiritFair)
+                .setPAS(spiritPos)
+                .setCOM(spiritCom)
+                .setComments(comments.getText().toString())
+                .setMaleMVPs(maleMVPs)
+                .setFemaleMVPs(femaleMVPs)
+                .build();
+
+        activity.submit(state);
 
     }
 
@@ -127,9 +125,11 @@ public class ReportResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_report_result, container, false);
+
+        //Get the state of the form, then setup display according to the state
         ReportResultActivity activity = (ReportResultActivity) getActivity();
         ReportFormState state = activity.getReportFormState();
-        View view = inflater.inflate(R.layout.fragment_report_result, container, false);
 
         //Setup Adapters
         ArrayAdapter<String> scoreAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, getScoreValues());
@@ -144,7 +144,7 @@ public class ReportResultFragment extends Fragment {
         setupSpinner(view.findViewById(R.id.spinner_positive_attitude), spiritAdapter, spiritAdapter.getPosition(state.PAS));
         setupSpinner(view.findViewById(R.id.spinner_communication), spiritAdapter, spiritAdapter.getPosition(state.COM));
 
-        //Load team details
+        //Setup team details
         TextView homeTeamName = view.findViewById(R.id.report_result_home_name);
         TextView awayTeamName = view.findViewById(R.id.report_result_away_name);
         ImageView homeTeamImage = view.findViewById(R.id.report_result_home_image);
@@ -156,25 +156,27 @@ public class ReportResultFragment extends Fragment {
         Picasso.get().load(activity.getAwayTeam().getImageUrl()).into(awayTeamImage);
 
         //Setup mvps
-        LinearLayout mvpBox = view.findViewById(R.id.mvpBox);
+        LinearLayout female_mvpBox = view.findViewById(R.id.female_mvpbox);
+        LinearLayout male_mvpBox = view.findViewById(R.id.male_mvpbox);
         int maleMVPCount = 1, femaleMVPCount = 1;
 
         for(String name : state.femaleMVPs){
             ArrayAdapter<String> femaleMVPAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, this.getFemaleMvpValues(activity.getOtherTeam()));
             LinearLayout mvp = buildMVPBox(view, name, "Female MVP #"+femaleMVPCount++, femaleMVPAdapter);
-            mvpBox.addView(mvp);
+            female_mvpBox.addView(mvp);
         }
 
         for(String name : state.maleMVPs){
             ArrayAdapter<String> maleMVPAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, this.getMaleMvpValues(activity.getOtherTeam()));
             LinearLayout mvp = buildMVPBox(view, name, "Male MVP #"+maleMVPCount++, maleMVPAdapter);
-            mvpBox.addView(mvp);
+            male_mvpBox.addView(mvp);
         }
 
         //load comments
         EditText comments = view.findViewById(R.id.report_result_comments);
         comments.setText(state.comments);
 
+        //Setup report button
         Button reportButton = view.findViewById(R.id.report_results2);
         reportButton.setOnClickListener(this::report);
 

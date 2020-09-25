@@ -5,8 +5,11 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,7 +59,7 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
     }
 
     private void loadUpcomingDisplay(View v){
-        if(user.getUpcomingGames().length == 0){
+        if(user.getUpcomingGamesAsArray().length == 0){
             TextView textView = v.findViewById(R.id.empty_games_text); //display text showing no games
             textView.setVisibility(View.VISIBLE);
         } else {
@@ -67,13 +70,13 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
             layoutManager = new LinearLayoutManager(getActivity());
             upcomingrecyclerView.setLayoutManager(layoutManager);
 
-            mAdapter = new UpcomingAdapter(limitupcomingItems(user.getUpcomingGames()));
+            mAdapter = new UpcomingAdapter(limitAdapterItems(user.getUpcomingGamesAsArray()));
             upcomingrecyclerView.setAdapter(mAdapter);
         }
     }
 
     private void loadMissingResultDisplay(View v){
-        if(user.getMissingResultGames().length == 0){
+        if(user.getMissingResultGamesAsArray().length == 0){
             TextView textView = v.findViewById(R.id.empty_games_text2);  //display text showing no games
             textView.setVisibility(View.VISIBLE);
         } else {
@@ -84,12 +87,12 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
             layoutManager = new LinearLayoutManager(getActivity());
             resultsrecyclerView.setLayoutManager(layoutManager);
 
-            wAdapter = new MissingResultAdapter(limitupcomingItems(user.getMissingResultGames()));
+            wAdapter = new MissingResultAdapter(limitAdapterItems(user.getMissingResultGamesAsArray()));
             resultsrecyclerView.setAdapter(wAdapter);
         }
     }
 
-    private Game[] limitupcomingItems(Game[] array){
+    private Game[] limitAdapterItems(Game[] array){
         if(array.length < 2) { return array; }
         Game[] output = new Game[2];
         for(int i = 0; i < array.length; i++){
@@ -100,20 +103,33 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
     }
 
     public void refresh() {
-        TextView textView1 = getView().findViewById(R.id.empty_games_text); //display text showing no games
-        textView1.setVisibility(View.GONE);
-        TextView textView2 = getView().findViewById(R.id.empty_games_text2); //display text showing no games
-        textView2.setVisibility(View.GONE);
+        user.loadExtras();
+
+        //animate refresh button
+        ActionMenuItemView image = getActivity().findViewById(R.id.action_refresh);
+        Animation rotateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+        rotateAnimation.setFillAfter(true);
+        image.startAnimation(rotateAnimation);
+
+        //Clear text and recyclers to show they are being reloaded
+        getView().findViewById(R.id.empty_games_text).setVisibility(View.GONE); //display text showing no games
+        getView().findViewById(R.id.empty_games_text2).setVisibility(View.GONE); //display text showing no games
         upcomingrecyclerView.setAdapter(new UpcomingAdapter(new Game[0])); //clear current displayed events
         resultsrecyclerView.setAdapter(new MissingResultAdapter(new Game[0]));
-        user.loadExtras();
+
+        //wait for data to load and display once done
         Handler handler = new Handler();
         int delay = 100; //milliseconds
 
         handler.postDelayed(new Runnable(){ //show new events after they are loaded
             public void run(){
-                loadUpcomingDisplay(getView());
-                loadMissingResultDisplay(getView());
+                if(user.missingResultGamesDone() && user.upcomingGamesDone()) {
+                    loadUpcomingDisplay(getView());
+                    loadMissingResultDisplay(getView());
+                    image.clearAnimation(); //finish animation
+                } else {
+                    handler.postDelayed(this, delay);
+                }
             }}, delay);
     }
 }

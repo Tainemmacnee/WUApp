@@ -22,45 +22,29 @@ public class Game {
     private String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time,
             location, homeTeamScore, homeTeamSpirit, awayTeamScore, awayTeamSpirit, reportLink;
 
-    public String getHomeTeamName() {
-        return homeTeamName;
-    }
+    public String getHomeTeamName() { return homeTeamName; }
 
-    public String getHomeTeamImg() {
-        return homeTeamImg;
-    }
+    public String getHomeTeamImg() { return homeTeamImg; }
 
     public String getHomeTeamScore() { return homeTeamScore; }
 
     public String getHomeTeamSpirit() { return homeTeamSpirit; }
 
-    public String getDate() {
-        return this.date;
-    }
+    public String getDate() { return date; }
 
-    public String getTime() {
-        return this.time;
-    }
+    public String getTime() { return time; }
 
-    public String getLeague() {
-        return this.league;
-    }
+    public String getLeague() { return league; }
 
-    public String getAwayTeamName() {
-        return awayTeamName;
-    }
+    public String getAwayTeamName() { return awayTeamName; }
 
-    public String getAwayTeamImg() {
-        return awayTeamImg;
-    }
+    public String getAwayTeamImg() { return awayTeamImg; }
 
     public String getAwayTeamScore() { return awayTeamScore; }
 
     public String getAwayTeamSpirit() { return awayTeamSpirit; }
 
-    public String getLocation() {
-        return location;
-    }
+    public String getLocation() { return location; }
 
     public String getReportLink() { return reportLink; }
 
@@ -79,17 +63,6 @@ public class Game {
         this.location = builder.location;
         this.reportLink = builder.reportLink;
     }
-
-//    public Game(String homeTeamName, String homeTeamImg, String awayTeamName, String awayTeamImg, String league, String date, String time, String location){
-//        this.homeTeamName = homeTeamName;
-//        this.homeTeamImg = homeTeamImg;
-//        this.awayTeamName = awayTeamName;
-//        this.awayTeamImg = awayTeamImg;
-//        this.league = league;
-//        this.time = time;
-//        this.date = date;
-//        this.location = location;
-//    }
 
     public static class Builder {
         private String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time,

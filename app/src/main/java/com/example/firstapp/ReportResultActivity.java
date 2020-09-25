@@ -66,15 +66,16 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
         //Pre load the OAuthToken so we don't have to wait for it later
         OAuthToken = WebLoader.getOAuthToken(cookies);
 
+        //Setup layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_result);
         Toolbar toolbar = findViewById(R.id.toolbar2);
         toolbar.setTitle("Report Result");
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        //load report form state
         Future<ReportFormState> ffs = WebLoader.getReportFormState(cookies, reportLink);
         LoadingScreen loadingScreen = new LoadingScreen();
         loadingScreen.load("Loading report form", ffs, this);
@@ -121,10 +122,10 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
         return null;
     }
 
-    public void submit(String homeScore, String awayScore, String RKU, String FBC, String FM, String PAC, String COM, String comments, List<String> mvps){
+    public void submit(ReportFormState state){
 
-        Future<Boolean> frMVP = WebLoader.reportMVPs(cookies, mvps, getOAuthToken(), reportLink);
-        Future<Boolean> frScore = WebLoader.report(cookies, reportLink, homeScore, awayScore, RKU, FBC, FM, PAC, COM, comments);
+        Future<Boolean> frMVP = WebLoader.reportMVPs(cookies, state.getAllMvps(), getOAuthToken(), reportLink);
+        Future<Boolean> frScore = WebLoader.report(cookies, reportLink, state);
 
         LoadingScreen loadingScreen = new LoadingScreen();
         loadingScreen.load("Submitting MVPs", frMVP, this);
@@ -136,7 +137,7 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
     }
 
     @Override
-    public void processResult(Object Result, boolean finished) {
+    public void processResult(Object Result, boolean finished){
         if(finished){
             if(Result instanceof ReportFormState){
                 formState = (ReportFormState) Result;
@@ -144,6 +145,14 @@ public class ReportResultActivity extends AppCompatActivity implements LoadingSc
                 transaction.replace(R.id.fragment_view, new ReportResultFragment(), "REPORTFRAGMENT");
                 transaction.commit();
             } else {
+                try {
+                    ReportFormState state = WebLoader.getReportFormState(cookies, reportLink).get();
+                    System.out.println(formState.Compare(state));
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         }

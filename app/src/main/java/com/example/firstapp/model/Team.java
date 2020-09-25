@@ -37,21 +37,13 @@ public class Team implements Serializable {
         this.femaleMatchups = femaleMatchups;
     }
 
-    public String getName() {
-        return this.name;
-    }
+    public String getName() { return this.name; }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public String getImageUrl() { return imageUrl; }
 
-    public List<String> getMaleMatchups(){
-        return this.maleMatchups;
-    }
+    public List<String> getMaleMatchups(){ return this.maleMatchups; }
 
-    public List<String> getFemaleMatchups(){
-        return this.femaleMatchups;
-    }
+    public List<String> getFemaleMatchups(){ return this.femaleMatchups; }
 
     public String toString(){
         return "TEAM: "+this.name+" IMAGE: "+this.imageUrl+" MEMBERS "+this.maleMatchups+" "+this.femaleMatchups;

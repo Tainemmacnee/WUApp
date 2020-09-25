@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.firstapp.model.User;
 import com.example.firstapp.model.UserLoginToken;
+import com.example.firstapp.model.WebLoader;
 import com.example.firstapp.ui.loading.LoadingScreen;
 import com.example.firstapp.ui.login.LoginFragment;
 import com.example.firstapp.ui.scores.scoresFragment;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
         ArrayList<String> params = new ArrayList<>();
         params.add(ed1.getText().toString());
         params.add(ed2.getText().toString());
-        Future<UserLoginToken> flt = User.loginUser(params.get(0), params.get(1));
+        Future<UserLoginToken> flt = WebLoader.loginUser(params.get(0), params.get(1));
 
         LoadingScreen loadingScreen = new LoadingScreen();
         loadingScreen.load("Logging In", flt, this);

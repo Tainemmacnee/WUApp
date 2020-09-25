@@ -5,24 +5,21 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firstapp.DisplayUserActivity;
 import com.example.firstapp.R;
-import com.example.firstapp.model.Event;
 import com.example.firstapp.model.Game;
 import com.example.firstapp.model.User;
 import com.example.firstapp.ui.RefreshableFragment;
-import com.example.firstapp.ui.events.EventsAdapter;
-import com.example.firstapp.ui.missingresultgames.MissingResultAdapter;
 
 public class UpcomingGamesFragment extends Fragment implements RefreshableFragment {
 
@@ -34,7 +31,8 @@ public class UpcomingGamesFragment extends Fragment implements RefreshableFragme
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_upcoming_games, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.upcoming_recycler_view);
+        recyclerView = v.findViewById(R.id.upcoming_recycler_view);
+        layoutManager = new LinearLayoutManager(getActivity());
 
         DisplayUserActivity activity = (DisplayUserActivity)getActivity();
         user = activity.getUserData();
@@ -45,34 +43,46 @@ public class UpcomingGamesFragment extends Fragment implements RefreshableFragme
     }
 
     private void loadDisplay(View v){
-        if(user.getUpcomingGames().length == 0){
+        if(user.getUpcomingGamesAsArray().length == 0){
             TextView textView = v.findViewById(R.id.empty_games_text); //display text showing no games
             textView.setVisibility(View.VISIBLE);
         } else {
             TextView textView = v.findViewById(R.id.empty_games_text);
             textView.setVisibility(View.GONE);
+
             recyclerView.setHasFixedSize(true);
-
-            layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-
-            mAdapter = new UpcomingAdapter(user.getUpcomingGames());
+            mAdapter = new UpcomingAdapter(user.getUpcomingGamesAsArray());
             recyclerView.setAdapter(mAdapter);
         }
     }
 
     @Override
     public void refresh() {
-        recyclerView.setAdapter(new UpcomingAdapter(new Game[0])); //clear current displayed events
-        TextView textView = getView().findViewById(R.id.empty_games_text);
-        textView.setVisibility(View.GONE);
         user.loadExtras();
+
+        //animate refresh button
+        ActionMenuItemView image = getActivity().findViewById(R.id.action_refresh);
+        Animation rotateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+        rotateAnimation.setFillAfter(true);
+        image.startAnimation(rotateAnimation);
+
+        //Clear text and recyclers to show they are being reloaded
+        recyclerView.setAdapter(new UpcomingAdapter(new Game[0])); //clear current displayed events
+        getView().findViewById(R.id.empty_games_text).setVisibility(View.GONE);
+
+        //wait for data to load and display once done
         Handler handler = new Handler();
         int delay = 100; //milliseconds
 
         handler.postDelayed(new Runnable(){ //show new events after they are loaded
             public void run(){
-                loadDisplay(getView());
+                if(user.upcomingGamesDone()) {
+                    loadDisplay(getView());
+                    image.clearAnimation(); //finish animation
+                } else {
+                    handler.postDelayed(this, delay);
+                }
             }}, delay);
     }
 }

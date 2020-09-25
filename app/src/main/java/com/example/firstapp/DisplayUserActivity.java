@@ -41,7 +41,6 @@ public class DisplayUserActivity extends AppCompatActivity implements LoadingScr
     private User user;
     private NavController navController;
     private UserLoginToken loginToken;
-    private boolean loaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

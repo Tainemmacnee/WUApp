@@ -26,16 +26,6 @@ public class Event implements Serializable{
     Map<String, String> cookies;
     Future<List<Team>> teams;
 
-    public Event(String eventName, String eventImg, Future<List<Team>> teams, String standingsLink, Map<String, String> cookies)
-
-    {
-        this.teams = teams;
-        this.eventName = eventName;
-        this.eventImg = eventImg.replace("40", "200");
-        this.standingsLink = standingsLink;
-        this.cookies = cookies;
-    }
-
     public String getName() {
         return this.eventName;
     }
@@ -50,6 +40,15 @@ public class Event implements Serializable{
 
     public String getStandingsLink() {
         return standingsLink;
+    }
+
+    public Event(String eventName, String eventImg, Future<List<Team>> teams, String standingsLink, Map<String, String> cookies)
+    {
+        this.teams = teams;
+        this.eventName = eventName;
+        this.eventImg = eventImg.replace("40", "200");
+        this.standingsLink = standingsLink;
+        this.cookies = cookies;
     }
 
     public List<Team> getTeams(){
