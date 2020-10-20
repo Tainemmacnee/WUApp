@@ -27,7 +27,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_background_olddark"
+                android:background="@drawable/rounded_background_newdark"
                 android:elevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView7">
 
                 <TextView
-                    android:id="@+id/empty_games_text"
+                    android:id="@+id/empty_events_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -94,7 +94,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="32dp"
-                android:background="@drawable/rounded_background_olddark"
+                android:background="@drawable/rounded_background_newdark"
                 android:elevation="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

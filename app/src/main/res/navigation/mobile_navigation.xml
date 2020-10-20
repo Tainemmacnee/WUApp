@@ -7,45 +7,58 @@
 
     <fragment
         android:id="@+id/nav_dashboard"
-        android:name="com.example.firstapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.Wuapp.ui.dashboard.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" >
-        <action
-            android:id="@+id/action_nav_dashboard_to_nav_upcoming_games"
-            app:destination="@id/nav_upcoming_games" />
-        <action
-            android:id="@+id/action_nav_dashboard_to_nav_missing_result_games"
-            app:destination="@id/nav_missing_result_games" />
         <action
             android:id="@+id/action_nav_dashboard_to_nav_events"
             app:destination="@id/nav_events" />
         <action
             android:id="@+id/action_nav_dashboard_to_nav_home"
             app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_dashboard_self"
+            app:destination="@id/nav_dashboard" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_games"
+            app:destination="@id/nav_games" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_maps"
+            app:destination="@id/nav_maps" />
+        <action
+            android:id="@+id/action_nav_to_feedback"
+            app:destination="@+id/nav_feedback"
+            app:enterAnim="@anim/fragment_close_enter"/>
     </fragment>
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.firstapp.ui.home.HomeFragment"
+        android:name="com.example.Wuapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_events"
-        android:name="com.example.firstapp.ui.events.EventsFragment"
+        android:name="com.example.Wuapp.ui.events.EventsFragment"
         android:label="@string/menu_events"
         tools:layout="@layout/fragment_events" />
 
     <fragment
-        android:id="@+id/nav_upcoming_games"
-        android:name="com.example.firstapp.ui.upcominggames.UpcomingGamesFragment"
-        android:label="@string/menu_upcoming_games"
-        tools:layout="@layout/fragment_upcoming_games" />
+        android:id="@+id/nav_games"
+        android:name="com.example.Wuapp.ui.games.GamesFragment"
+        android:label="@string/menu_games"
+        tools:layout="@layout/fragment_games" />
 
     <fragment
-        android:id="@+id/nav_missing_result_games"
-        android:name="com.example.firstapp.ui.missingresultgames.MissingResultGamesFragment"
-        android:label="@string/menu_missing_result_games"
-        tools:layout="@layout/fragment_missing_result_games" />
+        android:id="@+id/nav_maps"
+        android:name="com.example.Wuapp.ui.maps.mapsFragment"
+        android:label="Maps"
+        tools:layout="@layout/fragment_maps" />
+
+    <fragment
+        android:id="@+id/nav_feedback"
+        android:name="com.example.Wuapp.ui.feedback.FeedbackFragment"
+        android:label="Feedback"
+        tools:layout="@layout/fragment_feedback" />
 
 </navigation>

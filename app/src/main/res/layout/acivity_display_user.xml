@@ -13,14 +13,14 @@
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorNewDark" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#353537"
+        android:background="@color/colorNewDark"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:itemTextColor="@color/colorPrimary"
@@ -29,6 +29,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_background_grey"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="sendFeedback"
+                android:text="Send Feedback"
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/button2"

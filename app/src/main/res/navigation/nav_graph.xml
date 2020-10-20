@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/eventTeamsFragment"
-        android:name="com.example.firstapp.ui.events.teams.EventTeamsFragment"
+        android:name="com.example.Wuapp.ui.events.teams.EventTeamsFragment"
         android:label="EventTeamsFragment" />
 </navigation>

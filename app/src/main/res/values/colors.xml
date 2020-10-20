@@ -12,4 +12,5 @@
     <color name="grey">#808080</color>
     <color name="victory_green">#00b140</color>
     <color name="colorSecondaryDark">#424242</color>
+    <color name="colorNewDark">#353537</color>
 </resources>

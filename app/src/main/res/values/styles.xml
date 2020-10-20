@@ -36,4 +36,27 @@
         <item name="android:background">@color/colorOldDark</item>
     </style>
 
+    <style name="FilterMenuCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/white</item>
+        <!-- Used for the title and text -->
+        <item name="android:color">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <!-- Used for the background -->
+        <item name="android:background">@color/colorOldDark</item>
+    </style>
+
+    <style name="FilterMenu" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:textColorAlertDialogListItem">@color/colorPrimary</item>
+        <!-- Used for the background -->
+        <item name="android:background">@color/colorOldDark</item>
+    </style>
+
 </resources>
