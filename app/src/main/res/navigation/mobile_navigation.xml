@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_dashboard"
-        android:name="com.example.Wuapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.wuapp.ui.dashboard.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -33,32 +33,33 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.Wuapp.ui.home.HomeFragment"
+        android:name="com.example.wuapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_events"
-        android:name="com.example.Wuapp.ui.events.EventsFragment"
+        android:name="com.example.wuapp.ui.events.EventsFragment"
         android:label="@string/menu_events"
         tools:layout="@layout/fragment_events" />
 
     <fragment
         android:id="@+id/nav_games"
-        android:name="com.example.Wuapp.ui.games.GamesFragment"
+        android:name="com.example.wuapp.ui.games.GamesFragment"
         android:label="@string/menu_games"
         tools:layout="@layout/fragment_games" />
 
     <fragment
         android:id="@+id/nav_maps"
-        android:name="com.example.Wuapp.ui.maps.mapsFragment"
+        android:name="com.example.wuapp.ui.maps.MapsFragment"
         android:label="Maps"
         tools:layout="@layout/fragment_maps" />
 
     <fragment
         android:id="@+id/nav_feedback"
-        android:name="com.example.Wuapp.ui.feedback.FeedbackFragment"
+        android:name="com.example.wuapp.ui.feedback.FeedbackFragment"
         android:label="Feedback"
         tools:layout="@layout/fragment_feedback" />
+
 
 </navigation>

@@ -48,7 +48,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="opacityPercent" value="60" />
+                                                <entry key="imagePath" value="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\baseline_filter_alt_black_18dp.png" />
+                                                <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -80,7 +81,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_action_search" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\baseline_filter_alt_black_18dp.png" />
+                                      <entry key="outputName" value="ic_action_filter" />
+                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="ffdd00" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -324,6 +329,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>

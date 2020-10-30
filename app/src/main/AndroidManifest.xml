@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.Wuapp" >
+    package="com.example.wuapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -9,27 +9,27 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name="com.example.Wuapp.DisplayEventTeamsActivity"
-            android:parentActivityName="com.example.Wuapp.DisplayUserActivity">
+        <activity android:name="com.example.wuapp.DisplayEventTeamsActivity"
+            android:parentActivityName="com.example.wuapp.DisplayUserActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.Wuapp.DisplayUserActivity" />
+                android:value="com.example.wuapp.DisplayUserActivity" />
         </activity>
-        <activity android:name="com.example.Wuapp.DisplayUserActivity" />
-        <activity android:name="com.example.Wuapp.ReportResultActivity"
-            android:parentActivityName="com.example.Wuapp.DisplayUserActivity">
+        <activity android:name="com.example.wuapp.DisplayUserActivity" />
+        <activity android:name="com.example.wuapp.ReportResultActivity"
+            android:parentActivityName="com.example.wuapp.DisplayUserActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.Wuapp.DisplayUserActivity" />
+            android:value="com.example.wuapp.DisplayUserActivity" />
         </activity>
-        <activity android:name="com.example.Wuapp.DisplayEventStandingsActivity"
-            android:parentActivityName="com.example.Wuapp.DisplayUserActivity">
+        <activity android:name="com.example.wuapp.DisplayEventScoresActivity"
+            android:parentActivityName="com.example.wuapp.DisplayUserActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.Wuapp.DisplayUserActivity" />
+                android:value="com.example.wuapp.DisplayUserActivity" />
         </activity>
         <activity
-            android:name="com.example.Wuapp.MainActivity"
+            android:name="com.example.wuapp.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
