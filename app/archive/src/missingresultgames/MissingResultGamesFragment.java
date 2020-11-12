@@ -1,11 +1,8 @@
-package com.example.wuapp.ui.games;
+package com.example.wuapp.ui.missingresultgames;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -24,72 +21,41 @@ import com.example.wuapp.model.Game;
 import com.example.wuapp.model.User;
 import com.example.wuapp.ui.RefreshableFragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-public class GamesFragment extends Fragment implements RefreshableFragment, FilterDialog.FilterDialogListner{
+public class MissingResultGamesFragment extends Fragment implements RefreshableFragment {
 
     private RecyclerView recyclerView;
-    private GameAdapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private User user;
-    private FilterDialog filterDialog = new FilterDialog(this);
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_games, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        setHasOptionsMenu(true);
+        View v = inflater.inflate(R.layout.fragment_missing_result_games, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.missing_result_recycler_view);
 
         DisplayUserActivity activity = (DisplayUserActivity)getActivity();
-        user = activity.getUser();
+        user = activity.getUserData();
 
         loadDisplay(v);
 
         return v;
     }
 
-    public void showFilterDialog(){
-        filterDialog.show(getParentFragmentManager(), "FilterDialog");
-    }
-
-    @Override
-    public void onDialogPositiveClick(String filter) {
-        mAdapter.getFilter().filter(filter);
-        if(mAdapter.getItemCount() == 0){
-            TextView textView = getView().findViewById(R.id.empty_events_text); //display text showing no games
-            textView.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void loadDisplay(View v){
-        TextView textView = v.findViewById(R.id.empty_events_text);
-        textView.setVisibility(View.GONE);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new GameAdapter(user.getGames(), user.getEvents());
-        recyclerView.setAdapter(mAdapter);
-
-        onDialogPositiveClick(filterDialog.filter);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.display_games_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-       if(item.getItemId() == R.id.action_filter) {
-            showFilterDialog();
-            return true;
+        Game[] missingResultGames = user.getMissingResultGamesAsArray();
+        if(missingResultGames.length == 0){
+            TextView textView = v.findViewById(R.id.empty_events_text); //display text showing no games
+            textView.setVisibility(View.VISIBLE);
         } else {
-            return super.onOptionsItemSelected(item);
+            TextView textView = v.findViewById(R.id.empty_events_text);
+            textView.setVisibility(View.GONE);
+            recyclerView.setHasFixedSize(true);
+
+            layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
+
+            mAdapter = new MissingResultAdapter(missingResultGames);
+            recyclerView.setAdapter(mAdapter);
         }
     }
 
@@ -104,7 +70,7 @@ public class GamesFragment extends Fragment implements RefreshableFragment, Filt
         image.startAnimation(rotateAnimation);
 
         //Clear text and recycler to show they are being reloaded
-        recyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList())); //clear current displayed events
+        recyclerView.setAdapter(new MissingResultAdapter(new Game[0])); //clear current displayed events
         getView().findViewById(R.id.empty_events_text).setVisibility(View.GONE);
 
         //wait for data to load and display once done

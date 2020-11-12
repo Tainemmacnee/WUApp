@@ -22,6 +22,7 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
 
     private Team[] teams;
     private Team[] teamsFiltered;
+    private boolean showSeperators = true;
 
     public class EventTeamViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout femaleMatchupDisplay;
@@ -32,6 +33,7 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
         public LinearLayout femaleMatchupContainer;
         public TextView maleMatchupTextView;
         public TextView femaleMatchupTextView;
+        public View itemSeperator;
 
         public EventTeamViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -43,7 +45,7 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
             this.maleMatchupContainer = itemView.findViewById(R.id.male_matchup_container);
             this.maleMatchupTextView = itemView.findViewById(R.id.male_matchup_textview);
             this.femaleMatchupTextView = itemView.findViewById(R.id.female_matchup_textview);
-
+            this.itemSeperator = itemView.findViewById(R.id.item_seperator2);
         }
     }
 
@@ -62,8 +64,22 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
         return vh;
     }
 
+    public void hideSeperators(){
+        showSeperators = false;
+    }
+
+    public void showSeperators(){
+        showSeperators = true;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull EventTeamViewHolder holder, int position) {
+
+        if(showSeperators){
+            holder.itemSeperator.setVisibility(View.VISIBLE);
+        } else {
+            holder.itemSeperator.setVisibility(View.INVISIBLE);
+        }
 
         Team team = teamsFiltered[position];
         holder.textView.setText(team.getName());

@@ -20,8 +20,10 @@ import com.example.wuapp.model.Game;
 import com.example.wuapp.model.User;
 import com.example.wuapp.ui.RefreshableFragment;
 import com.example.wuapp.ui.games.GameAdapter;
+import com.example.wuapp.ui.games.NoScrollLinearLayoutManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -68,11 +70,9 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
             TextView textView = v.findViewById(R.id.empty_events_text);
             textView.setVisibility(View.GONE);
             upcomingrecyclerView.setHasFixedSize(true);
+            upcomingrecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-            layoutManager = new LinearLayoutManager(getActivity());
-            upcomingrecyclerView.setLayoutManager(layoutManager);
-
-            mAdapter = new GameAdapter(limitAdapterItems(user.getUpcomingGames()));
+            mAdapter = new GameAdapter(limitAdapterItems(user.getUpcomingGames()),  user.getEvents());
             upcomingrecyclerView.setAdapter(mAdapter);
         }
     }
@@ -85,11 +85,9 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
             TextView textView = v.findViewById(R.id.empty_games_text2);
             textView.setVisibility(View.GONE);
             resultsrecyclerView.setHasFixedSize(true);
+            resultsrecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-            layoutManager = new LinearLayoutManager(getActivity());
-            resultsrecyclerView.setLayoutManager(layoutManager);
-
-            wAdapter = new GameAdapter(limitAdapterItems(user.getMissingResultGames()));
+            wAdapter = new GameAdapter(limitAdapterItems(user.getMissingResultGames()),  user.getEvents());
             resultsrecyclerView.setAdapter(wAdapter);
         }
     }
@@ -111,8 +109,8 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
         //Clear text and recyclers to show they are being reloaded
         getView().findViewById(R.id.empty_events_text).setVisibility(View.GONE); //display text showing no games
         getView().findViewById(R.id.empty_games_text2).setVisibility(View.GONE); //display text showing no games
-        upcomingrecyclerView.setAdapter(new GameAdapter(new ArrayList<>())); //clear current displayed events
-        resultsrecyclerView.setAdapter(new GameAdapter(new ArrayList<>()));
+        upcomingrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList())); //clear current displayed events
+        resultsrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList()));
 
         //wait for data to load and display once done
         Handler handler = new Handler();
