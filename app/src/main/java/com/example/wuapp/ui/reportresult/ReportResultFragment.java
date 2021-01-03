@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wuapp.R;
 import com.example.wuapp.ReportResultActivity;
+import com.example.wuapp.databinding.FragmentReportResultBinding;
+import com.example.wuapp.databinding.ReportResultMvpBoxBinding;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
 import com.squareup.picasso.Picasso;
@@ -29,6 +30,10 @@ import java.util.List;
 
 
 public class ReportResultFragment extends Fragment {
+
+    private FragmentReportResultBinding binding;
+    private List<ReportResultMvpBoxBinding> maleMVPBindings = new ArrayList<>();
+    private List<ReportResultMvpBoxBinding> femaleMVPBindings = new ArrayList<>();
 
     public List<String> getScoreValues(){
         ArrayList<String> list = new ArrayList<>(Arrays.asList("Unreported", "Win", "Loss", "Tie(Unplayed)"));
@@ -59,38 +64,24 @@ public class ReportResultFragment extends Fragment {
     public void report(View view){
         ReportResultActivity activity = (ReportResultActivity) getActivity();
 
-        Spinner homeScoreSpinner = (Spinner) activity.findViewById(R.id.report_result_home_score);
-        Spinner awayScoreSpinner = (Spinner) activity.findViewById(R.id.report_result_away_score);
-        Spinner spiritRulesSpinner = (Spinner) activity.findViewById(R.id.spinner_rules);
-        Spinner spiritFoulsSpinner = (Spinner) activity.findViewById(R.id.spinner_fouls);
-        Spinner spiritFairSpinner = (Spinner) activity.findViewById(R.id.spinner_fair);
-        Spinner spiritPosSpinner = (Spinner) activity.findViewById(R.id.spinner_positive_attitude);
-        Spinner spiritComSpinner = (Spinner) activity.findViewById(R.id.spinner_communication);
-        EditText comments = activity.findViewById(R.id.report_result_comments);
-
-        int homeScore = homeScoreSpinner.getSelectedItemPosition();
-        int awayScore = awayScoreSpinner.getSelectedItemPosition();
-        int spiritRules = spiritRulesSpinner.getSelectedItemPosition();
-        int spiritFouls = spiritFoulsSpinner.getSelectedItemPosition();
-        int spiritFair = spiritFairSpinner.getSelectedItemPosition();
-        int spiritPos = spiritPosSpinner.getSelectedItemPosition();
-        int spiritCom = spiritComSpinner.getSelectedItemPosition();
+        int homeScore = binding.reportResultHomeScore.getSelectedItemPosition();
+        int awayScore = binding.reportResultAwayScore.getSelectedItemPosition();
+        int spiritRules = binding.spinnerRules.getSelectedItemPosition();
+        int spiritFouls = binding.spinnerFouls.getSelectedItemPosition();
+        int spiritFair = binding.spinnerFair.getSelectedItemPosition();
+        int spiritPos = binding.spinnerPositiveAttitude.getSelectedItemPosition();
+        int spiritCom = binding.spinnerCommunication.getSelectedItemPosition();
+        String comments = binding.reportResultComments.getText().toString();
 
         //get mvps
         List<String> femaleMVPs = new ArrayList<>();
-        LinearLayout female_mvpBox = activity.findViewById(R.id.female_mvpbox);
-        for(int i = 0; i < female_mvpBox.getChildCount(); i++){
-            LinearLayout mvpLayout = (LinearLayout) female_mvpBox.getChildAt(i);
-            Spinner mvpSpinner = (Spinner) mvpLayout.getChildAt(1);
-            femaleMVPs.add((String) mvpSpinner.getSelectedItem());
+        for(ReportResultMvpBoxBinding binding : femaleMVPBindings){
+            femaleMVPs.add((String) binding.mvpSpinner.getSelectedItem());
         }
 
         List<String> maleMVPs = new ArrayList<>();
-        LinearLayout male_mvpBox = activity.findViewById(R.id.male_mvpbox);
-        for(int i = 0; i < male_mvpBox.getChildCount(); i++){
-            LinearLayout mvpLayout = (LinearLayout) male_mvpBox.getChildAt(i);
-            Spinner mvpSpinner = (Spinner) mvpLayout.getChildAt(1);
-            maleMVPs.add((String) mvpSpinner.getSelectedItem());
+        for(ReportResultMvpBoxBinding binding : maleMVPBindings){
+            maleMVPs.add((String) binding.mvpSpinner.getSelectedItem());
         }
 
         ReportFormState state = new ReportFormState.Builder()
@@ -101,7 +92,7 @@ public class ReportResultFragment extends Fragment {
                 .setFM(spiritFair)
                 .setPAS(spiritPos)
                 .setCOM(spiritCom)
-                .setComments(comments.getText().toString())
+                .setComments(comments)
                 .setMaleMVPs(maleMVPs)
                 .setFemaleMVPs(femaleMVPs)
                 .setDocument(activity.getReportFormState().doc)
@@ -117,106 +108,74 @@ public class ReportResultFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_report_result, container, false);
 
-        //Get the state of the form, then setup display according to the state
+        binding = FragmentReportResultBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+
         ReportResultActivity activity = (ReportResultActivity) getActivity();
         ReportFormState state = activity.getReportFormState();
+
+        binding.reportResultHomeName.setText(activity.getHomeTeam().getName());
+        binding.reportResultAwayName.setText(activity.getAwayTeam().getName());
+        Picasso.get().load(activity.getHomeTeam().getImageUrl()).into(binding.homeImage);
+        Picasso.get().load(activity.getAwayTeam().getImageUrl()).into(binding.awayImage);
 
         //Setup Adapters
         ArrayAdapter<String> scoreAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, getScoreValues());
         ArrayAdapter<String> spiritAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, getSpiritValues());
 
         //Setup Spinners
-        setupSpinner(view.findViewById(R.id.report_result_home_score), scoreAdapter, state.homeTeamScore);
-        setupSpinner(view.findViewById(R.id.report_result_away_score), scoreAdapter, state.awayTeamScore);
-        setupSpinner(view.findViewById(R.id.spinner_rules), spiritAdapter, state.RKU);
-        setupSpinner(view.findViewById(R.id.spinner_fouls), spiritAdapter, state.FBC);
-        setupSpinner(view.findViewById(R.id.spinner_fair), spiritAdapter, state.FM);
-        setupSpinner(view.findViewById(R.id.spinner_positive_attitude), spiritAdapter, state.PAS);
-        setupSpinner(view.findViewById(R.id.spinner_communication), spiritAdapter, state.COM);
+        setupSpinner(binding.reportResultHomeScore, scoreAdapter, state.homeTeamScore);
+        setupSpinner(binding.reportResultAwayScore, scoreAdapter, state.awayTeamScore);
+        setupSpinner(binding.spinnerRules, spiritAdapter, state.RKU);
+        setupSpinner(binding.spinnerFouls, spiritAdapter, state.FBC);
+        setupSpinner(binding.spinnerFair, spiritAdapter, state.FM);
+        setupSpinner(binding.spinnerPositiveAttitude, spiritAdapter, state.PAS);
+        setupSpinner(binding.spinnerCommunication, spiritAdapter, state.COM);
 
-        //Setup team details
-        TextView homeTeamName = view.findViewById(R.id.report_result_home_name);
-        TextView awayTeamName = view.findViewById(R.id.report_result_away_name);
-        ImageView homeTeamImage = view.findViewById(R.id.report_result_home_image);
-        ImageView awayTeamImage = view.findViewById(R.id.report_result_away_image);
-
-        homeTeamName.setText(activity.getHomeTeam().getName());
-        awayTeamName.setText(activity.getAwayTeam().getName());
-        Picasso.get().load(activity.getHomeTeam().getImageUrl()).into(homeTeamImage);
-        Picasso.get().load(activity.getAwayTeam().getImageUrl()).into(awayTeamImage);
-
-        //Setup mvps
-        TextView mvpTitle = view.findViewById(R.id.mvp_title);
-        LinearLayout female_mvpBox = view.findViewById(R.id.female_mvpbox);
-        LinearLayout male_mvpBox = view.findViewById(R.id.male_mvpbox);
-
+        //setup MVPs
         if(state.femaleMVPs.size() == 0 && state.maleMVPs.size() == 0){
-            mvpTitle.setVisibility(View.GONE);
-            female_mvpBox.setVisibility(View.GONE);
-            male_mvpBox.setVisibility(View.GONE);
+            binding.mvpboxTitle.setVisibility(View.GONE);
+            binding.femaleMvpbox.setVisibility(View.GONE);
+            binding.maleMvpbox.setVisibility(View.GONE);
         } else {
-            mvpTitle.setVisibility(View.VISIBLE);
-            female_mvpBox.setVisibility(View.VISIBLE);
-            male_mvpBox.setVisibility(View.VISIBLE);
+            binding.mvpboxTitle.setVisibility(View.VISIBLE);
+            binding.femaleMvpbox.setVisibility(View.VISIBLE);
+            binding.maleMvpbox.setVisibility(View.VISIBLE);
 
             int maleMVPCount = 1, femaleMVPCount = 1;
 
             for(String name : state.femaleMVPs){
                 ArrayAdapter<String> femaleMVPAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, this.getFemaleMvpValues(activity.getOtherTeam()));
-                LinearLayout mvp = buildMVPBox(view, name, "Female MVP #"+femaleMVPCount++, femaleMVPAdapter);
-                female_mvpBox.addView(mvp);
+
+                ReportResultMvpBoxBinding mvpBoxBinding = ReportResultMvpBoxBinding.inflate(inflater);
+                mvpBoxBinding.mvpTitle.setText("Female MVP #"+femaleMVPCount++);
+                mvpBoxBinding.mvpSpinner.setAdapter(femaleMVPAdapter);
+                mvpBoxBinding.mvpSpinner.setSelection(femaleMVPAdapter.getPosition(name));
+
+                binding.femaleMvpbox.addView(mvpBoxBinding.getRoot());
+                femaleMVPBindings.add(mvpBoxBinding);
             }
 
             for(String name : state.maleMVPs){
                 ArrayAdapter<String> maleMVPAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, this.getMaleMvpValues(activity.getOtherTeam()));
-                LinearLayout mvp = buildMVPBox(view, name, "Male MVP #"+maleMVPCount++, maleMVPAdapter);
-                male_mvpBox.addView(mvp);
+
+                ReportResultMvpBoxBinding mvpBoxBinding = ReportResultMvpBoxBinding.inflate(inflater);
+                mvpBoxBinding.mvpTitle.setText("Male MVP #"+maleMVPCount++);
+                mvpBoxBinding.mvpSpinner.setAdapter(maleMVPAdapter);
+                mvpBoxBinding.mvpSpinner.setSelection(maleMVPAdapter.getPosition(name));
+
+                binding.maleMvpbox.addView(mvpBoxBinding.getRoot());
+                maleMVPBindings.add(mvpBoxBinding);
             }
         }
 
-        //load comments
-        EditText comments = view.findViewById(R.id.report_result_comments);
-        comments.setText(state.comments);
+        //setup comments
+        binding.reportResultComments.setText(state.comments);
 
         //Setup report button
-        Button reportButton = view.findViewById(R.id.report_results2);
-        reportButton.setOnClickListener(this::report);
+        binding.reportResults2.setOnClickListener(this::report);
 
         return view;
-    }
-
-    private LinearLayout buildMVPBox(View view, String name, String title, ArrayAdapter<String> adapter){
-        //setup container for mvp
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setLayoutParams(new LinearLayout.LayoutParams((int) (200*getContext().getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        //setup title for mvp
-        TextView titleView = new TextView(getContext());
-        titleView.setGravity(Gravity.CENTER_HORIZONTAL);
-        titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-        //setup spinner for mvp
-        Spinner spinner = new Spinner(getContext());
-        spinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (40*getContext().getResources().getDisplayMetrics().density)));
-        spinner.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_background_light));
-        spinner.setAdapter(adapter);
-
-        //set spinner selection
-        if(!name.equals("")) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                if (adapter.getItem(i).contains(name)) {
-                    spinner.setSelection(i);
-                }
-            }
-        }
-
-        layout.addView(titleView, 0);
-        layout.addView(spinner, 1);
-        return layout;
     }
 }

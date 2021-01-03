@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wuapp.DisplayUserActivity;
 import com.example.wuapp.R;
+import com.example.wuapp.databinding.FragmentDashboardBinding;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.User;
 import com.example.wuapp.ui.RefreshableFragment;
@@ -37,6 +38,8 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
     private RecyclerView.Adapter wAdapter;
     private User user;
 
+    FragmentDashboardBinding binding;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,47 +49,45 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+
         DisplayUserActivity activity = (DisplayUserActivity)getActivity();
         user = activity.getUser();
 
-        upcomingrecyclerView = (RecyclerView) v.findViewById(R.id.upcoming_recycler_view);
-        resultsrecyclerView = (RecyclerView) v.findViewById(R.id.missing_result_recycler_view);
+        upcomingrecyclerView = binding.upcomingRecyclerView;
+        resultsrecyclerView = binding.missingResultRecyclerView;
 
         //setup dashboard display for upcoming games
-        loadUpcomingDisplay(v);
+        loadUpcomingDisplay(binding.getRoot());
 
         //setup dashboard display for missing result games
-        loadMissingResultDisplay(v);
+        loadMissingResultDisplay(binding.getRoot());
 
-        return v;
+        return binding.getRoot();
     }
 
     private void loadUpcomingDisplay(View v){
+        TextView textView = binding.emptyEventsText;
         if(user.getUpcomingGames().size() == 0){
-            TextView textView = v.findViewById(R.id.empty_events_text); //display text showing no games
-            textView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE); //display text showing no games
         } else {
-            TextView textView = v.findViewById(R.id.empty_events_text);
-            textView.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE); //hide text showing no games
             upcomingrecyclerView.setHasFixedSize(true);
             upcomingrecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
             mAdapter = new GameAdapter(limitAdapterItems(user.getUpcomingGames()),  user.getEvents());
             upcomingrecyclerView.setAdapter(mAdapter);
         }
     }
 
     private void loadMissingResultDisplay(View v){
+        TextView textView = binding.emptyGamesText2;
         if(user.getMissingResultGames().size() == 0){
-            TextView textView = v.findViewById(R.id.empty_games_text2);  //display text showing no games
-            textView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE); //display text showing no games
         } else {
-            TextView textView = v.findViewById(R.id.empty_games_text2);
-            textView.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE); //hide text showing no games
             resultsrecyclerView.setHasFixedSize(true);
             resultsrecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
             wAdapter = new GameAdapter(limitAdapterItems(user.getMissingResultGames()),  user.getEvents());
             resultsrecyclerView.setAdapter(wAdapter);
         }
@@ -107,8 +108,8 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
         image.startAnimation(rotateAnimation);
 
         //Clear text and recyclers to show they are being reloaded
-        getView().findViewById(R.id.empty_events_text).setVisibility(View.GONE); //display text showing no games
-        getView().findViewById(R.id.empty_games_text2).setVisibility(View.GONE); //display text showing no games
+        binding.emptyEventsText.setVisibility(View.GONE); //display text showing no games
+        binding.emptyGamesText2.setVisibility(View.GONE); //display text showing no games
         upcomingrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList())); //clear current displayed events
         resultsrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList()));
 

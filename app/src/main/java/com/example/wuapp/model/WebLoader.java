@@ -305,7 +305,7 @@ public class WebLoader {
             Element profileAboutText = profileAboutDiv.getElementsByClass("rich-text").first();
             aboutText = profileAboutText != null ? profileAboutText.text() : null;
 
-            return new User(loginToken, name, profileImgUrl, aboutText, profileInfo);
+            return new User(loginToken);
         });
     }
 
@@ -582,6 +582,8 @@ public class WebLoader {
             HashMap<String, String> cookies;
             HashMap<String, String> links = new HashMap<>();
 
+            String name, profileImage;
+
             //log user in
             Element loginForm = loadWebPage(new HashMap<String, String>(), WEB_URL)
                     .getElementsByClass("form-vertical signin exists spacer1").first();
@@ -608,11 +610,16 @@ public class WebLoader {
                 links.put(User.UPCOMINGGAMESLINK, userpageLink.attr("href") + "/schedule");
                 links.put(User.MISSINGRESULTSLINK, userpageLink.attr("href") + "/schedule/game_type/missing_result");
                 links.put(User.GAMESLINK, userpageLink.attr("href") + "/schedule/event_id/active_events_only/game_type/all");
+
+                Element userButton = doc.getElementsByClass("global-toolbar-user-btn ").first();
+                profileImage = userButton.child(0).attr("src").replace("30", "200");
+                name = userButton.child(1).text();
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
-            return new UserLoginToken(cookies, links);
+            return new UserLoginToken(cookies, links, name, profileImage);
         });
     }
 

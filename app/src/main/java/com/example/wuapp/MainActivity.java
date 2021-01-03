@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
                 writer.write(output);
                 writer.newLine();
                 writer.write(lt.getLinks().toString());
+                writer.newLine();
+                writer.write(lt.getName());
+                writer.newLine();
+                writer.write(lt.getProfileImage());
             } catch (IOException e) {
                 Log.e("Exception", "File write failed: " + e.toString());
             }
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
         String linkString = "";
         HashMap<String,String> links = new HashMap<>();
         HashMap<String,String> cookies = new HashMap<>();
+        String name = "", profileImage = "";
         try {
             InputStream inputStream = getApplicationContext().openFileInput("login.txt");
             if ( inputStream != null ) {
@@ -114,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 cookieString = bufferedReader.readLine();
                 linkString = bufferedReader.readLine();
-
+                name = bufferedReader.readLine();
+                profileImage = bufferedReader.readLine();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
                 links.put(entry[0].trim(), entry[1].trim());          //add them to the hashmap and trim whitespaces
             }
             cookies.put("tsid", cookieString.split(":")[1]);
-            finishLogin(new UserLoginToken(cookies, links));
+            finishLogin(new UserLoginToken(cookies, links, name, profileImage));
         }
     }
 

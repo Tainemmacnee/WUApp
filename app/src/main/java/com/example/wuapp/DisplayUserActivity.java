@@ -62,11 +62,13 @@ public class DisplayUserActivity extends AppCompatActivity implements LoadingScr
         //Load User
         Intent intent = getIntent();
         this.loginToken = (UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN);
-
         futureEvents = WebLoader.LoadEvents(loginToken.getCookies());
         futureGames = WebLoader.LoadGames(loginToken.getCookies(), loginToken.getLinks().get(User.GAMESLINK));
 
-        new LoadingScreen("Loading User", WebLoader.loadUser(loginToken), this);
+        this.user = new User(loginToken);
+        this.user.setData(futureEvents, futureGames);
+
+        new LoadingScreen("Loading Events", futureEvents, this);
     }
 
     /**
@@ -162,16 +164,16 @@ public class DisplayUserActivity extends AppCompatActivity implements LoadingScr
     }
 
     @Override
-    /**
-     * This function is called when the activity finishes loading something
-     * @param result the results returned when the loading finished
-     * @param finished a boolean showing if there are more things to finish loading or not
-     */
     public void processResult(Object Result, boolean finished) {
-        if(finished){
-            this.user = (User) Result;
-            this.user.setData(futureEvents, futureGames);
-            lateOnCreate();
+        if(Result != null) {
+            if(Result instanceof List) {
+                List list = (List)Result;
+                if(list.get(0) instanceof Event){
+                    new LoadingScreen("Loading Games", futureGames, this);
+                } else {
+                    lateOnCreate();
+                }
+            }
         }
     }
 }

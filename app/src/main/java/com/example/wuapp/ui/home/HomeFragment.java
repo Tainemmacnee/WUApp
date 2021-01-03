@@ -14,58 +14,39 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wuapp.DisplayUserActivity;
 import com.example.wuapp.R;
+import com.example.wuapp.databinding.FragmentHomeBinding;
+import com.example.wuapp.databinding.ProfileInfoRowBinding;
 import com.example.wuapp.model.User;
 import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
 
+    private FragmentHomeBinding binding;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final TextView userName = root.findViewById(R.id.username_display_main);
-        final TextView aboutText = root.findViewById(R.id.home_about_text);
-        final ImageView profileImg = root.findViewById(R.id.profile_image_main);
+       binding = FragmentHomeBinding.inflate(inflater, container, false);
+       View view = binding.getRoot();
 
-        DisplayUserActivity activity = (DisplayUserActivity)getActivity();
-        User user = activity.getUser();
+       DisplayUserActivity activity = (DisplayUserActivity)getActivity();
+       User user = activity.getUser();
 
-        userName.setText(user.getName());
-        aboutText.setText((user.getAboutText()));
-        Picasso.get().load(user.getProfileImgUrl()).into(profileImg);
+       binding.usernameDisplay.setText(user.getName());
+       binding.homeAboutText.setText(user.getAboutText());
+       Picasso.get().load(user.getProfileImgUrl()).into(binding.profileImageMain);
 
-        final LinearLayout exampleInfoBox = root.findViewById(R.id.home_example_info);
-        final TextView exampleValueTextView = root.findViewById(R.id.home_example_value);
-        final TextView exampleTitleTextView = root.findViewById(R.id.home_example_title);
+       for(String key : user.getProfileInfo().keySet()){
 
-        LinearLayout infoDisplay = root.findViewById(R.id.home_info_display);
+           System.out.println("K: "+key);
 
-        for(String key : user.getProfileInfo().keySet()){
-            LinearLayout infoBox = new LinearLayout(getContext());
-            TextView infoTitle = new TextView(getContext());
-            Space spacer = new Space(getContext());
-            spacer.setLayoutParams(root.findViewById(R.id.space).getLayoutParams());
-            TextView infoValue = new TextView(getContext());
+           ProfileInfoRowBinding rowBinding = ProfileInfoRowBinding.inflate(inflater);
+           rowBinding.profileInfoTitle.setText(key);
+           rowBinding.profileInfoValue.setText(user.getProfileInfo().get(key));
 
-            infoBox.setOrientation(LinearLayout.HORIZONTAL);
-            infoBox.addView(infoTitle);
-            infoBox.addView(spacer);
-            infoBox.addView(infoValue);
+           binding.homeInfoDisplay.addView(rowBinding.getRoot());
+       }
 
-            infoTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
-            infoValue.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-            infoTitle.setLayoutParams(exampleTitleTextView.getLayoutParams());
-            infoValue.setLayoutParams(exampleValueTextView.getLayoutParams());
-
-            infoTitle.setText(key);
-            infoValue.setText(user.getProfileInfo().get(key));
-
-            infoBox.setLayoutParams(exampleInfoBox.getLayoutParams());
-
-            infoDisplay.addView(infoBox);
-        }
-
-        return root;
+       return view;
     }
 }

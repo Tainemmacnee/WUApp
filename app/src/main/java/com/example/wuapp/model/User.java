@@ -44,13 +44,11 @@ public class User{
 
     public boolean eventsDone(){ return futureEvents.isDone(); }
 
-    public User(UserLoginToken loginToken, String name, String profileImgUrl, String aboutText, Map<String, String> profileInfo){
+    public User(UserLoginToken loginToken){
         this.cookies = loginToken.getCookies();
         this.links = loginToken.getLinks();
-        this.name = name;
-        this.profileImgUrl = profileImgUrl;
-        this.aboutText = aboutText;
-        this.profileInfo = profileInfo;
+        this.name = loginToken.getName();
+        this.profileImgUrl = loginToken.getProfileImage();
     }
 
     /**

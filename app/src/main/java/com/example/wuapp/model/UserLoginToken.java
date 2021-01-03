@@ -11,10 +11,14 @@ public class UserLoginToken implements Serializable {
 
     private HashMap<String ,String> cookies;
     private HashMap<String ,String> links;
+    private String name;
+    private String profileImage;
 
-    public UserLoginToken(HashMap<String ,String> cookies, HashMap<String ,String> links){
+    public UserLoginToken(HashMap<String ,String> cookies, HashMap<String ,String> links, String name, String profileImage){
         this.cookies = cookies;
         this.links = links;
+        this.name = name;
+        this.profileImage = profileImage;
     }
 
     public HashMap<String, String> getCookies() {
@@ -31,5 +35,21 @@ public class UserLoginToken implements Serializable {
 
     public void setLinks(HashMap<String, String> links) {
         this.links = links;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }
