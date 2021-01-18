@@ -1,5 +1,9 @@
 package com.example.wuapp.model;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
@@ -8,10 +12,38 @@ import java.util.Date;
 /**
  * The Game class is used to represent and store the data for a Game
  */
-public class Game {
+public class Game implements Parcelable {
 
     private String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, league, date, time,
             location, homeTeamScore, homeTeamSpirit, awayTeamScore, awayTeamSpirit, reportLink;
+
+    protected Game(Parcel in) {
+        homeTeamName = in.readString();
+        homeTeamImg = in.readString();
+        awayTeamName = in.readString();
+        awayTeamImg = in.readString();
+        league = in.readString();
+        date = in.readString();
+        time = in.readString();
+        location = in.readString();
+        homeTeamScore = in.readString();
+        homeTeamSpirit = in.readString();
+        awayTeamScore = in.readString();
+        awayTeamSpirit = in.readString();
+        reportLink = in.readString();
+    }
+
+    public static final Creator<Game> CREATOR = new Creator<Game>() {
+        @Override
+        public Game createFromParcel(Parcel in) {
+            return new Game(in);
+        }
+
+        @Override
+        public Game[] newArray(int size) {
+            return new Game[size];
+        }
+    };
 
     public String getHomeTeamName() { return homeTeamName; }
 
@@ -70,6 +102,28 @@ public class Game {
         this.date = builder.date;
         this.location = builder.location;
         this.reportLink = builder.reportLink;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(homeTeamName);
+        parcel.writeString(homeTeamImg);
+        parcel.writeString(awayTeamName);
+        parcel.writeString(awayTeamImg);
+        parcel.writeString(league);
+        parcel.writeString(date);
+        parcel.writeString(time);
+        parcel.writeString(location);
+        parcel.writeString(homeTeamScore);
+        parcel.writeString(homeTeamSpirit);
+        parcel.writeString(awayTeamScore);
+        parcel.writeString(awayTeamSpirit);
+        parcel.writeString(reportLink);
     }
 
     public static class Builder {

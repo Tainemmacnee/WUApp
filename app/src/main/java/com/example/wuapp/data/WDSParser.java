@@ -2,12 +2,92 @@ package com.example.wuapp.data;
 
 import com.example.wuapp.model.Game;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.util.HashSet;
 import java.util.Set;
 
 public class WDSParser {
 
-    public static Set<Game> parseGames(){
+    public static Set<Game> parseGames(Document htmlDOC){
 
+        Set<Game> results = new HashSet<>();
+
+        for(Element gameDiv : htmlDOC.getElementsByClass("game-list-item")){
+            String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, Event, date, time, location,
+                    homeTeamScore = "?", homeTeamSpirit = "?", awayTeamScore = "?", awayTeamSpirit = "?", reportLink = null;
+
+            //find divs containing team info
+            Element homeTeamElem = gameDiv.getElementsByClass("game-participant").first();
+            Element awayTeamElem = gameDiv.getElementsByClass("game-participant").last();
+
+            Element scoreBoxDiv = gameDiv.getElementsByClass("schedule-score-box").first();
+            if (scoreBoxDiv != null) { //Score is reportable
+                if (scoreBoxDiv.classNames().contains("can-report")) {
+                    Element reportLinkTag = scoreBoxDiv.getElementsByTag("a").first();
+                    reportLink = reportLinkTag.attr("href");
+                }
+                if (scoreBoxDiv.classNames().contains("with-score")) { //check if score has been reported
+                    Element homeTeamScoreElem = homeTeamElem.getElementsByClass("score ").first();
+                    homeTeamScore = ((homeTeamScoreElem == null) ? "?" : homeTeamScoreElem.text().trim().replaceAll("(--)", "?"));
+
+                    Element homeTeamSpiritElem = homeTeamElem.getElementsByClass("schedule-score-box-game-result").first();
+                    homeTeamSpirit = ((homeTeamSpiritElem == null) ? "?" : homeTeamSpiritElem.text().trim().replaceAll("[^0-9?]", ""));
+
+                    Element awayTeamScoreElem = awayTeamElem.getElementsByClass("score ").first();
+                    awayTeamScore = ((awayTeamScoreElem == null) ? "?" : awayTeamScoreElem.text().trim().replaceAll("(--)", "?"));
+
+                    Element awayTeamSpiritElem = awayTeamElem.getElementsByClass("schedule-score-box-game-result").first();
+                    awayTeamSpirit = ((awayTeamSpiritElem == null) ? "?" : awayTeamSpiritElem.text().trim().replaceAll("[^0-9?]", ""));
+                }
+            }
+
+            //Team Names and Images
+            Element homeTeamNameElem = homeTeamElem.getElementsByClass("schedule-team-name ").first();
+            homeTeamName = homeTeamNameElem.text().trim();
+
+            Element homeTeamImgElem = homeTeamElem.child(0);
+            homeTeamImg = homeTeamImgElem.attr("src");
+
+            Element awayTeamNameElem = awayTeamElem.getElementsByClass("schedule-team-name ").first();
+            awayTeamName = awayTeamNameElem.text().trim();
+
+            Element awayTeamImgElem = awayTeamElem.child(0);
+            awayTeamImg = awayTeamImgElem.attr("src");
+
+            //Time and Date
+            Element datetimeElem = gameDiv.getElementsByClass("clearfix").first();
+            String[] datetime = datetimeElem.text().trim().split(" ");
+
+            date = datetime[0] + " " + datetime[1];
+            time = datetime[2] + " " + datetime[3];
+
+            //Location and Event
+            Element locationLeagueElem = gameDiv.getElementsByClass("clearfix").last();
+            Element locationElem = locationLeagueElem.getElementsByClass("push-left").first();
+            location = locationElem.text().trim();
+
+            Element LeagueElem = locationLeagueElem.getElementsByClass("push-right").first();
+            Event = LeagueElem.text().trim();
+
+            results.add(new Game.Builder()
+                    .setHomeTeamName(homeTeamName)
+                    .setHomeTeamImg(homeTeamImg)
+                    .setHomeTeamScore(homeTeamScore)
+                    .setHomeTeamSpirit(homeTeamSpirit)
+                    .setAwayTeamName(awayTeamName)
+                    .setAwayTeamImg(awayTeamImg)
+                    .setAwayTeamScore(awayTeamScore)
+                    .setAwayTeamSpirit(awayTeamSpirit)
+                    .setLeague(Event)
+                    .setDate(date)
+                    .setTime(time)
+                    .setLocation(location)
+                    .setReportLink(reportLink)
+                    .build());
+        }
+        return results;
     }
 
 }
