@@ -1,12 +1,15 @@
 package com.example.wuapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * The Team class is used to represent and store the data for a team that is part of an event
  */
-public class Team implements Serializable {
+public class Team implements Serializable, Parcelable {
 
     private String name, imageUrl;
     private List<String> maleMatchups, femaleMatchups;
@@ -17,6 +20,25 @@ public class Team implements Serializable {
         this.maleMatchups = maleMatchups;
         this.femaleMatchups = femaleMatchups;
     }
+
+    protected Team(Parcel in) {
+        name = in.readString();
+        imageUrl = in.readString();
+        maleMatchups = in.createStringArrayList();
+        femaleMatchups = in.createStringArrayList();
+    }
+
+    public static final Creator<Team> CREATOR = new Creator<Team>() {
+        @Override
+        public Team createFromParcel(Parcel in) {
+            return new Team(in);
+        }
+
+        @Override
+        public Team[] newArray(int size) {
+            return new Team[size];
+        }
+    };
 
     public String getName() { return this.name; }
 
@@ -49,5 +71,18 @@ public class Team implements Serializable {
         hash = 31 * hash + (maleMatchups == null ? 0 : maleMatchups.hashCode());
         hash = 31 * hash + (femaleMatchups == null ? 0 : femaleMatchups.hashCode());
         return hash;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(imageUrl);
+        parcel.writeStringList(maleMatchups);
+        parcel.writeStringList(femaleMatchups);
     }
 }

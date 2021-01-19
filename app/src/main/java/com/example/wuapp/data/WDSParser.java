@@ -1,14 +1,79 @@
 package com.example.wuapp.data;
 
+import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
+import com.example.wuapp.model.Team;
+import com.example.wuapp.model.WebLoader;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 public class WDSParser {
+
+    public static Set<Event> parseEvents(Document htmlDOC) {
+        Set<Event> results = new HashSet<>();
+        String eventName, eventImg, eventLink;
+
+        Elements eventLinks = htmlDOC.getElementsByClass("global-toolbar-subnav-img-item plain-link");
+        for (Element e : eventLinks) {
+            if (e.attr("href").startsWith("/e/")) {
+                eventLink = htmlDOC.location() + e.attr("href");
+            } else {
+                continue;
+            }
+
+            //Collect event image url from page
+            Element eventImgElem = e.child(0);
+            eventImg = eventImgElem.attr("src");
+
+            //Collect event name from page
+            Element eventNameElem = e.child(1);
+            eventName = eventNameElem.text();
+
+            results.add(new Event(eventName, eventImg, eventLink));
+        }
+        return results;
+    }
+
+    public static Set<Team> parseTeams(Document htmlDOC){
+        Set<Team> teams = new HashSet<>();
+        for (Element teamDiv : htmlDOC.getElementsByClass("span4 media-item-wrapper spacer1 ")) {
+
+            String teamName, teamImage;
+            teamName = teamDiv.getElementsByTag("h3").first().text();
+            teamImage = teamDiv.getElementsByClass("media-item-tile media-item-tile-normal media-item-tile-cover").first().attr("style");
+            teamImage = teamImage.substring(23, teamImage.length() - 2);
+
+            List<String> maleMatchups = new ArrayList<>();
+            List<String> femaleMatchups = new ArrayList<>();
+
+            for (Element genderMatchupDiv : teamDiv.getElementsByClass("gender-cluster")) {
+                List<String> matchups = new ArrayList<>();
+                for (Element member : genderMatchupDiv.getElementsByTag("a")) {
+                    if (member.nextElementSibling().children().first().attr("data-value").contains("player") ||
+                            member.nextElementSibling().children().first().attr("data-value").contains("captain")) { //check they are a player not a coach/admin
+                        matchups.add(member.text().trim());
+                    }
+                }
+
+                if (genderMatchupDiv.getElementsByTag("h5").first().text().startsWith("Female")) {
+                    femaleMatchups = matchups;
+                } else {
+                    maleMatchups = matchups;
+                }
+            }
+            teams.add(new Team(teamName, teamImage, maleMatchups, femaleMatchups));
+        }
+        return teams;
+    }
 
     public static Set<Game> parseGames(Document htmlDOC){
 

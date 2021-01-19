@@ -7,21 +7,21 @@ import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
+import com.example.wuapp.model.Team;
 import com.example.wuapp.model.User;
 import com.example.wuapp.model.UserLoginToken;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.w3c.dom.DOMStringList;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This Class manages all data that is downloaded or needs downloading
@@ -31,9 +31,11 @@ public class DataManager implements Parcelable {
     public static final String REQUEST_SCHEDULED_GAMES = "request_scheduled_games";
     public static final String REQUEST_RECENT_GAMES = "request_recent_games";
 
-    private boolean downloading = false;
+    private boolean downloadingGames = false;
+    private boolean downloadingEvents = false;
 
     private Set<Game> gameSet = new HashSet<>();
+    private Set<Event> eventSet = new HashSet<>();
     private Queue<Request> requestQueue;
 
     private UserLoginToken loginToken;
@@ -45,6 +47,7 @@ public class DataManager implements Parcelable {
 
     protected DataManager(Parcel in) {
         gameSet.addAll(in.createTypedArrayList(Game.CREATOR));
+        eventSet.addAll(in.createTypedArrayList(Event.CREATOR));
     }
 
     private void processQueue(){
@@ -54,7 +57,7 @@ public class DataManager implements Parcelable {
         handler.postDelayed(new Runnable(){
             public void run(){
                 //do something
-                if(!requestQueue.isEmpty() && !downloading){
+                if(!requestQueue.isEmpty() && !downloadingGames){
                     for(Request r : requestQueue){
                         processRequest(r);
                     }
@@ -102,8 +105,11 @@ public class DataManager implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         List<Game> gameList = new ArrayList<>();
+        List<Event> eventList = new ArrayList<>();
         gameList.addAll(gameSet);
+        eventList.addAll(eventSet);
         parcel.writeTypedList(gameList);
+        parcel.writeTypedList(eventList);
     }
 
     private Document downloadWebPage(String link){
@@ -125,7 +131,7 @@ public class DataManager implements Parcelable {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void downloadGames(){
-        this.downloading = true;
+        this.downloadingGames = true;
 
         CompletableFuture<Void> scheduledGames = CompletableFuture.supplyAsync(() ->
             downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
@@ -140,7 +146,42 @@ public class DataManager implements Parcelable {
         ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
         CompletableFuture combinedFutures = CompletableFuture.allOf(scheduledGames, gamesWithResult, gamesWithoutResult)
-                .thenAccept(r -> this.downloading = false);
+                .thenAccept(r -> this.downloadingGames = false);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void downloadEvents() {
+        this.downloadingEvents = true;
+
+        CompletableFuture<Void> events = CompletableFuture.supplyAsync(() ->
+                downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_WEB_DASHBOARD))
+        ).thenApply(r -> WDSParser.parseEvents(r)
+        ).thenAccept(r -> {
+            r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getStandingsLink())));
+            this.eventSet.addAll(r);
+            this.downloadingEvents = false;
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private Set<Team> downloadEventTeams(String eventLink) {
+
+        CompletableFuture<Set<Team>> teamsPage1 = CompletableFuture.supplyAsync(() ->
+                downloadWebPage(eventLink+"/teams?page=1")
+        ).thenApply(r -> WDSParser.parseTeams(r));
+
+        CompletableFuture<Set<Team>> teamsPage2 = CompletableFuture.supplyAsync(() ->
+                downloadWebPage(eventLink+"/teams?page=2")
+        ).thenApply(r -> WDSParser.parseTeams(r));
+
+        CompletableFuture<Set<Team>> teamsPage3 = CompletableFuture.supplyAsync(() ->
+                downloadWebPage(eventLink+"/teams?page=3")
+        ).thenApply(r -> WDSParser.parseTeams(r));
+
+        CompletableFuture combinedFutures = CompletableFuture.allOf(teamsPage1, teamsPage2, teamsPage3)
+                .thenApply(r -> Stream.of(teamsPage1, teamsPage2, teamsPage3).flatMap(f -> f.join().stream()).collect(Collectors.toSet()));
+
+        return (Set<Team>) combinedFutures.join();
     }
 
 
