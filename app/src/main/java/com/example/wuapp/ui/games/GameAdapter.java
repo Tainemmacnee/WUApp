@@ -2,6 +2,7 @@ package com.example.wuapp.ui.games;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,8 +136,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
                     Team homeTeam = event.getTeam(gamesFiltered[position].getHomeTeamName());
                     Team awayTeam = event.getTeam(gamesFiltered[position].getAwayTeamName());
                     Intent intent = new Intent(view.getContext(), ReportResultActivity.class);
-                    intent.putExtra(DisplayUserActivity.MESSAGEHOMETEAM, homeTeam);
-                    intent.putExtra(DisplayUserActivity.MESSAGEAWAYTEAM, awayTeam);
+                    intent.putExtra(DisplayUserActivity.MESSAGEHOMETEAM, (Parcelable) homeTeam);
+                    intent.putExtra(DisplayUserActivity.MESSAGEAWAYTEAM, (Parcelable) awayTeam);
                     intent.putExtra(DisplayUserActivity.MESSAGEREPORTLINK, gamesFiltered[position].getReportLink());
                     intent.putExtra(DisplayUserActivity.MESSAGEUSERNAME, a.getUser().getName());
                     intent.putExtra(MainActivity.MESSAGE_COOKIES, a.getUser().getCookies());

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.wuapp.data.DataManager;
 import com.example.wuapp.model.UserLoginToken;
 import com.example.wuapp.model.WebLoader;
 import com.example.wuapp.ui.loading.LoadingScreen;
@@ -88,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements LoadingScreen.loa
 
         Intent intent = new Intent(this, DisplayUserActivity.class);
         intent.putExtra(MESSAGE_LOGINTOKEN, lt);
+        DataManager dm = new DataManager();
+        System.out.println(dm);
+        intent.putExtra("test", dm);
         startActivity(intent);
     }
 

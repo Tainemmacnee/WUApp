@@ -9,6 +9,7 @@ import java.util.HashMap;
  */
 public class UserLoginToken implements Serializable {
 
+    public static final String LINK_USER = "linkuser";
     public static final String LINK_SCHEDULED_GAMES = "linkscheduledgames";
     public static final String LINK_GAMES_WITH_RESULTS = "linkgameswithresults";
     public static final String LINK_GAMES_MISSING_RESULTS = "linkgameswithoutresults";

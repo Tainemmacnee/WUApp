@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.wuapp.data.DataManager;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.User;
@@ -64,6 +65,10 @@ public class DisplayUserActivity extends AppCompatActivity implements LoadingScr
         this.loginToken = (UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN);
         futureEvents = WebLoader.LoadEvents(loginToken.getCookies());
         futureGames = WebLoader.LoadGames(loginToken.getCookies(), loginToken.getLinks().get(User.GAMESLINK));
+
+        DataManager dm = intent.getExtras().getParcelable("test");
+
+        System.out.println(dm);
 
         this.user = new User(loginToken);
         this.user.setData(futureEvents, futureGames);

@@ -114,14 +114,12 @@ public class DataManager implements Parcelable {
 
     private Document downloadWebPage(String link){
         Document result = null;
-        long t1 = System.currentTimeMillis();
         try {
             Connection.Response loadPageResponse = Jsoup.connect(link)
                     .method(Connection.Method.GET)
                     .userAgent(User.USER_AGENT)
                     .cookies(loginToken.getCookies())
                     .execute();
-            System.out.println("Time to load " + link + ": " + (System.currentTimeMillis() - t1));
             result = loadPageResponse.parse();
         } catch (IOException e) {
             e.printStackTrace();
