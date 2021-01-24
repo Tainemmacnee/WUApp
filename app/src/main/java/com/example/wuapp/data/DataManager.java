@@ -1,5 +1,6 @@
 package com.example.wuapp.data;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Parcel;
@@ -7,6 +8,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.wuapp.LoginActivity;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.Team;
@@ -30,19 +32,28 @@ public class DataManager implements Parcelable {
 
     public static final String REQUEST_SCHEDULED_GAMES = "request_scheduled_games";
     public static final String REQUEST_RECENT_GAMES = "request_recent_games";
+    public static final String REQUEST_EVENTS = "requestevents";
+
+    private final String HOME_URL = "https://wds.usetopscore.com";
 
     private boolean downloadingGames = false;
     private boolean downloadingEvents = false;
 
     private Set<Game> gameSet = new HashSet<>();
     private Set<Event> eventSet = new HashSet<>();
-    private Queue<Request> requestQueue;
+    private Queue<Request> requestQueue = new ArrayDeque<>();
 
     private UserLoginToken loginToken;
 
     //TODO: Remove test constructor
-    public DataManager(){
-        gameSet.add(new Game.Builder().setHomeTeamName("HOME TEAM NAME!").setAwayTeamName("AWAY TEAM").build());
+    @SuppressLint("NewApi")
+    public DataManager(UserLoginToken loginToken){
+        this.loginToken = loginToken;
+
+        downloadGames();
+        downloadEvents();
+
+        processQueue();
     }
 
     protected DataManager(Parcel in) {
@@ -57,10 +68,8 @@ public class DataManager implements Parcelable {
         handler.postDelayed(new Runnable(){
             public void run(){
                 //do something
-                if(!requestQueue.isEmpty() && !downloadingGames){
-                    for(Request r : requestQueue){
-                        processRequest(r);
-                    }
+                while(!requestQueue.isEmpty() && !downloadingGames){
+                    processRequest(requestQueue.poll());
                 }
                 handler.postDelayed(this, delay);
             }
@@ -76,9 +85,14 @@ public class DataManager implements Parcelable {
                     if(g.isUpcoming()){ results.add(g); }
                 }
                 break;
+            case DataManager.REQUEST_EVENTS:
+                ArrayList res = new ArrayList();
+                res.addAll(eventSet);
+                r.callback.receiveData(res);
+                return;
         }
 
-        r.callback.DataReady(results);
+        r.callback.receiveData(results);
     }
 
     public static final Creator<DataManager> CREATOR = new Creator<DataManager>() {
@@ -93,7 +107,7 @@ public class DataManager implements Parcelable {
         }
     };
 
-    public void makeRequest(DataReady callback, String request){
+    public void makeRequest(DataReceiver callback, String request){
         requestQueue.add(new Request(callback, request));
     }
 
@@ -113,6 +127,8 @@ public class DataManager implements Parcelable {
     }
 
     private Document downloadWebPage(String link){
+        System.out.println(link);
+        if(link == null) {return null;}
         Document result = null;
         try {
             Connection.Response loadPageResponse = Jsoup.connect(link)
@@ -145,20 +161,22 @@ public class DataManager implements Parcelable {
 
         CompletableFuture combinedFutures = CompletableFuture.allOf(scheduledGames, gamesWithResult, gamesWithoutResult)
                 .thenAccept(r -> this.downloadingGames = false);
+
+        combinedFutures.join();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void downloadEvents() {
         this.downloadingEvents = true;
 
-        CompletableFuture<Void> events = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_WEB_DASHBOARD))
+        CompletableFuture.supplyAsync(() ->
+                downloadWebPage(HOME_URL)
         ).thenApply(r -> WDSParser.parseEvents(r)
         ).thenAccept(r -> {
             r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getStandingsLink())));
             this.eventSet.addAll(r);
             this.downloadingEvents = false;
-        });
+        }).join();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -186,9 +204,9 @@ public class DataManager implements Parcelable {
     private class Request{
 
         public final String request;
-        public final DataReady callback;
+        public final DataReceiver callback;
 
-        public Request(DataReady callback, String request){
+        public Request(DataReceiver callback, String request){
             this.request = request;
             this.callback = callback;
         }

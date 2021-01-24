@@ -41,8 +41,8 @@ public class GamesFragment extends Fragment implements RefreshableFragment, Filt
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         setHasOptionsMenu(true);
 
-        DisplayUserActivity activity = (DisplayUserActivity)getActivity();
-        user = activity.getUser();
+        //DisplayUserActivity activity = (DisplayUserActivity)getActivity();
+        //user = activity.getUser();
 
         loadDisplay(v);
 
@@ -55,11 +55,11 @@ public class GamesFragment extends Fragment implements RefreshableFragment, Filt
 
     @Override
     public void onDialogPositiveClick(String filter) {
-        mAdapter.getFilter().filter(filter);
-        if(mAdapter.getItemCount() == 0){
-            TextView textView = getView().findViewById(R.id.empty_events_text); //display text showing no games
-            textView.setVisibility(View.VISIBLE);
-        }
+//        mAdapter.getFilter().filter(filter);
+//        if(mAdapter.getItemCount() == 0){
+//            TextView textView = getView().findViewById(R.id.empty_events_text); //display text showing no games
+//            textView.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void loadDisplay(View v){
@@ -69,8 +69,8 @@ public class GamesFragment extends Fragment implements RefreshableFragment, Filt
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new GameAdapter(user.getGames(), user.getEvents());
-        recyclerView.setAdapter(mAdapter);
+       // mAdapter = new GameAdapter(user.getGames(), user.getEvents());
+        //recyclerView.setAdapter(mAdapter);
 
         onDialogPositiveClick(filterDialog.filter);
     }

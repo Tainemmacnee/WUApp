@@ -9,14 +9,11 @@ import android.view.View;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.wuapp.data.DataManager;
-import com.example.wuapp.databinding.FragmentDashboardBinding;
-import com.example.wuapp.databinding.FragmentLoginBinding;
+import com.example.wuapp.databinding.ActivityLoginBinding;
 import com.example.wuapp.model.User;
 import com.example.wuapp.model.UserLoginToken;
-import com.example.wuapp.ui.login.LoginFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Connection;
@@ -34,19 +31,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
 
-    FragmentLoginBinding binding;
+    ActivityLoginBinding binding;
 
-    private String LOGIN_URL = "https://wds.usetopscore.com";
+    public final String LOGIN_URL = "https://wds.usetopscore.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = FragmentLoginBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
         binding.button.setOnClickListener(this::attemptLogin);
@@ -71,15 +67,13 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
-            try { if (fin != null) fin.close(); } catch(IOException e) {}
-            try { if (oin != null) oin.close(); } catch(IOException e) {}
+            try { if (fin != null) fin.close(); } catch(IOException ignored) {}
+            try { if (oin != null) oin.close(); } catch(IOException ignored) {}
         }
 
         if(loginToken != null) {
-            Intent intent = new Intent(this, DisplayUserActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, loginToken);
-            DataManager dm = new DataManager();
-            intent.putExtra("test", dm);
             startActivity(intent);
         }
     }
@@ -130,13 +124,13 @@ public class LoginActivity extends AppCompatActivity {
 
         String profileImage = userButton.child(0).attr("src").replace("30", "200");
 
-        HashMap<String, String> cookies = (HashMap) loginActionResponse.cookies();
+        HashMap<String, String> cookies = (HashMap<String, String>) loginActionResponse.cookies();
 
         HashMap<String, String> links = new HashMap<>();
-        links.put(UserLoginToken.LINK_USER, userButton.attr("href"));
-        links.put(UserLoginToken.LINK_SCHEDULED_GAMES, userButton.attr("href") + "/schedule");
-        links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, userButton.attr("href") + "/schedule/game_type/played");
-        links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, userButton.attr("href") + "/schedule/game_type/missing_result");
+        links.put(UserLoginToken.LINK_USER, LOGIN_URL+userButton.attr("href"));
+        links.put(UserLoginToken.LINK_SCHEDULED_GAMES, LOGIN_URL+userButton.attr("href") + "/schedule");
+        links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/played");
+        links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
 
         //TODO: remove legacy links
         links.put(User.USERPAGELINK, userButton.attr("href"));
@@ -155,40 +149,31 @@ public class LoginActivity extends AppCompatActivity {
         ProgressDialog dialog = ProgressDialog.show(LoginActivity.this, "",
                 "Logging in. Please wait...", true);
 
-        CompletableFuture.supplyAsync(() -> loadLoginPage()
-        ).thenApply(r -> attemptLogin(r, username, password)
-        ).thenAccept(r -> {
-            dialog.dismiss();
+        CompletableFuture.supplyAsync(this::loadLoginPage)
+                .thenApply(r -> attemptLogin(r, username, password))
+                .thenAccept(r -> {
+                    dialog.dismiss();
 
-            if(r != null) {
-                saveLoginToken(r);
+                    if(r != null) {
+                        saveLoginToken(r);
 
-                Intent intent = new Intent(this, DisplayUserActivity.class);
-                intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, r);
-                DataManager dm = new DataManager();
-                intent.putExtra("test", dm);
-                startActivity(intent);
-            } else {
-                Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();
-            }
+                        Intent intent = new Intent(this, DisplayUserActivity.class);
+                        intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, r);
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();
+                    }
         });
     }
 
     private void saveLoginToken(UserLoginToken token){
         if (!new File(getApplicationContext().getFilesDir(), "login.txt").exists()) {
-            FileOutputStream fout = null;
-            ObjectOutputStream oos = null;
-            try {
-                fout = getApplicationContext().openFileOutput("login.txt", Context.MODE_PRIVATE);
-                oos = new ObjectOutputStream(fout);
+            try (FileOutputStream fout = getApplicationContext().openFileOutput("login.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
                 oos.writeObject(token);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                try { if (fout != null) fout.close(); } catch(IOException e) {}
-                try { if (oos != null) oos.close(); } catch(IOException e) {}
             }
         }
     }

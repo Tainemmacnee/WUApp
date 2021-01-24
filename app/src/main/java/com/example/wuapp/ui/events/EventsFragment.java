@@ -1,90 +1,57 @@
 package com.example.wuapp.ui.events;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wuapp.DisplayUserActivity;
+import com.example.wuapp.MainActivity;
 import com.example.wuapp.R;
+import com.example.wuapp.data.DataManager;
+import com.example.wuapp.data.DataReceiver;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.User;
-import com.example.wuapp.ui.RefreshableFragment;
 
 import java.util.ArrayList;
 
-public class EventsFragment extends Fragment implements RefreshableFragment {
+public class EventsFragment extends Fragment implements DataReceiver {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_events, container, false);
-        recyclerView = v.findViewById(R.id.event_recycler_view);
+
         layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = v.findViewById(R.id.event_recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
 
-        DisplayUserActivity activity = (DisplayUserActivity)getActivity();
-        user = activity.getUser();
+        MainActivity activity = (MainActivity) getActivity();
 
-        loadDisplay(v);
+        makeRequest(activity.getDataManager(), this, DataManager.REQUEST_EVENTS);
 
         return v;
     }
 
-    private void loadDisplay(View v){
-        if(user.getEvents().size() == 0){
-            TextView textView = v.findViewById(R.id.empty_events_text); //display text showing no games
-            textView.setVisibility(View.VISIBLE);
-        } else {
-            TextView textView = v.findViewById(R.id.empty_events_text);
-            textView.setVisibility(View.GONE);
-
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(layoutManager);
-            mAdapter = new EventsAdapter(user.getEvents());
-            recyclerView.setAdapter(mAdapter);
-        }
+    private void loadRecycleView(ArrayList<Event> data){
+        recyclerView.setAdapter(new EventsAdapter(data));
     }
 
     @Override
-    public void refresh() {
-        user.loadData();
-
-        //animate refresh button
-        ActionMenuItemView image = getActivity().findViewById(R.id.action_refresh);
-        Animation rotateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
-        rotateAnimation.setFillAfter(true);
-        image.startAnimation(rotateAnimation);
-
-        //Clear text and recycler to show they are being reloaded
-        recyclerView.setAdapter(new EventsAdapter(new ArrayList<>())); //clear current displayed events
-        getView().findViewById(R.id.empty_events_text).setVisibility(View.GONE);
-
-        //wait for data to load and display once done
-        Handler handler = new Handler();
-        int delay = 100; //milliseconds
-
-        handler.postDelayed(new Runnable(){ //show new events after they are loaded
-            public void run(){
-                if(user.eventsDone()) {
-                    loadDisplay(getView());
-                    image.clearAnimation();
-                }  else {
-                    handler.postDelayed(this, delay);
-                }
-            }}, delay);
+    public <T> void receiveData(ArrayList<T> results) {
+        if(results != null && results.size() > 0){
+            if(results.get(0) instanceof Event){
+                System.out.println("Setting Events");
+                loadRecycleView((ArrayList<Event>) results);
+            }
+        }
     }
 }

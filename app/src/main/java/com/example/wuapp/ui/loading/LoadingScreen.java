@@ -39,10 +39,10 @@ public class LoadingScreen extends Fragment {
         this.load = load;
         this.activity = activity;
 
-        AppCompatActivity tempActivity = (AppCompatActivity) activity;
-        FragmentTransaction transaction = tempActivity.getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_view, this);
-        transaction.commit();
+//        AppCompatActivity tempActivity = (AppCompatActivity) activity;
+//        FragmentTransaction transaction = tempActivity.getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id., this);
+//        transaction.commit();
 
         start();
     }

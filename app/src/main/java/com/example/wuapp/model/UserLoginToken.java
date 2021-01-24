@@ -13,8 +13,6 @@ public class UserLoginToken implements Serializable {
     public static final String LINK_SCHEDULED_GAMES = "linkscheduledgames";
     public static final String LINK_GAMES_WITH_RESULTS = "linkgameswithresults";
     public static final String LINK_GAMES_MISSING_RESULTS = "linkgameswithoutresults";
-    public static final String LINK_WEB_DASHBOARD = "linkwebdashboard";
-
 
 
     private HashMap<String ,String> cookies;
