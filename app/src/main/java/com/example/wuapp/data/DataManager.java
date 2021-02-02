@@ -22,6 +22,8 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,6 +46,8 @@ public class DataManager implements Parcelable {
     private Queue<Request> requestQueue = new ArrayDeque<>();
 
     private UserLoginToken loginToken;
+
+    private ExecutorService executor = Executors.newCachedThreadPool();
 
     //TODO: Remove test constructor
     @SuppressLint("NewApi")
@@ -68,7 +72,7 @@ public class DataManager implements Parcelable {
         handler.postDelayed(new Runnable(){
             public void run(){
                 //do something
-                while(!requestQueue.isEmpty() && !downloadingGames){
+                while(!requestQueue.isEmpty() && !downloadingGames && !downloadingEvents){
                     processRequest(requestQueue.poll());
                 }
                 handler.postDelayed(this, delay);
@@ -85,6 +89,7 @@ public class DataManager implements Parcelable {
                     if(g.isUpcoming()){ results.add(g); }
                 }
                 break;
+
             case DataManager.REQUEST_EVENTS:
                 ArrayList res = new ArrayList();
                 res.addAll(eventSet);
@@ -146,37 +151,39 @@ public class DataManager implements Parcelable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void downloadGames(){
         this.downloadingGames = true;
+        executor.submit(() -> {
+            CompletableFuture<Void> scheduledGames = CompletableFuture.supplyAsync(() ->
+                downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
+            ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
-        CompletableFuture<Void> scheduledGames = CompletableFuture.supplyAsync(() ->
-            downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
-        ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
+            CompletableFuture<Void> gamesWithResult = CompletableFuture.supplyAsync(() ->
+                    downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_WITH_RESULTS))
+            ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
-        CompletableFuture<Void> gamesWithResult = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_WITH_RESULTS))
-        ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
+            CompletableFuture<Void> gamesWithoutResult = CompletableFuture.supplyAsync(() ->
+                    downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS))
+            ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
-        CompletableFuture<Void> gamesWithoutResult = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS))
-        ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
+            CompletableFuture combinedFutures = CompletableFuture.allOf(scheduledGames, gamesWithResult, gamesWithoutResult)
+                    .thenAccept(r -> this.downloadingGames = false);
 
-        CompletableFuture combinedFutures = CompletableFuture.allOf(scheduledGames, gamesWithResult, gamesWithoutResult)
-                .thenAccept(r -> this.downloadingGames = false);
-
-        combinedFutures.join();
+            combinedFutures.join();
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void downloadEvents() {
         this.downloadingEvents = true;
-
-        CompletableFuture.supplyAsync(() ->
-                downloadWebPage(HOME_URL)
-        ).thenApply(r -> WDSParser.parseEvents(r)
-        ).thenAccept(r -> {
-            r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getStandingsLink())));
-            this.eventSet.addAll(r);
-            this.downloadingEvents = false;
-        }).join();
+            executor.submit(() -> {
+            CompletableFuture.supplyAsync(() ->
+                    downloadWebPage(HOME_URL)
+            ).thenApply(r -> WDSParser.parseEvents(r)
+            ).thenAccept(r -> {
+                r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getStandingsLink())));
+                this.eventSet.addAll(r);
+                this.downloadingEvents = false;
+            }).join();
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
