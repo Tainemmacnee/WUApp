@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder> implements Filterable {
+public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHolder> implements Filterable {
 
     private Game[] gamesFiltered;
     private Game[] games;
@@ -40,43 +40,27 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         public ConstraintLayout root;
         public TextView homeTeamName;
         public TextView awayTeamName;
-        public TextView homeTeamScore;
-        public TextView awayTeamSpirit;
-        public TextView awayTeamScore;
-        public TextView homeTeamSpirit;
 
         public TextView date;
         public TextView time;
-        public TextView league;
         public TextView location;
         public ImageView homeTeamImage;
         public ImageView awayTeamImage;
-        public Button reportResultButton;
-
-        public ExpandableLayout expandableLayout;;
-
-        public View itemSeperator;
 
         public GameViewHolder(@NonNull View itemView) {
             super(itemView);
             this.root = itemView.findViewById(R.id.game_view_root);
             this.homeTeamName = itemView.findViewById(R.id.team1_name);
-            this.awayTeamName = itemView.findViewById(R.id.upcoming_game_away_team);
-            this.date = itemView.findViewById(R.id.upcoming_game_date);
-            this.time = itemView.findViewById(R.id.upcoming_game_time);
-            this.league = itemView.findViewById(R.id.upcoming_game_league);
-            this.location = itemView.findViewById(R.id.upcoming_game_location);
-            this.homeTeamImage = itemView.findViewById(R.id.event_team_image);
-            this.awayTeamImage = itemView.findViewById(R.id.upcoming_game_away_image);
-            this.homeTeamScore = itemView.findViewById(R.id.home_team_score);
-            this.awayTeamScore = itemView.findViewById(R.id.away_team_score);
-            this.homeTeamSpirit = itemView.findViewById(R.id.home_team_spirit);
-            this.awayTeamSpirit = itemView.findViewById(R.id.away_team_spirit);
-            this.reportResultButton = itemView.findViewById(R.id.report_results);
+            this.awayTeamName = itemView.findViewById(R.id.team2_name);
+            this.date = itemView.findViewById(R.id.game_date);
+            this.time = itemView.findViewById(R.id.game_time);
+            this.location = itemView.findViewById(R.id.game_location);
+            this.homeTeamImage = itemView.findViewById(R.id.team1_image);
+            this.awayTeamImage = itemView.findViewById(R.id.team2_image);
         }
     }
 
-    public GameAdapter(List<Game> games) {
+    public GameAdapter2(List<Game> games) {
         Game[] gamesArray = games.toArray(new Game[games.size()]);
         this.games = gamesArray;
         this.gamesFiltered = gamesArray;
@@ -85,7 +69,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.game_view, parent, false);
+                .inflate(R.layout.game_view2, parent, false);
 
         return new GameViewHolder(v);
     }
@@ -97,65 +81,10 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         holder.awayTeamName.setText(gamesFiltered[position].getAwayTeamName());
         holder.date.setText(gamesFiltered[position].getDate());
         holder.time.setText(gamesFiltered[position].getTime());
-        holder.league.setText(gamesFiltered[position].getLeague());
         holder.location.setText(gamesFiltered[position].getLocation());
         Picasso.get().load(gamesFiltered[position].getHomeTeamImg()).into(holder.homeTeamImage);
         Picasso.get().load(gamesFiltered[position].getAwayTeamImg()).into(holder.awayTeamImage);
 
-        holder.homeTeamScore.setText(gamesFiltered[position].getHomeTeamScore());
-        holder.awayTeamScore.setText(gamesFiltered[position].getAwayTeamScore());
-        holder.awayTeamSpirit.setText(gamesFiltered[position].getAwayTeamSpirit());
-        holder.homeTeamSpirit.setText(gamesFiltered[position].getHomeTeamSpirit());
-
-        if(gamesFiltered[position].isReportable()) {
-            holder.reportResultButton.setVisibility(View.VISIBLE);
-            holder.reportResultButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DisplayUserActivity a = (DisplayUserActivity) view.getContext();
-                    Event event = a.getUser().getEvent(gamesFiltered[position].getLeague());
-
-                    Team homeTeam = event.getTeam(gamesFiltered[position].getHomeTeamName());
-                    Team awayTeam = event.getTeam(gamesFiltered[position].getAwayTeamName());
-                    Intent intent = new Intent(view.getContext(), ReportResultActivity.class);
-                    intent.putExtra(DisplayUserActivity.MESSAGEHOMETEAM, (Parcelable) homeTeam);
-                    intent.putExtra(DisplayUserActivity.MESSAGEAWAYTEAM, (Parcelable) awayTeam);
-                    intent.putExtra(DisplayUserActivity.MESSAGEREPORTLINK, gamesFiltered[position].getReportLink());
-                    intent.putExtra(DisplayUserActivity.MESSAGEUSERNAME, a.getUser().getName());
-                    intent.putExtra(MainActivity.MESSAGE_COOKIES, a.getUser().getCookies());
-                    view.getContext().startActivity(intent);
-                }
-            });
-        } else {
-            holder.reportResultButton.setVisibility(View.GONE);
-        }
-
-        int red = Color.rgb(255, 0, 0);
-        int green = Color.rgb(0, 177, 64);
-
-        if(gamesFiltered[position].getHomeTeamScore().contains("W")){
-            holder.homeTeamScore.setTextColor(green);
-            holder.awayTeamScore.setTextColor(red);
-        } else if(gamesFiltered[position].getAwayTeamScore().contains("W")) {
-            holder.awayTeamScore.setTextColor(green);
-            holder.homeTeamScore.setTextColor(red);
-        } else if(gamesFiltered[position].getHomeTeamScore().contains("?")){
-            holder.homeTeamScore.setTextColor(Color.BLACK);
-            holder.awayTeamScore.setTextColor(Color.BLACK);
-        } else {
-            int homeTeamScore = Integer.parseInt(gamesFiltered[position].getHomeTeamScore());
-            int awayTeamScore = Integer.parseInt(gamesFiltered[position].getAwayTeamScore());
-            if(homeTeamScore == awayTeamScore){
-                holder.homeTeamScore.setTextColor(Color.BLACK);
-                holder.awayTeamScore.setTextColor(Color.BLACK);
-            } else if(homeTeamScore > awayTeamScore){
-                holder.homeTeamScore.setTextColor(green);
-                holder.awayTeamScore.setTextColor(red);
-            } else {
-                holder.homeTeamScore.setTextColor(red);
-                holder.awayTeamScore.setTextColor(green);
-            }
-        }
     }
 
     @Override

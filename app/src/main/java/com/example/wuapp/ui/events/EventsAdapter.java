@@ -38,7 +38,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             this.context = itemView.getContext();
-            this.textView = (TextView) itemView.findViewById(R.id.event_team_name);
+            this.textView = (TextView) itemView.findViewById(R.id.event_name);
             this.imageView = (ImageView) itemView.findViewById(R.id.event_team_image);
             this.eventTeamsButton = (Button) itemView.findViewById(R.id.event_teams_button);
             this.eventStandingsButton = (Button) itemView.findViewById(R.id.event_standings_button);

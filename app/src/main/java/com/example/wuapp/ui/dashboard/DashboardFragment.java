@@ -75,7 +75,7 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
             textView.setVisibility(View.GONE); //hide text showing no games
             upcomingrecyclerView.setHasFixedSize(true);
             upcomingrecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            mAdapter = new GameAdapter(limitAdapterItems(user.getUpcomingGames()),  user.getEvents());
+            //mAdapter = new GameAdapter(limitAdapterItems(user.getUpcomingGames()),  user.getEvents());
             upcomingrecyclerView.setAdapter(mAdapter);
         }
     }
@@ -88,7 +88,7 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
             textView.setVisibility(View.GONE); //hide text showing no games
             resultsrecyclerView.setHasFixedSize(true);
             resultsrecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            wAdapter = new GameAdapter(limitAdapterItems(user.getMissingResultGames()),  user.getEvents());
+            //wAdapter = new GameAdapter(limitAdapterItems(user.getMissingResultGames()),  user.getEvents());
             resultsrecyclerView.setAdapter(wAdapter);
         }
     }
@@ -110,8 +110,8 @@ public class DashboardFragment extends Fragment implements RefreshableFragment {
         //Clear text and recyclers to show they are being reloaded
         binding.emptyEventsText.setVisibility(View.GONE); //display text showing no games
         binding.emptyGamesText2.setVisibility(View.GONE); //display text showing no games
-        upcomingrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList())); //clear current displayed events
-        resultsrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList()));
+        //upcomingrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList())); //clear current displayed events
+        //resultsrecyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList()));
 
         //wait for data to load and display once done
         Handler handler = new Handler();

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 public class WDSParser {
 
@@ -79,6 +80,7 @@ public class WDSParser {
 
         Set<Game> results = new HashSet<>();
 
+        System.out.println(htmlDOC.location() + " " + htmlDOC.getElementsByClass("game-list-item").size());
         for(Element gameDiv : htmlDOC.getElementsByClass("game-list-item")){
             String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, Event, date, time, location,
                     homeTeamScore = "?", homeTeamSpirit = "?", awayTeamScore = "?", awayTeamSpirit = "?", reportLink = null;

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -57,6 +57,14 @@
         <item name="android:textColorAlertDialogListItem">@color/colorPrimary</item>
         <!-- Used for the background -->
         <item name="android:background">@color/colorOldDark</item>
+    </style>
+
+    <style name="StandardButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_background_grey</item>
+        <item name="android:elevation" tools:targetApi="lollipop">8dp</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
     </style>
 
 </resources>

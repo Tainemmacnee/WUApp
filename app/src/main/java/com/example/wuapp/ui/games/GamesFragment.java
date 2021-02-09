@@ -19,106 +19,52 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wuapp.DisplayUserActivity;
+import com.example.wuapp.MainActivity;
 import com.example.wuapp.R;
+import com.example.wuapp.data.DataManager;
+import com.example.wuapp.data.DataReceiver;
+import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.User;
 import com.example.wuapp.ui.RefreshableFragment;
+import com.example.wuapp.ui.events.EventsAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class GamesFragment extends Fragment implements RefreshableFragment, FilterDialog.FilterDialogListner{
+public class GamesFragment extends Fragment implements DataReceiver {
 
     private RecyclerView recyclerView;
     private GameAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private User user;
-    private FilterDialog filterDialog = new FilterDialog(this);
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_games, container, false);
+
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
         setHasOptionsMenu(true);
 
-        //DisplayUserActivity activity = (DisplayUserActivity)getActivity();
-        //user = activity.getUser();
-
-        loadDisplay(v);
+        MainActivity activity = (MainActivity) getActivity();
+        makeRequest(activity.getDataManager(), this, DataManager.REQUEST_SCHEDULED_GAMES);
 
         return v;
     }
 
-    public void showFilterDialog(){
-        filterDialog.show(getParentFragmentManager(), "FilterDialog");
+    private void loadRecycleView(ArrayList<Game> data){
+        recyclerView.setAdapter(new GameAdapter2(data));
     }
 
     @Override
-    public void onDialogPositiveClick(String filter) {
-//        mAdapter.getFilter().filter(filter);
-//        if(mAdapter.getItemCount() == 0){
-//            TextView textView = getView().findViewById(R.id.empty_events_text); //display text showing no games
-//            textView.setVisibility(View.VISIBLE);
-//        }
-    }
-
-    private void loadDisplay(View v){
-        TextView textView = v.findViewById(R.id.empty_events_text);
-        textView.setVisibility(View.GONE);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-       // mAdapter = new GameAdapter(user.getGames(), user.getEvents());
-        //recyclerView.setAdapter(mAdapter);
-
-        onDialogPositiveClick(filterDialog.filter);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.display_games_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-       if(item.getItemId() == R.id.action_filter) {
-            showFilterDialog();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+    public <T> void receiveData(ArrayList<T> results) {
+        if(results != null && results.size() > 0){
+            if(results.get(0) instanceof Game){
+                System.out.println("Setting Games");
+                loadRecycleView((ArrayList<Game>) results);
+            }
         }
     }
 
-    @Override
-    public void refresh() {
-        user.loadData();
-
-        //animate refresh button
-        ActionMenuItemView image = getActivity().findViewById(R.id.action_refresh);
-        Animation rotateAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
-        rotateAnimation.setFillAfter(true);
-        image.startAnimation(rotateAnimation);
-
-        //Clear text and recycler to show they are being reloaded
-        recyclerView.setAdapter(new GameAdapter(Collections.emptyList(), Collections.emptyList())); //clear current displayed events
-        getView().findViewById(R.id.empty_events_text).setVisibility(View.GONE);
-
-        //wait for data to load and display once done
-        Handler handler = new Handler();
-        int delay = 100; //milliseconds
-
-        handler.postDelayed(new Runnable(){ //show new events after they are loaded
-            public void run(){
-                if(user.gamesDone()){
-                    loadDisplay(getView());
-                    image.clearAnimation(); //finish animation
-                } else {
-                    handler.postDelayed(this, delay);
-                }
-            }}, delay);
-    }
 }

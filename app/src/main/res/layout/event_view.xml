@@ -8,11 +8,49 @@
     android:layout_marginTop="8dp"
     android:layout_marginRight="4dp"
     android:background="@drawable/rounded_background_dark"
-    android:elevation="2dp"
-    android:paddingBottom="15dp">
+    android:elevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/gameview_rounded_background_grey"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_name">
+
+        <Button
+            android:id="@+id/event_standings_button"
+            style="@style/StandardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:elevation="8dp"
+            android:text="Pools and Standings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/event_teams_button"
+            style="@style/StandardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:elevation="8dp"
+            android:text="Teams"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/event_standings_button"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/event_team_name"
+        android:id="@+id/event_name"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -64,34 +102,4 @@
         app:layout_constraintTop_toBottomOf="@id/image_main_card"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/event_teams_button"
-        android:layout_width="70dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/rounded_background_grey"
-        android:elevation="8dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="Teams"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/event_standings_button"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-    <Button
-        android:id="@+id/event_standings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/rounded_background_grey"
-        android:elevation="8dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="Pools and Standings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
         HashMap<String, String> links = new HashMap<>();
         links.put(UserLoginToken.LINK_USER, LOGIN_URL+userButton.attr("href"));
         links.put(UserLoginToken.LINK_SCHEDULED_GAMES, LOGIN_URL+userButton.attr("href") + "/schedule");
-        links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/played");
+        links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/with_result");
         links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
 
         //TODO: remove legacy links
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(r != null) {
                         saveLoginToken(r);
 
-                        Intent intent = new Intent(this, DisplayUserActivity.class);
+                        Intent intent = new Intent(this, MainActivity.class);
                         intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, r);
                         startActivity(intent);
                     } else {

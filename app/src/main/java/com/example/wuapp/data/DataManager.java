@@ -72,8 +72,9 @@ public class DataManager implements Parcelable {
         handler.postDelayed(new Runnable(){
             public void run(){
                 //do something
-                while(!requestQueue.isEmpty() && !downloadingGames && !downloadingEvents){
+                while(!requestQueue.isEmpty()){
                     processRequest(requestQueue.poll());
+                    System.out.println("processed request");
                 }
                 handler.postDelayed(this, delay);
             }
@@ -85,12 +86,20 @@ public class DataManager implements Parcelable {
 
         switch (r.request){
             case DataManager.REQUEST_SCHEDULED_GAMES:
+                if(downloadingGames) { break; }
                 for(Game g : gameSet){
                     if(g.isUpcoming()){ results.add(g); }
                 }
                 break;
+            case DataManager.REQUEST_RECENT_GAMES:
+                if(downloadingGames) { break; }
+                for(Game g : gameSet){
+                    if(!g.isUpcoming()){ results.add(g); }
+                }
+                break;
 
             case DataManager.REQUEST_EVENTS:
+                if(downloadingEvents) { break; }
                 ArrayList res = new ArrayList();
                 res.addAll(eventSet);
                 r.callback.receiveData(res);
@@ -153,7 +162,7 @@ public class DataManager implements Parcelable {
         this.downloadingGames = true;
         executor.submit(() -> {
             CompletableFuture<Void> scheduledGames = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
+                    downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
             ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
             CompletableFuture<Void> gamesWithResult = CompletableFuture.supplyAsync(() ->
@@ -164,7 +173,7 @@ public class DataManager implements Parcelable {
                     downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS))
             ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
-            CompletableFuture combinedFutures = CompletableFuture.allOf(scheduledGames, gamesWithResult, gamesWithoutResult)
+            CompletableFuture combinedFutures = CompletableFuture.allOf( gamesWithoutResult, scheduledGames)
                     .thenAccept(r -> this.downloadingGames = false);
 
             combinedFutures.join();
