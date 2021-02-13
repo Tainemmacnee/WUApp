@@ -12,28 +12,19 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="updated layouts for gameviews and event views">
-      <change afterPath="$PROJECT_DIR$/../Beta Test Users.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GameAdapter2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/RecentGamesFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/gameview_rounded_background_grey.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/backup_gameview.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/game_view2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/settings/SettingsFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/ic_calendar_today_24px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/LoginActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/DataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/dashboard/DashboardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/dashboard/DashboardFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/events/EventsAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/events/EventsAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/events/EventsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/events/EventsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GameAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GameAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GameTabsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GameTabsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GamesFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/games/GamesFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_gametabs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_gametabs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/game_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/game_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/game_view2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/game_view2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/menu/bottom_navigation_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/menu/bottom_navigation_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/drawables.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/drawables.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,9 +48,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="layoutResourceFile" />
         <option value="resourceFile" />
         <option value="Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -107,8 +98,21 @@
     <option name="MODULE_TAB" value="Default Config" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\raw" />
+    </key>
+    <key name="android.template.1160011513">
+      <recent name="com.example.firstapp" />
+    </key>
     <key name="android.template.-598303784">
       <recent name="com.example.firstapp" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.wuapp.ui.settings" />
+      <recent name="com.example.wuapp.ui.games" />
+      <recent name="com.example.Wuapp.ui.feedback" />
+      <recent name="com.example.firstapp" />
+      <recent name="com.example.firstapp.ui.events.teams" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\layout" />
@@ -116,18 +120,6 @@
       <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\java\com\example\Wuapp\ui\games" />
       <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\navigation" />
       <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\menu" />
-    </key>
-    <key name="android.template.1160011513">
-      <recent name="com.example.firstapp" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.wuapp.ui.games" />
-      <recent name="com.example.Wuapp.ui.feedback" />
-      <recent name="com.example.firstapp" />
-      <recent name="com.example.firstapp.ui.events.teams" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\raw" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -158,6 +150,39 @@
       <option name="PACKAGE_NAME" value="com.example.wuapp" />
       <option name="MAIN_CLASS_NAME" value="com.example.wuapp.UserObjectTest" />
       <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WDSParserTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Wuapp.app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.wuapp.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.wuapp" />
+      <option name="MAIN_CLASS_NAME" value="com.example.wuapp.WDSParserTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WDSParserTest.test_with_results_games_parsing_results" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Wuapp.app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.wuapp.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.wuapp" />
+      <option name="MAIN_CLASS_NAME" value="com.example.wuapp.WDSParserTest" />
+      <option name="METHOD_NAME" value="test_with_results_games_parsing_results" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
@@ -280,6 +305,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Android JUnit.WDSParserTest.test_with_results_games_parsing_results" />
+        <item itemvalue="Android JUnit.WDSParserTest" />
         <item itemvalue="Android JUnit.UserObjectTest" />
         <item itemvalue="Android Instrumented Tests.ExampleInstrumentedT..." />
         <item itemvalue="Android JUnit.LoginPerformanceTest" />
@@ -619,12 +646,25 @@
       <option name="project" value="LOCAL" />
       <updated>1612271653996</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="updated layouts for gameviews and event views">
+      <created>1612848160639</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1612848160639</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Fixed a bug with the WDS Parser that would fail to load when some layouts were not as expected, it will now just ignore the game that failed to parse. changed some bottom navigation icons.">
+      <created>1613226482025</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1613226482025</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="fixed bug with login layout" />
     <MESSAGE value="Updated loading screens for better code reuse" />
     <MESSAGE value="reworked user login to be much faster. implemented refreshing in a more clear way" />
     <MESSAGE value="Begun UI 2.0 update!" />
@@ -649,7 +689,8 @@
     <MESSAGE value="Implemented new bottom navigation. Fixed bugs with data manager" />
     <MESSAGE value="Updated some layouts to create a more consistent colour scheme" />
     <MESSAGE value="updated layouts for gameviews and event views" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated layouts for gameviews and event views" />
+    <MESSAGE value="Fixed a bug with the WDS Parser that would fail to load when some layouts were not as expected, it will now just ignore the game that failed to parse. changed some bottom navigation icons." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed a bug with the WDS Parser that would fail to load when some layouts were not as expected, it will now just ignore the game that failed to parse. changed some bottom navigation icons." />
   </component>
   <component name="WindowStateProjectService">
     <state x="989" y="286" key="#app" timestamp="1612318958979">
@@ -661,56 +702,64 @@
     </state>
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607320490810" />
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612320442487" />
-    <state x="720" y="320" key="AndroidCreateResourceFileDialog" timestamp="1612269943051">
+    <state x="860" y="454" key="AndroidCreateResourceDirectoryDialog" timestamp="1613224101643">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="860" y="454" key="AndroidCreateResourceDirectoryDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613224101643" />
+    <state x="720" y="320" key="AndroidCreateResourceFileDialog" timestamp="1613227320562">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="720" y="320" key="AndroidCreateResourceFileDialog/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607316192242" />
-    <state x="720" y="320" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612269943051" />
-    <state x="481" y="39" width="1510" height="1075" key="CommitChangelistDialog2" timestamp="1612848118450">
+    <state x="720" y="320" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613227320562" />
+    <state x="481" y="39" width="1510" height="1075" key="CommitChangelistDialog2" timestamp="1613226480347">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="489" y="223" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225436590" />
-    <state x="481" y="39" width="1510" height="1075" key="CommitChangelistDialog2/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612848118450" />
-    <state width="2517" height="252" key="GridCell.Tab.0.bottom" timestamp="1612847797429">
+    <state x="481" y="39" width="1510" height="1075" key="CommitChangelistDialog2/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226480347" />
+    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1612848998147">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612848998147" />
+    <state width="2517" height="252" key="GridCell.Tab.0.bottom" timestamp="1613226859002">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612847797429" />
-    <state width="2517" height="252" key="GridCell.Tab.0.center" timestamp="1612847797429">
+    <state width="2517" height="252" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
+    <state width="2517" height="252" key="GridCell.Tab.0.center" timestamp="1613226859002">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612847797429" />
-    <state width="2517" height="252" key="GridCell.Tab.0.left" timestamp="1612847797429">
+    <state width="2517" height="252" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
+    <state width="2517" height="252" key="GridCell.Tab.0.left" timestamp="1613226859002">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612847797429" />
-    <state width="2517" height="252" key="GridCell.Tab.0.right" timestamp="1612847797429">
+    <state width="2517" height="252" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
+    <state width="2517" height="252" key="GridCell.Tab.0.right" timestamp="1613226859002">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612847797429" />
-    <state width="1664" height="314" key="GridCell.Tab.1.bottom" timestamp="1612349651444">
+    <state width="2517" height="252" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
+    <state width="2517" height="347" key="GridCell.Tab.1.bottom" timestamp="1613226071489">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="1664" height="314" key="GridCell.Tab.1.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612349651444" />
-    <state width="1664" height="314" key="GridCell.Tab.1.center" timestamp="1612349651444">
+    <state width="2517" height="347" key="GridCell.Tab.1.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
+    <state width="2517" height="347" key="GridCell.Tab.1.center" timestamp="1613226071489">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="1664" height="314" key="GridCell.Tab.1.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612349651444" />
-    <state width="1664" height="314" key="GridCell.Tab.1.left" timestamp="1612349651444">
+    <state width="2517" height="347" key="GridCell.Tab.1.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
+    <state width="2517" height="347" key="GridCell.Tab.1.left" timestamp="1613226071489">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="1664" height="314" key="GridCell.Tab.1.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612349651444" />
-    <state width="1664" height="314" key="GridCell.Tab.1.right" timestamp="1612349651444">
+    <state width="2517" height="347" key="GridCell.Tab.1.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
+    <state width="2517" height="347" key="GridCell.Tab.1.right" timestamp="1613226071489">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="1664" height="314" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612349651444" />
+    <state width="2517" height="347" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
     <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1612271655401">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -726,13 +775,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java</url>
-          <line>156</line>
+          <line>160</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java</url>
-          <line>154</line>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -3,6 +3,7 @@ package com.example.wuapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,10 @@ import com.example.wuapp.model.WebLoader;
 import com.example.wuapp.ui.events.EventsFragment;
 import com.example.wuapp.ui.games.GameTabsFragment;
 import com.example.wuapp.ui.games.GamesFragment;
+import com.example.wuapp.ui.settings.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.File;
 
 /**
  * This is the activity that starts when the application is run. It it used to process the users login
@@ -51,6 +55,9 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.events:
                         mfragment = new EventsFragment();
                         break;
+                    case R.id.settings:
+                        mfragment = new SettingsFragment();
+                        break;
                 }
                 return loadFragment(mfragment);
             }
@@ -70,6 +77,20 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
         return false;
+    }
+
+    /**
+     * This function is used to log the user out
+     * @param view
+     */
+    public void logout(View view){
+        File file = new File(getApplicationContext().getFilesDir(), "login.txt");
+        if (file.exists()) {
+            file.delete();
+        }
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

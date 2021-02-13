@@ -60,7 +60,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="2020 Winter Monday mens Womexn's Leauge"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/newLightText"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="parent"
