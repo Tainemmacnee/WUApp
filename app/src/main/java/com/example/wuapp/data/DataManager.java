@@ -173,7 +173,7 @@ public class DataManager implements Parcelable {
                     downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS))
             ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
 
-            CompletableFuture combinedFutures = CompletableFuture.allOf( gamesWithoutResult, scheduledGames)
+            CompletableFuture combinedFutures = CompletableFuture.allOf(gamesWithoutResult, gamesWithResult, scheduledGames)
                     .thenAccept(r -> this.downloadingGames = false);
 
             combinedFutures.join();

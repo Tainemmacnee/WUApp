@@ -1,0 +1,770 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VQcDWFJWGwEJXFZQBgQ=",licenseKey:"18c7efa99d",applicationID:"2987215"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(t){try{c.console&&console.log(t)}catch(e){}}var i,o=t("ee"),a=t(20),c={};try{i=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(c.console=!0,i.indexOf("dev")!==-1&&(c.dev=!0),i.indexOf("nr_dev")!==-1&&(c.nrDev=!0))}catch(s){}c.nrDev&&o.on("internal-error",function(t){r(t.stack)}),c.dev&&o.on("fn-err",function(t,e,n){r(n.stack)}),c.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(c,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,c){try{p?p-=1:i(c||new UncaughtException(t,e,n),!0)}catch(u){try{o("ierr",[u,s.now(),!0])}catch(d){}}return"function"==typeof f&&f.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function i(t,e){var n=e?null:s.now();o("err",[t,n])}var o=t("handle"),a=t(21),c=t("ee"),s=t("loader"),u=t("gos"),f=window.onerror,d=!1,l="nr@seenError",p=0;s.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(6),t(5),"addEventListener"in window&&t(3),s.xhrWrappable&&t(7),d=!0)}c.on("fn-start",function(t,e,n){d&&(p+=1)}),c.on("fn-err",function(t,e,n){d&&!n[l]&&(u(n,l,function(){return!0}),this.thrown=!0,i(n))}),c.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),c.on("internal-error",function(t){o("ierr",[t,s.now(),!0])})},{}],3:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(f);)e=Object.getPrototypeOf(e);e&&i(e)}function i(t){c.inPlace(t,[f,d],"-",o)}function o(t,e){return t[1]}var a=t("ee").get("events"),c=t("wrap-function")(a,!0),s=t("gos"),u=XMLHttpRequest,f="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(u.prototype)):u.prototype.hasOwnProperty(f)&&(i(window),i(u.prototype)),a.on(f+"-start",function(t,e){var n=t[1],r=s(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?c(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],4:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=o(arguments),e={};i.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var c=r.apply(this,t);return i.emit(n+"start",[t,a],c),c.then(function(t){return i.emit(n+"end",[null,t],c),t},function(t){throw i.emit(n+"end",[t],c),t})})}var i=t("ee").get("fetch"),o=t(21),a=t(20);e.exports=i;var c=window,s="fetch-",u=s+"body-",f=["arrayBuffer","blob","json","text","formData"],d=c.Request,l=c.Response,p=c.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(f,function(t,e){r(d[h],e,u),r(l[h],e,u)}),r(c,"fetch",s),i.on(s+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),i.emit(s+"done",[null,e],n)}else i.emit(s+"done",[t],n)}))},{}],5:[function(t,e,n){var r=t("ee").get("raf"),i=t("wrap-function")(r),o="equestAnimationFrame";e.exports=r,i.inPlace(window,["r"+o,"mozR"+o,"webkitR"+o,"msR"+o],"raf-"),r.on("raf-start",function(t){t[0]=i(t[0],"fn-")})},{}],6:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function i(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var o=t("ee").get("timer"),a=t("wrap-function")(o),c="setTimeout",s="setInterval",u="clearTimeout",f="-start",d="-";e.exports=o,a.inPlace(window,[c,"setImmediate"],c+d),a.inPlace(window,[s],s+d),a.inPlace(window,[u,"clearImmediate"],u+d),o.on(s+f,r),o.on(c+f,i)},{}],7:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",c)}function i(){var t=this,e=f.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,f.emit("xhr-resolved",[],t)),d.inPlace(t,w,"fn-",c)}function o(t){y.push(t),h&&(b?b.then(a):v?v(a):(E=-E,R.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function c(t,e){return e}function s(t,e){for(var n in t)e[n]=t[n];return e}t(3);var u=t("ee"),f=u.get("xhr"),d=t("wrap-function")(f),l=NREUM.o,p=l.XHR,h=l.MO,m=l.PR,v=l.SI,g="readystatechange",w=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=f;var x=window.XMLHttpRequest=function(t){var e=new p(t);try{f.emit("new-xhr",[e],e),e.addEventListener(g,i,!1)}catch(n){try{f.emit("internal-error",[n])}catch(r){}}return e};if(s(p,x),x.prototype=p.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",c),f.on("send-xhr-start",function(t,e){r(t,e),o(e)}),f.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!v&&!m){var E=1,R=document.createTextNode(E);new h(a).observe(R,{characterData:!0})}}else u.on("fn-end",function(t){t[0]&&t[0].type===g||a()})},{}],8:[function(t,e,n){function r(t){if(!c(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,u=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=p.generateSpanId(),m=p.generateTraceId(),v=Date.now(),g={spanId:h,traceId:m,timestamp:v};return(t.sameOrigin||s(t)&&l())&&(g.traceContextParentHeader=i(h,m),g.traceContextStateHeader=o(h,v,n,r,u)),(t.sameOrigin&&!f()||!t.sameOrigin&&s(t)&&d())&&(g.newrelicHeader=a(h,m,v,n,r,u)),g}function i(t,e){return"00-"+e+"-"+t+"-01"}function o(t,e,n,r,i){var o=0,a="",c=1,s="",u="";return i+"@nr="+o+"-"+c+"-"+n+"-"+r+"-"+t+"-"+a+"-"+s+"-"+u+"-"+e}function a(t,e,n,r,i,o){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var c={v:[0,1],d:{ty:"Browser",ac:r,ap:i,id:t,tr:e,ti:n}};return o&&r!==o&&(c.d.tk=o),btoa(JSON.stringify(c))}function c(t){return u()&&s(t)}function s(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var i=h(n.allowed_origins[r]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return e}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function l(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var p=t(17),h=t(10);e.exports={generateTracePayload:r,shouldGenerateTrace:c}},{}],9:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<l;r++)t.removeEventListener(d[r],this.listener,!1);e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):o(this,t),n.cbTime=this.cbTime,f.emit("xhr-done",[t],t),c("xhr",[e,n,this.startTime]))}}function i(t,e){var n=s(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=s(e),t.sameOrigin=t.parsedOrigin.sameOrigin}function o(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable){var c=t("handle"),s=t(10),u=t(8).generateTracePayload,f=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(14),m=t(13),v=t(11),g=window.XMLHttpRequest;a.features.xhr=!0,t(7),t(4),f.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,t.addEventListener("load",function(n){o(e,t)},!1),h&&(h>34||h<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),f.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),f.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=u(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),f.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],i=this;if(n&&r){var o=m(r);o&&(n.txSize=o)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||i.loadCaptureCalled||(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{f.emit("internal-error",[n])}catch(r){}}};for(var c=0;c<l;c++)e.addEventListener(d[c],this.listener,!1)}),f.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),f.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),f.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),f.on("addEventListener-end",function(t,e){e instanceof g&&"load"===t[0]&&f.emit("xhr-load-added",[t[1],t[2]],e)}),f.on("removeEventListener-end",function(t,e){e instanceof g&&"load"===t[0]&&f.emit("xhr-load-removed",[t[1],t[2]],e)}),f.on("fn-start",function(t,e,n){e instanceof g&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),f.on("fn-end",function(t,e){this.xhrCbStart&&f.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),f.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url?n=t[0].url:window.URL&&t[0]&&t[0]instanceof URL&&(n=t[0].href),n&&(this.parsedOrigin=s(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var i=u(this.parsedOrigin);if(i&&(i.newrelicHeader||i.traceContextParentHeader))if("string"==typeof t[0]||window.URL&&t[0]&&t[0]instanceof URL){var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),e(o.headers,i)&&(this.dt=i),t.length>1?t[1]=o:t.push(o)}else t[0]&&t[0].headers&&e(t[0].headers,i)&&(this.dt=i)})}},{}],10:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];var e=document.createElement("a"),n=window.location,i={};e.href=t,i.port=e.port;var o=e.href.split("://");!i.port&&o[1]&&(i.port=o[1].split("/")[0].split("@").pop().split(":")[1]),i.port&&"0"!==i.port||(i.port="https"===o[0]?"443":"80"),i.hostname=e.hostname||n.hostname,i.pathname=e.pathname,i.protocol=o[0],"/"!==i.pathname.charAt(0)&&(i.pathname="/"+i.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,c=e.hostname===document.domain&&e.port===n.port;return i.sameOrigin=a&&(!e.hostname||c),"/"===i.pathname&&(r[t]=i),i}},{}],11:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?i(t.response):"text"===n||""===n||void 0===n?i(t.responseText):void 0}var i=t(13);e.exports=r},{}],12:[function(t,e,n){function r(){}function i(t,e,n){return function(){return o(t,[u.now()].concat(c(arguments)),e?null:this,n),e?void 0:this}}var o=t("handle"),a=t(20),c=t(21),s=t("ee").get("tracer"),u=t("loader"),f=NREUM;"undefined"==typeof window.newrelic&&(newrelic=f);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",p=l+"ixn-";a(d,function(t,e){f[e]=i(l+e,!0,"api")}),f.addPageAction=i(l+"addPageAction",!0),f.setCurrentRouteName=i(l+"routeName",!0),e.exports=newrelic,f.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(p+"tracer",[u.now(),t,n],r),function(){if(s.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw s.emit("fn-err",[arguments,this,t],n),t}finally{s.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){h[e]=i(p+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),o("err",[t,u.now(),!1,e])}},{}],13:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],14:[function(t,e,n){var r=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(r=+i[1]),e.exports=r},{}],15:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(22);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],16:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?d("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&d("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();n.length>0&&d("lcp",[n[n.length-1]])}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||d("cls",[t])})}function a(t){if(t instanceof h&&!v){var e=Math.round(t.timeStamp),n={type:t.type};e<=l.now()?n.fid=l.now()-e:e>l.offset&&e<=Date.now()?(e-=l.offset,n.fid=l.now()-e):e=l.now(),v=!0,d("timing",["fi",e,n])}}function c(t){d("pageHide",[l.now(),t])}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var s,u,f,d=t("handle"),l=t("loader"),p=t(19),h=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(m){}u=new PerformanceObserver(i);try{u.observe({entryTypes:["largest-contentful-paint"]})}catch(m){}f=new PerformanceObserver(o);try{f.observe({type:"layout-shift",buffered:!0})}catch(m){}}if("addEventListener"in document){var v=!1,g=["click","keydown","mousedown","pointerdown","touchstart"];g.forEach(function(t){document.addEventListener(t,a,!1)})}p(c)}},{}],17:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var i,o="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",c=0;c<o.length;c++)i=o[c],"x"===i?a+=t().toString(16):"y"===i?(i=3&t()|8,a+=i.toString(16)):a+=i;return a}function i(){return a(16)}function o(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,i=window.crypto||window.msCrypto;i&&i.getRandomValues&&Uint8Array&&(n=i.getRandomValues(new Uint8Array(31)));for(var o=[],a=0;a<t;a++)o.push(e().toString(16));return o.join("")}e.exports={generateUuid:r,generateSpanId:i,generateTraceId:o}},{}],18:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,s=c.match(a);s&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=s[1])}e.exports={agent:i,version:o,match:r}},{}],19:[function(t,e,n){function r(t){function e(){t(a&&document[a]?document[a]:document[i]?"hidden":"visible")}"addEventListener"in document&&o&&document.addEventListener(o,e,!1)}e.exports=r;var i,o,a;"undefined"!=typeof document.hidden?(i="hidden",o="visibilitychange",a="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",o="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",o="webkitvisibilitychange",a="webkitVisibilityState")},{}],20:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],21:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],22:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?u(t,s,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!p.aborted||o){t&&a&&t(n,r,i);for(var c=e(i),s=m(n),u=s.length,f=0;f<u;f++)s[f].apply(c,r);var l=d[y[n]];return l&&l.push([x,n,r,c]),c}}function o(t,e){w[t]=m(t).concat(e)}function h(t,e){var n=w[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return w[t]||[]}function v(t){return l[t]=l[t]||i(n)}function g(t,e){f(t,function(t,n){e=e||"feature",y[n]=e,e in d||(d[e]=[])})}var w={},y={},x={on:o,addEventListener:o,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:g,abort:c,aborted:!1};return x}function o(t){return u(t,s,a)}function a(){return new r}function c(){(d.api||d.feature)&&(p.aborted=!0,d=p.backlog={})}var s="nr@context",u=t("gos"),f=t(20),d={},l={},p=e.exports=i();e.exports.getOrSetContext=o,p.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!b++){var t=x.info=NREUM.info,e=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();s(w,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+x.offset],null,"api"),c("timing",["load",n]);var r=l.createElement("script");r.src="https://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===l.readyState&&o()}function o(){c("mark",["domContent",a()+x.offset],null,"api")}var a=t(15),c=t("handle"),s=t(20),u=t("ee"),f=t(18),d=window,l=d.document,p="addEventListener",h="attachEvent",m=d.XMLHttpRequest,v=m&&m.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:m,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var g=""+location,w={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1198.min.js"},y=m&&v&&v[p]&&!/CriOS/.test(navigator.userAgent),x=e.exports={offset:a.getLastTimestamp(),now:a,origin:g,features:{},xhrWrappable:y,userAgent:f};t(12),t(16),l[p]?(l[p]("DOMContentLoaded",o,!1),d[p]("load",r,!1)):(l[h]("onreadystatechange",i),d[h]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var b=0},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,s,u){function nrWrapper(){var o,a,f,l;try{a=this,o=d(arguments),f="function"==typeof r?r(o,a):r||{}}catch(p){i([p,"",[o,a,s],f],t)}c(n+"start",[o,a,s],f,u);try{return l=e.apply(a,o)}catch(h){throw c(n+"err",[o,a,h],f,u),h}finally{c(n+"end",[o,a,l],f,u)}}return a(e)?e:(n||(n=""),nrWrapper[l]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var c,s,u,f="-"===r.charAt(0);for(u=0;u<e.length;u++)s=e[u],c=t[s],a(c)||(t[s]=n(c,f?s+r:r,i,s,o))}function c(n,r,o,a){if(!h||e){var c=h;h=!0;try{t.emit(n,r,o,e,a)}catch(s){i([s,n,r,o],t)}h=c}}return t||(t=f),n.inPlace=r,n.flag=l,n}function i(t,e){e||(e=f);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)p.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[l])}function c(t,e){var n=e(t);return n[l]=t,o(t,n,f),n}function s(t,e,n){var r=t[e];t[e]=c(r,n)}function u(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var f=t("ee"),d=t(21),l="nr@original",p=Object.prototype.hasOwnProperty,h=!1;e.exports=r,e.exports.wrapFunction=c,e.exports.wrapInPlace=s,e.exports.argsToArray=u},{}]},{},["loader",2,9]);</script>  
+              <meta name="robots" content="noindex, noarchive" />                <title>Taine Macnee - Wellington Disc Sports</title>                      <meta name="viewport" content="width=device-width, initial-scale=1.0" />        
+    
+      <meta property="og:title" content="Taine Macnee - Wellington Disc Sports"/>
+    
+  <link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" />
+      <link href='//fonts.googleapis.com/css?family=Open+Sans|Bree+Serif' rel='stylesheet' type='text/css'>
+        <link rel="canonical" href="https://wds.usetopscore.com/u/taine-macnee/schedule/game_type/missing_result"/>
+  
+          <script>
+            var disqus_shortname = "Wellingtondisc";
+    </script>
+  
+    
+                          <link href="/asset-cache/34410c9097da3af5575ac62b4857a887.css" data-group="global" rel="stylesheet" type="text/css" media="screen,print" />
+              <link href="/asset-cache/web-css-component-profile.less.25990bc9f8479b9ef4fc28af48b1e1ab.0c333d6508a86fba4ac8be8dc6bd4dd3.css" rel="stylesheet" type="text/css" media="screen,print" />
+    
+  <style type="text/css">
+.main-content-inner, table.table tbody tr:nth-child(even):not(.odd), table.table tbody tr.even {
+background-color: #2c2c2e;
+} 
+.rich-text table tbody tr:nth-child(odd):not(.even), .rich-text table tbody tr.odd, .rich-excerpt table tbody tr:nth-child(odd):not(.even), .rich-excerpt table tbody tr.odd, .mce-content-body table tbody tr:nth-child(odd):not(.even), .mce-content-body table tbody tr.odd{
+background-color: #2c2c2e;
+} 
+
+
+#body {
+    color: #f8f8f8;
+}
+
+#footer {
+    background:#2c2c2e
+}
+
+.has-background .nav-sidebar, .has-background .sidebar-area, .has-background .main-content-inner, .has-background .header-content-inner, .has-background .sidebar-content-full .sidebar-area, .has-background .breadcrumb-outer {
+    background: #2c2c2e;
+}
+.nav-sidebar>li.selected>a, .nav-sidebar>li.selected-ancestor>a {
+    background-color: #424344;
+}
+
+.plain-link[class*="icon-"].alt, .plain-link[class*="icon-"].alt>.icon {
+color: #ffdd00;
+}
+
+.breadcrumb {
+    background: #2c2c2e
+}
+
+table.table tbody tr:nth-child(odd):not(.even), table.table tbody tr.odd {
+    background-color: #262626;
+}
+
+.form-inset {
+    background-color: #262626;
+    background-image: none;
+    border:none;
+    
+}
+.nav-sidebar > li a:focus, .nav-sidebar > li a:hover, .nav-sidebar>li.selected>a:focus, .nav-sidebar>li.selected>a:hover, .nav-sidebar>li.selected-ancestor>a:focus, .nav-sidebar>li.selected-ancestor>a:hover {
+     color: #2c2c2e;
+}
+
+.striped-block:nth-child(even) {
+    background: #262626;
+}
+
+.row-select:hover, .panel {
+background-color: #58595b;
+}
+.btn {
+color: #2c2c2e !important;
+}
+
+.game-card .game-card-info {
+    background: lightgrey;
+}
+
+.popup-content {
+    background: #2c2c2e;</style>
+  
+    <script id="global-js-data" data-content="{&quot;culture&quot;:&quot;en_NZ&quot;,&quot;is_debugging&quot;:false,&quot;is_production&quot;:true,&quot;is_forum&quot;:false,&quot;is_auth&quot;:true,&quot;ajax_error_url&quot;:&quot;\/ajax-error&quot;,&quot;ajax_debug_url&quot;:null,&quot;csrf&quot;:{&quot;name&quot;:&quot;_csrf_token&quot;,&quot;value&quot;:&quot;74e10e921deb46488cdc137c557d3b32&quot;},&quot;collapsed_width&quot;:799,&quot;max_fluid_width&quot;:1170,&quot;api_domain&quot;:&quot;https:\/\/wds.usetopscore.com\/&quot;,&quot;api_csrf&quot;:{&quot;name&quot;:&quot;api_csrf&quot;,&quot;value&quot;:&quot;QXJCek00RG5VVVNVfDE2MTMyMjM5NTR8ZlZ1Z21HdEVlanQ3cmo4WTNlYXVYRWt0LUFhLVVNNnJGSXJZdlpUODJCOA&quot;,&quot;expires&quot;:1613227554,&quot;renew_url&quot;:&quot;https:\/\/wellington.ultimate.org.nz\/u\/renew-api-csrf&quot;},&quot;upload_max_file_size&quot;:{&quot;bytes&quot;:15728640,&quot;text&quot;:&quot;15M&quot;},&quot;gmApiKey&quot;:&quot;AIzaSyCZuRrNM-RztYZTFd7l2X_3LAUOPAS2lXE&quot;}"></script>
+  
+</head>
+  <body class="has-background content-standard" id="body">
+  
+            <div class="flashes">
+                                                                            <div id="flash-tmpl" class="hide">
+      <div class="flash flash-FLASH_TYPE">
+        <div class="container">
+          <a data-for=".flash" href="javascript:;" class="icon-close no-label plain-link my-toggler close-only"><span class="icon"></span><span class="btn-label">Close</span></a>          <span class="flash-msg">FLASH_MESSAGE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+          <div class="flow-content">
+    
+      <nav class="global-toolbar " id="global-toolbar"
+         data-sub-tabs-per-row="4">
+    <div class="global-toolbar-inner">
+
+                                                      <div class="global-toolbar-item global-toolbar-network-icon global-toolbar-item-collapsed ">
+                      <a href="https://ultimatecentral.com/en_nz/" class="no-label icon-uc"
+               style="">
+              <span class="icon"></span>
+              <span class="btn-label">Ultimate Central</span>
+            </a>
+                  </div>
+      
+      
+              <div class="global-toolbar-item global-toolbar-item-full"  data-collapse-order="3">
+                                                  <a class="icon-event-list " href="/e" data-content-safe="1"><span class="icon"></span><span class="btn-label">Events</span> <span class="badge">4</span></a>                    <nav class="global-toolbar-subnav">
+                          <a class="icon-personal " href="/u/taine-macnee/events"><span class="icon"></span><span class="btn-label">Your Events</span></a>                                                                                  <a class="global-toolbar-subnav-img-item plain-link" href="/e/2021-summer-thursday-7-aside-mixed-social-league" data-content-safe="1"><img alt="WDS Logo BY" title="WDS Logo BY" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/lHJDvO9oDU/s-40-40/wds-logo-by.gif" data-media-item-id="116964" /><span class="global-toolbar-subnav-item-name">2021 Summer Thursday 7 a-side Mixed Social League </span> <span class="badge badge-success">accepted</span></a>                                                                      <a class="global-toolbar-subnav-img-item plain-link" href="/e/2021-summer-friday-indoors-league" data-content-safe="1"><img alt="WDS Logo BY" title="WDS Logo BY" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/lHJDvO9oDU/s-40-40/wds-logo-by.gif" data-media-item-id="116964" /><span class="global-toolbar-subnav-item-name">2021 Summer Friday Indoors League</span> <span class="badge badge-success">accepted</span></a>                                                                      <a class="global-toolbar-subnav-img-item plain-link" href="/e/21q1-4-aside-mixed" data-content-safe="1"><img alt="WDS Logo BY" title="WDS Logo BY" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/lHJDvO9oDU/s-40-40/wds-logo-by.gif" data-media-item-id="116964" /><span class="global-toolbar-subnav-item-name">2021 Summer Monday Ultimates 4 A-side mixed social league </span> <span class="badge badge-success">accepted</span></a>                                                                      <a class="global-toolbar-subnav-img-item plain-link" href="/e/experiment" data-content-safe="1"><img alt="WDS Logo BY" title="WDS Logo BY" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/lHJDvO9oDU/s-40-40/wds-logo-by.gif" data-media-item-id="116964" /><span class="global-toolbar-subnav-item-name">Experiment</span> <span class="badge badge-info">admin</span></a>                        <a class="icon-event " href="/e" data-content-safe="1"><span class="icon"></span><span class="btn-label">Events</span></a>            <div class="global-toolbar-subaction-list"><a class="plain-link" href="/e" data-content-safe="1">Future</a><a class="plain-link" href="/e/event_status/registering" data-content-safe="1">Registering</a><a class="plain-link" href="/e/event_status/happening" data-content-safe="1">Happening</a><a class="plain-link" href="/e/start/_" data-content-safe="1">All</a></div>                                                  <a class="icon-add " href="/e/new"><span class="icon"></span><span class="btn-label">Add Event</span></a>                      </nav>
+                  </div>
+      
+      
+      <div class="global-toolbar-item global-toolbar-item-full"  data-collapse-order="3">
+        <a class="icon-blog " href="/p" data-content-safe="1"><span class="icon"></span><span class="btn-label">Posts</span></a>        <nav class="global-toolbar-subnav">
+                    <a class="icon-blog " href="/p" data-content-safe="1"><span class="icon"></span><span class="btn-label">All Posts</span></a>                      <a class="icon-add " href="/p/new"><span class="icon"></span><span class="btn-label">Add Post</span></a>                  </nav>
+      </div>
+
+              <div class="global-toolbar-item global-toolbar-item-full"  data-collapse-order="3">
+                              <a class="icon-teams " href="/t" data-content-safe="1"><span class="icon"></span><span class="btn-label">Teams</span> <span class="badge badge-warning">5</span></a>          <nav class="global-toolbar-subnav">
+                          <a class="icon-personal " href="/u/taine-macnee/teams"><span class="icon"></span><span class="btn-label">Your Teams</span></a>                                                                                                                                                                        <a href="/t/discfunctional-dinosaurs#team-report-results" class="plain-link global-toolbar-subnav-img-item">
+                <img alt="11132abf624399ef34b9336181e6fa3b" title="11132abf624399ef34b9336181e6fa3b" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/TpbNfwbJFz/s-40-33/11132abf624399ef34b9336181e6fa3b-1.jpg" data-media-item-id="315977" style=" max-height: 40px; " /><span class="global-toolbar-subnav-item-name">Discfunctional Dinosaurs</span><span class="badge badge-info">admin</span> <span class="badge badge-warning">report results</span>              </a>
+                                                                                                                              <a href="/t/beyblades-2#team-report-results" class="plain-link global-toolbar-subnav-img-item">
+                <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/s-40-40/uc-logomark-1.png" data-media-item-id="127650" style=" max-height: 40px; " /><span class="global-toolbar-subnav-item-name">Beyblades</span><span class="badge badge-warning">report results</span>              </a>
+                                                                                                                              <a href="/t/equilibrium" class="plain-link global-toolbar-subnav-img-item">
+                <img alt="Equilibrium Logo Small" title="Equilibrium Logo Small" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/6TMZ2kquaS/s-40-36/equilibrium-logo-small.png" data-media-item-id="296809" style=" max-height: 40px; " /><span class="global-toolbar-subnav-item-name">Equilibrium</span><span class="badge badge-info">admin</span>              </a>
+                                                                                                <a href="/t/beyblades-1" class="plain-link global-toolbar-subnav-img-item">
+                <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/s-40-40/uc-logomark-1.png" data-media-item-id="127650" style=" max-height: 40px; " /><span class="global-toolbar-subnav-item-name">Beyblades</span>              </a>
+                                                                                                                              <a href="/t/team-01-6847" class="plain-link global-toolbar-subnav-img-item">
+                <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/s-40-40/uc-logomark-1.png" data-media-item-id="127650" style=" max-height: 40px; " /><span class="global-toolbar-subnav-item-name">Team 01</span><span class="badge badge-info">admin</span>              </a>
+                        <a class="icon-teams " href="/t" data-content-safe="1"><span class="icon"></span><span class="btn-label">All Teams</span></a>                                      <a class="icon-add " href="/t/new"><span class="icon"></span><span class="btn-label">Add Team</span></a>                        
+                        </nav>
+        </div>
+      
+      
+      
+      
+      <div class="global-toolbar-items-right ">
+                                                          <div class="global-toolbar-item global-toolbar-item-full global-toolbar-item-right"  data-collapse-order="1">
+            <a class="icon-settings">
+              <span class="icon"></span>
+              <span class="btn-label">Admin</span>
+            </a>
+            <nav class="global-toolbar-subnav global-toolbar-subnav-admin global-toolbar-subnav-compact">
+                                                        <a class="icon-media " href="/m"><span class="icon"></span><span class="btn-label">Media</span></a>                                          <a target="_blank" href="https://help.ultimatecentral.com/" class="icon-help "><span class="icon"></span><span class="btn-label">Help</span></a>            </nav>
+          </div>
+        
+                  <div class="global-toolbar-item global-toolbar-item-full global-toolbar-item-preview global-toolbar-item-right badge-middle ">
+                        <a id="preview-btn" data-url="https://wds.usetopscore.com/api/persons/edit?id=690268" data-ajax-remote="1" data-api-csrf="1" href="javascript:;" class="icon-edit "><span class="icon"></span><span class="btn-label">Edit </span><span class="hide-on-edit badge badge-info">Off</span><span class="hide-on-preview badge badge-info">On</span></a>          </div>
+        
+                
+                  <div class="global-toolbar-item global-toolbar-item-full global-toolbar-user global-toolbar-item-right" data-collapse-order="2">
+            <a class="global-toolbar-user-btn " href="/u/taine-macnee" data-content-safe="1"><img alt="Picture of Taine Macnee" class="global-toolbar-user-img" src="https://d36m266ykvepgv.cloudfront.net/uploads/person/EFyibyQ0.30.png" width="30" height="30" /><span class="btn-label">Taine Macnee</span><span class="icon-dropdown plain-link no-label"><span class="icon"></span></span></a>            <nav class="global-toolbar-subnav">
+              <a class="icon-player-profile " href="/u/taine-macnee" data-content-safe="1"><span class="icon"></span><span class="btn-label">Account</span></a>              <a class="icon-schedule " href="/u/taine-macnee/schedule"><span class="icon"></span><span class="btn-label">Schedule</span></a>              <a data-content-no-ajax="1" class="icon-family " href="/u/taine-macnee/family"><span class="icon"></span><span class="btn-label">Family</span></a>              <a data-content-no-ajax="1" class="icon-close " href="/signout"><span class="icon"></span><span class="btn-label">Sign Out</span></a>            </nav>
+          </div>
+                    </div>
+          </div>
+  </nav>
+
+    <div id="dynamic-content">
+              <header id="header" class="  ">
+      <div class="header-branding">
+      <div id="cms-area-126707-header" class="cms-area  "
+      >
+                    <div id="cms-slots-126707-header" class="cms-slots ">
+      <div class="cms-slot cms-slot-header floating-option-menu-scope " id="slot-1252590"
+         data-permid="1">
+      
+          <div class=" cms-slot-content" id="cms-slot-content-1252590">
+                          <div class="header header-light header-text-left"
+  >
+    <div class="container">
+    <div class="header-inner                              header-padded">
+      <div class="header-logo header-logo-center">
+                                  <a href="/" title="Home" class="extra-large-size">
+          <img alt="wds abbreviated logo with white nz" title="wds abbreviated logo with white nz" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/01POxKzZx1/s-234-80/wds-abbreviated-logo-with-white-nz.png" data-media-item-id="122385" style=" max-height: 80px; " />        </a>
+      </div>
+          </div>
+  </div>
+</div>                      </div>
+
+                </div>    </div>
+      </div>          </div>
+    </header>
+
+<main id="content">
+
+      <div class="content-inner has-sidebar"><div class="sidebar-content sidebar-content-collapsed"
+           data-alignment="left"
+           ><div class="sidebar-content-inner"><a href="javascript:;" class="icon-close no-label sidebar-content-close plain-link large-size"><span class="icon"></span><span class="btn-label">Close</span></a><ul class="nav-sidebar">
+  <li class="nav-item ">
+    <a class="plain-link icon-overview" href="/u/taine-macnee" data-content-safe="1"><span class="icon"></span><span class="btn-label">Overview</span></a>  </li>
+
+  
+  <li class="nav-item selected">
+    <a class="plain-link icon-schedule" href="/u/taine-macnee/schedule"><span class="icon"></span><span class="btn-label">Schedule</span></a>  </li>
+
+  <li class="nav-item ">
+    <a class="plain-link icon-schedule" href="/u/taine-macnee/referee-schedule"><span class="icon"></span><span class="btn-label">Officiating Schedule</span></a>  </li>
+
+      <li class="nav-item ">
+      <a class="plain-link icon-events" href="/u/taine-macnee/events"><span class="icon"></span><span class="btn-label">Events<span class="align-right badge">39</span></span></a>    </li>
+  
+  
+  
+      <li class="nav-item ">
+      <a class="plain-link icon-teams" href="/u/taine-macnee/teams"><span class="icon"></span><span class="btn-label">Teams<span class="align-right badge">18</span></span></a>    </li>
+  </ul>
+
+        <div class="sidebar-area spacer1-top">
+      <h4>Account</h4>
+      <ul class="nav-sidebar-admin"><li class="nav-item ">
+        <a class="plain-link icon-edit" href="/u/taine-macnee/edit"><span class="icon"></span><span class="btn-label">Personal Information</span></a>      </li>
+      <li class="nav-item ">
+        <a class="plain-link icon-settings" href="/u/taine-macnee/preferences"><span class="icon"></span><span class="btn-label">Preferences & Privacy</span></a>      </li>
+      <li class="nav-item ">
+        <a class="plain-link icon-family" href="/u/taine-macnee/family"><span class="icon"></span><span class="btn-label">Family</span></a>      </li>
+                  <li class="nav-item ">
+        <a class="plain-link icon-network" href="/u/taine-macnee/associations"><span class="icon"></span><span class="btn-label">Associations</span></a>      </li>
+                  <li class="nav-item ">
+        <a class="plain-link icon-password" href="/u/taine-macnee/password"><span class="icon"></span><span class="btn-label">Change Password</span></a>      </li></ul>
+    </div>
+  
+  <div class="sidebar-area spacer1-top">
+    <h4>About</h4>
+    <ul class="nav-sidebar-admin">
+              <li class="nav-item ">
+          <a class="plain-link icon-membership" href="/u/taine-macnee/memberships"><span class="icon"></span><span class="btn-label">Memberships</span></a>        </li>
+                    <li class="nav-item ">
+          <a class="plain-link icon-fa" href="/u/taine-macnee/payment-methods"><span class="icon"><i class="fa fa-credit-card"></i></span><span class="btn-label">Payment Options</span></a>        </li>
+                    <li class="nav-item ">
+          <a class="plain-link icon-page" href="/u/taine-macnee/receipts"><span class="icon"></span><span class="btn-label">Receipts</span></a>        </li>
+                    <li class="nav-item ">
+          <a class="plain-link icon-people" href="/u/taine-macnee/sports"><span class="icon"></span><span class="btn-label">Sports</span></a>        </li>
+                    <li class="nav-item ">
+          <a class="plain-link icon-survey" href="/u/taine-macnee/surveys"><span class="icon"></span><span class="btn-label">Surveys</span></a>        </li>
+            <li class="nav-item ">
+        <a class="plain-link icon-waiver" href="/u/taine-macnee/waivers"><span class="icon"></span><span class="btn-label">Waivers</span></a>      </li>
+                    <li class="nav-item ">
+          <a class="plain-link icon-calendar" href="/u/taine-macnee/calendar-sync"><span class="icon"></span><span class="btn-label">Calendar Sync</span></a>        </li>
+                </ul>
+  </div></div></div><div class="main-content"><div class="main-content-inner">  
+
+
+  <h1>
+    <span class="icon-schedule plain-link no-label"><span class="icon"></span></span>    Schedule  </h1>
+  <form class="spacer1 game-filters" id="game-search"
+        action="/u/taine-macnee/schedule/game_type/missing_result">
+    
+
+
+  <select name="field" class="spacer-half">
+    <option value="">All Locations</option>
+          <option value="asb-sports-centre" >
+        ASB Sports Centre      </option>
+          <option value="awakairangi-park" >
+        Awakairangi Park      </option>
+          <option value="bm-centre" >
+        B&M Centre      </option>
+          <option value="liardet-street-park" >
+        Liardet Street Park      </option>
+          <option value="macalister-park" >
+        MacAlister Park      </option>
+          <option value="nga-puna-wai" >
+        Ngā Puna Wai      </option>
+          <option value="nunweek-park" >
+        Nunweek Park      </option>
+          <option value="st-patricks-college-artificial-surface" >
+        St Patrick's College Artificial Surface      </option>
+          <option value="tahunanui-nelson-1" >
+        Tahunanui      </option>
+      </select>
+
+  <select name="event_id" class="spacer-half">
+    <option value="">All Events</option>
+    <option value="active_events_only" >
+      Active Events    </option>
+          <option value="135861" >
+        2018 Spring Monday 4-a-side Mixed Social League      </option>
+          <option value="135865" >
+        2018 Spring Thursday 7-a-side Mixed Social League      </option>
+          <option value="131521" >
+        2018 Winter Thursday Mixed Social League      </option>
+          <option value="139063" >
+        2019 Autumn Monday Men's and Women's League       </option>
+          <option value="139062" >
+        2019 Autumn Monday Mixed Social League       </option>
+          <option value="139275" >
+        2019 Autumn Thursday Auction Draft League      </option>
+          <option value="139066" >
+        2019 Autumn Thursday Mixed Social League      </option>
+          <option value="141113" >
+        2019 Indoor Nationals      </option>
+          <option value="141244" >
+        2019 NZ Division 2 Mixed Ultimate Championships       </option>
+          <option value="141859" >
+        2019 Spring Thursday 7 Aside Mixed Social League       </option>
+          <option value="141857" >
+        2019 Spring Wednesday Mixed A-Grade League      </option>
+          <option value="135862" >
+        2019 Summer Monday ultiM4TES League      </option>
+          <option value="136071" >
+        2019 Summer Thursday 7-a-side Mixed Social League      </option>
+          <option value="140666" >
+        2019 Winter Monday Men's and Women's League      </option>
+          <option value="140665" >
+        2019 Winter Monday Mixed Social League      </option>
+          <option value="140667" >
+        2019 Winter Thursday Mixed Social League       </option>
+          <option value="142813" >
+        2020 Summer Monday UltiMATES 4-a-side Mixe      </option>
+          <option value="140236" >
+        Flat Out on the Beach 2019      </option>
+          <option value="140428" >
+        Indoorpendence 2019      </option>
+          <option value="133549" >
+        Indoorpendence Day 2018      </option>
+          <option value="141858" >
+        Spring Monday ultiMATES 4-Aside Mixed Social League      </option>
+          <option value="141235" >
+        Tūpararā Tussle 2019      </option>
+      </select>
+
+
+
+<select name="game_type" class="spacer-half">
+      <option value="all" >
+      All Types    </option>
+      <option value="upcoming" >
+      Upcoming Games    </option>
+      <option value="played" >
+      Played Games    </option>
+      <option value="with_result" >
+      With Results    </option>
+      <option value="missing_result" selected="selected">
+      Missing Results    </option>
+      <option value="live_scoreboard" >
+      Live Scoreboard    </option>
+  </select>
+
+
+<div class="help-block js-scoreboard-notice hide">
+  Live scoreboard enabled. Results will be updated every few minutes.</div>  </form>
+  <div id="game-list">
+          <div class="spacer1 game-list">
+            <div class="striped-blocks">
+          <div class="game-list-item row-select game-list-item-1141594  striped-block"
+     data-url="/g/1141594?label=View+game"
+     data-content-safe="1"
+     id="game-list-item-1141594">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="clearfix">
+                              <span class="push-left">Thu, 11/02/2021</span>
+                    <div class="small push-right">
+            6:30 PM          </div>
+                                              </div>
+    </div>
+
+                <div class="span8">
+        <div class="row-fluid-always">
+                                          <div class="span6">
+                                              <span class="game-home-or-away meta-small">
+                                      vs                                  </span>
+                                            <div class="game-participant">
+          
+  <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/c-40-40/uc-logomark-1.png" data-media-item-id="127650" class="inset-line-left" />
+      <div class="schedule-score-box with-score can-report win">
+              <div class="score ">
+          15        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>?          </div>
+                                            <a data-for=".game-list-item" data-with-undo-cancel="1" data-close-on-overlay-click="" class="icon-report-score alt popup-open flag flag-left no-label btn" href="/admin/game/report-score/1141594?first_team=278809"><span class="icon"></span><span class="btn-flag">Report Results</span></a>          </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/beyblades-2" data-content-safe="1">Beyblades</a>      </div>
+</div>
+                                          </div>
+                      <div class="span6">
+                                                                          <div class="game-participant">
+          
+  <img alt="13308716 1066049800131215 8280117726375636105 O" title="13308716 1066049800131215 8280117726375636105 O" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/kMqwKMfjgq/c-40-40/13308716-1066049800131215-8280117726375636105-o.jpg" data-media-item-id="186657" class="inset-line-left" />
+      <div class="schedule-score-box with-score can-report loss">
+              <div class="score ">
+          5        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>&#x2714;          </div>
+                                            <a data-for=".game-list-item" data-with-undo-cancel="1" data-close-on-overlay-click="" class="icon-report-score alt popup-open flag flag-left no-label btn" href="/admin/game/report-score/1141594?first_team=278809"><span class="icon"></span><span class="btn-flag">Report Results</span></a>          </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/squad-zulu" data-content-safe="1">SQUAD Zulu</a>      </div>
+</div>
+                                          </div>
+                  </div>
+      </div>
+    
+    <div class="span2">
+      <div class="clearfix">
+                  <span class="push-left">
+                          <a class="plain-link" href="/f/liardet-street-park" data-content-safe="1">Liardet Street Park</a>              #1                      </span>
+                          <div class="meta-small push-right">
+                          <a class="plain-link" href="/e/2021-summer-thursday-7-aside-mixed-social-league" data-content-safe="1">2021 Summer Thursday 7 a-side Mixed Social League </a><br/>
+                                  </div>
+              </div>
+    </div>
+  </div>
+
+  
+  
+  
+  </div>
+          <div class="game-list-item row-select game-list-item-1141587  striped-block"
+     data-url="/g/1141587?label=View+game"
+     data-content-safe="1"
+     id="game-list-item-1141587">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="clearfix">
+                              <span class="push-left">Thu, 4/02/2021</span>
+                    <div class="small push-right">
+            6:30 PM          </div>
+                                              </div>
+    </div>
+
+                <div class="span8">
+        <div class="row-fluid-always">
+                                          <div class="span6">
+                                              <span class="game-home-or-away meta-small">
+                                      vs                                  </span>
+                                            <div class="game-participant">
+          
+  <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/c-40-40/uc-logomark-1.png" data-media-item-id="127650" class="inset-line-left" />
+      <div class="schedule-score-box with-score  win">
+              <div class="score ">
+          14        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>11          </div>
+                        </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/beyblades-2" data-content-safe="1">Beyblades</a>      </div>
+</div>
+                                          </div>
+                      <div class="span6">
+                                                                          <div class="game-participant">
+          
+  <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/c-40-40/uc-logomark-1.png" data-media-item-id="127650" class="inset-line-left" />
+      <div class="schedule-score-box with-score  loss">
+              <div class="score ">
+          10        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>?          </div>
+                        </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/let-it-rip-1" data-content-safe="1">Let It Rip</a>      </div>
+</div>
+                                          </div>
+                  </div>
+      </div>
+    
+    <div class="span2">
+      <div class="clearfix">
+                  <span class="push-left">
+                          <a class="plain-link" href="/f/liardet-street-park" data-content-safe="1">Liardet Street Park</a>              #1                      </span>
+                          <div class="meta-small push-right">
+                          <a class="plain-link" href="/e/2021-summer-thursday-7-aside-mixed-social-league" data-content-safe="1">2021 Summer Thursday 7 a-side Mixed Social League </a><br/>
+                                  </div>
+              </div>
+    </div>
+  </div>
+
+  
+  
+  
+  </div>
+          <div class="game-list-item row-select game-list-item-1141521  striped-block"
+     data-url="/g/1141521?label=View+game"
+     data-content-safe="1"
+     id="game-list-item-1141521">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="clearfix">
+                              <span class="push-left">Fri, 29/01/2021</span>
+                    <div class="small push-right">
+            7:30 PM          </div>
+                                              </div>
+    </div>
+
+                <div class="span8">
+        <div class="row-fluid-always">
+                                          <div class="span6">
+                                              <span class="game-home-or-away meta-small">
+                                      vs                                  </span>
+                                            <div class="game-participant">
+          
+  <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/c-40-40/uc-logomark-1.png" data-media-item-id="127650" class="inset-line-left" />
+      <div class="schedule-score-box with-score  tie">
+              <div class="score ">
+          --        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>&#x2714;          </div>
+                        </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/team-01-7309" data-content-safe="1">Team 01 (BYE - No Game)</a>      </div>
+</div>
+                                          </div>
+                      <div class="span6">
+                                                                          <div class="game-participant">
+          
+  <img alt="11132abf624399ef34b9336181e6fa3b" title="11132abf624399ef34b9336181e6fa3b" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/TpbNfwbJFz/c-40-40/11132abf624399ef34b9336181e6fa3b-1.jpg" data-media-item-id="315977" class="inset-line-left" />
+      <div class="schedule-score-box with-score  tie">
+              <div class="score ">
+          --        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>?          </div>
+                        </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/discfunctional-dinosaurs" data-content-safe="1">Discfunctional Dinosaurs</a>      </div>
+</div>
+                                          </div>
+                  </div>
+      </div>
+    
+    <div class="span2">
+      <div class="clearfix">
+                  <span class="push-left">
+                          <a class="plain-link" href="/f/asb-sports-centre" data-content-safe="1">ASB Sports Centre</a>              #BYE                      </span>
+                          <div class="meta-small push-right">
+                          <a class="plain-link" href="/e/2021-summer-friday-indoors-league" data-content-safe="1">2021 Summer Friday Indoors League</a><br/>
+                                  </div>
+              </div>
+    </div>
+  </div>
+
+  
+  
+  
+  </div>
+          <div class="game-list-item row-select game-list-item-1141581  striped-block"
+     data-url="/g/1141581?label=View+game"
+     data-content-safe="1"
+     id="game-list-item-1141581">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="clearfix">
+                              <span class="push-left">Thu, 28/01/2021</span>
+                    <div class="small push-right">
+            6:30 PM          </div>
+                                              </div>
+    </div>
+
+                <div class="span8">
+        <div class="row-fluid-always">
+                                          <div class="span6">
+                                              <span class="game-home-or-away meta-small">
+                                      vs                                  </span>
+                                            <div class="game-participant">
+          
+  <img alt="Screen Shot 2020 09 29 At 4 15 42 PM" title="Screen Shot 2020 09 29 At 4 15 42 PM" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/XmTmJJpP0T/c-40-40/screen-shot-2020-09-29-at-4-15-42-pm.png" data-media-item-id="319476" class="inset-line-left" />
+      <div class="schedule-score-box with-score  loss">
+              <div class="score ">
+          8        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>?          </div>
+                        </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/pinot-green" data-content-safe="1">Resting Grinch face</a>      </div>
+</div>
+                                          </div>
+                      <div class="span6">
+                                                                          <div class="game-participant">
+          
+  <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/c-40-40/uc-logomark-1.png" data-media-item-id="127650" class="inset-line-left" />
+      <div class="schedule-score-box with-score  win">
+              <div class="score ">
+          10        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>12          </div>
+                        </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/beyblades-2" data-content-safe="1">Beyblades</a>      </div>
+</div>
+                                          </div>
+                  </div>
+      </div>
+    
+    <div class="span2">
+      <div class="clearfix">
+                  <span class="push-left">
+                          <a class="plain-link" href="/f/liardet-street-park" data-content-safe="1">Liardet Street Park</a>              #1                      </span>
+                          <div class="meta-small push-right">
+                          <a class="plain-link" href="/e/2021-summer-thursday-7-aside-mixed-social-league" data-content-safe="1">2021 Summer Thursday 7 a-side Mixed Social League </a><br/>
+                                  </div>
+              </div>
+    </div>
+  </div>
+
+  
+  
+  
+  </div>
+          <div class="game-list-item row-select game-list-item-1142176  striped-block"
+     data-url="/g/1142176?label=View+game"
+     data-content-safe="1"
+     id="game-list-item-1142176">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="clearfix">
+                              <span class="push-left">Mon, 25/01/2021</span>
+                    <div class="small push-right">
+            6:30 PM          </div>
+                                              </div>
+    </div>
+
+                <div class="span8">
+        <div class="row-fluid-always">
+                                          <div class="span6">
+                                              <span class="game-home-or-away meta-small">
+                                      vs                                  </span>
+                                            <div class="game-participant">
+          
+  <img alt="Uc Logomark" title="Uc Logomark" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/66h47QW8vx/c-40-40/uc-logomark-1.png" data-media-item-id="127650" class="inset-line-left" />
+      <div class="schedule-score-box with-score can-report loss">
+              <div class="score ">
+          4        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>&#x2714;          </div>
+                                            <a data-for=".game-list-item" data-with-undo-cancel="1" data-close-on-overlay-click="" class="icon-report-score alt popup-open flag flag-left no-label btn" href="/admin/game/report-score/1142176?first_team=255275"><span class="icon"></span><span class="btn-flag">Report Results</span></a>          </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/xero-hucks-given" data-content-safe="1">Xero Hucks Given</a>      </div>
+</div>
+                                          </div>
+                      <div class="span6">
+                                                                          <div class="game-participant">
+          
+  <img alt="11132abf624399ef34b9336181e6fa3b" title="11132abf624399ef34b9336181e6fa3b" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/TpbNfwbJFz/c-40-40/11132abf624399ef34b9336181e6fa3b-1.jpg" data-media-item-id="315977" class="inset-line-left" />
+      <div class="schedule-score-box with-score can-report win">
+              <div class="score ">
+          12        </div>
+                  <div class="schedule-score-box-game-result" title="Team Spirit">
+            <span class="icon-spirit plain-link no-label"><span class="icon"></span></span>?          </div>
+                                            <a data-for=".game-list-item" data-with-undo-cancel="1" data-close-on-overlay-click="" class="icon-report-score alt popup-open flag flag-left no-label btn" href="/admin/game/report-score/1142176?first_team=255275"><span class="icon"></span><span class="btn-flag">Report Results</span></a>          </div>
+  
+  <div class="schedule-team-name ">
+          <a class="plain-link" href="/t/discfunctional-dinosaurs" data-content-safe="1">Discfunctional Dinosaurs</a>      </div>
+</div>
+                                          </div>
+                  </div>
+      </div>
+    
+    <div class="span2">
+      <div class="clearfix">
+                  <span class="push-left">
+                          <a class="plain-link" href="/f/macalister-park" data-content-safe="1">MacAlister Park</a>              #2                      </span>
+                          <div class="meta-small push-right">
+                          <a class="plain-link" href="/e/21q1-4-aside-mixed" data-content-safe="1">2021 Summer Monday Ultimates 4 A-side mixed social league </a><br/>
+                                  </div>
+              </div>
+    </div>
+  </div>
+
+  
+  
+  
+  </div>
+      </div>
+      </div>
+
+  </div>
+</div></div>  </div>
+</main>
+
+  <a href="javascript:;" class="sidebar-content-toggle not-loaded">
+    <span class="icon-player-profile plain-link no-label"><span class="icon"></span></span><span class="sidebar-content-toggle-title">Profile Menu</span>
+  </a>
+            </div>
+              <footer id="footer">
+      <div class="footer-inner">
+        <ul class="nav-footer">
+          <li class="nav-item ">
+      <a href="/event-information"   >Event Information</a>          </li>
+          <li class="nav-item ">
+      <a href="/leagues"   >Leagues</a>          </li>
+          <li class="nav-item ">
+      <a href="/youth-ultimate"   >Youth Ultimate</a>          </li>
+          <li class="nav-item ">
+      <a href="/tournaments"   >Tournaments</a>          </li>
+          <li class="nav-item ">
+      <a href="/community"   >Community</a>          </li>
+          <li class="nav-item ">
+      <a href="/about"   >About WDS</a>          </li>
+  </ul>
+        <ul class="nav-footer spacer1">
+                      <li>
+              <a data-ga="{&quot;category&quot;:&quot;social&quot;,&quot;action&quot;:&quot;click-facebook&quot;,&quot;label&quot;:&quot;footer&quot;}" target="_blank" href="https://www.facebook.com/WellingtonDisc" class="icon-facebook plain-link"><span class="icon"></span><span class="btn-label">Facebook</span></a>            </li>
+                                                </ul>
+          <div id="cms-area-126707-footer" class="cms-area  "
+      >
+                    <div id="cms-slots-126707-footer" class="cms-slots ">
+      <div class="cms-slot cms-slot-sponsor floating-option-menu-scope " id="slot-1247811"
+         data-permid="1">
+      
+          <div class=" cms-slot-content" id="cms-slot-content-1247811">
+                          <div class="row-fluid">        <div class="span3 spacer-half sponsor-item                    text-center ">
+
+                                <a href="https://proactive4health.co.nz/" target="_blank" class="plain-link block"><img alt="Logo ProActive Horizontal Top" title="Logo ProActive Horizontal Top" src="https://d36m266ykvepgv.cloudfront.net/uploads/media/xJN35EQCtC/s-270-107/logo-proactive-horizontal-top.png" data-media-item-id="311087" style=" max-height: 270px; " /></a>
+              
+                        <div class="small">
+                          <a href="https://proactive4health.co.nz/" class="plain-link">
+                Proactive Physio                  </a>
+                  
+                  </div>
+                  </div>
+    </div>                      </div>
+
+                </div>    </div>
+      </div>
+        <div class="text-center small-size">
+          <a href="//www.usetopscore.com/privacy-policy" class="plain-link"><span class="btn-label">Privacy Policy</span></a>                  </div>
+        <div class="text-center small-size">
+                      <span style="margin-right: 20px">Part of <a class="plain-link icon-right icon-uc" href="https://ultimatecentral.com/en_nz/"><span class="btn-label">Ultimate Central</span><span class="icon"></span></a>            </span>
+                    Powered by <a href="//www.usetopscore.com" class="plain-link icon-right icon-ts"><span class="btn-label">TopScore</span><span class="icon"></span></a>        </div>
+      </div>
+    </footer>
+          </div>
+  <div id="page-overlay"></div>
+<div id="popup-wrapper">
+  <div class="popup-width-enforcer">
+    <div id="popup" class="popup-window">
+      <a href="javascript:;" class="icon-close close-popup plain-link alt no-label"><span class="icon"></span></a>      <div class="popup-content"></div>
+    </div>
+  </div>
+</div>
+            <div class="body-bg body-bg-none"></div>
+        
+
+      
+
+  
+      <div class="scripts">
+                          <script>function runOnReady() {
+        ts.liveFilter("#game-search", "#game-list")
+ts.setupPreview("#preview-btn", false, false, false)
+ts.enableGlobalToolbar("#global-toolbar")
+ts.enableSidebarContentToggle("#content")
+ts.registerStylesheets(["\/asset-cache\/web-css-reset.css.929e1c3cc6b141e8522c2f6bae909173.css","\/asset-cache\/web-css-global-basic.less.25990bc9f8479b9ef4fc28af48b1e1ab.30acbec6b42b0c9ad355c0270994359c.css","\/asset-cache\/web-css-global-grid.less.25990bc9f8479b9ef4fc28af48b1e1ab.5258aa5e304b40bb4164a816cd928c6c.css","\/asset-cache\/web-css-global-typography.less.25990bc9f8479b9ef4fc28af48b1e1ab.a9fd141ef7dc744c24c52c96b832be5a.css","\/asset-cache\/web-css-component-badges.less.25990bc9f8479b9ef4fc28af48b1e1ab.1e8b7f9b8195ff139e3dceeda2fee94f.css","\/asset-cache\/web-css-theme-compact-overrides-component-buttons.less.25990bc9f8479b9ef4fc28af48b1e1ab.3c413e5ce6bfe98843caf34c4286a055.css","\/asset-cache\/web-css-component-icons.less.25990bc9f8479b9ef4fc28af48b1e1ab.6d3380eff3935b1c79c32f70ee55cfe6.css","\/asset-cache\/web-css-component-layout_shared.less.25990bc9f8479b9ef4fc28af48b1e1ab.7a0ec07a360fe2dc4c7ab1dd35dd2a85.css","\/asset-cache\/web-css-component-media_list.less.25990bc9f8479b9ef4fc28af48b1e1ab.7eeeca7d3f8012cc3f7053ddb44006f5.css","\/asset-cache\/web-css-component-menu.less.25990bc9f8479b9ef4fc28af48b1e1ab.5166a9174835fc0e062c8452422e45ab.css","\/asset-cache\/web-css-component-tabs.less.25990bc9f8479b9ef4fc28af48b1e1ab.67761dc9ec2c12c4647d309668ffcc82.css","\/asset-cache\/web-css-component-pager.less.25990bc9f8479b9ef4fc28af48b1e1ab.a946015b5e4a9e9fd87d3ede8a0339b6.css","\/asset-cache\/web-css-component-footer.less.25990bc9f8479b9ef4fc28af48b1e1ab.33bbe38209d0eded191944be05f1c6bb.css","\/asset-cache\/web-css-component-notices.less.25990bc9f8479b9ef4fc28af48b1e1ab.c199555a15334f80251b4ebacbedd6b2.css","\/asset-cache\/web-css-component-panel.less.25990bc9f8479b9ef4fc28af48b1e1ab.bb48e1e44fcdba42cfb0335e5a832cc5.css","\/asset-cache\/web-css-component-body_background.less.25990bc9f8479b9ef4fc28af48b1e1ab.73c51c56d07945cc4f4212784e3a05f8.css","\/asset-cache\/web-css-component-popup.less.25990bc9f8479b9ef4fc28af48b1e1ab.c1833502b3e8a8c494844f0d6247a291.css","\/asset-cache\/web-css-component-progress_bar.less.25990bc9f8479b9ef4fc28af48b1e1ab.e57502fb0734b0ed39c5db9b73e11c52.css","\/asset-cache\/web-css-component-rostering.less.25990bc9f8479b9ef4fc28af48b1e1ab.1e8dbfbbace8bc94c28e52259a369117.css","\/asset-cache\/web-css-component-sortable.less.25990bc9f8479b9ef4fc28af48b1e1ab.15ef0ec62d719bc2da1120a32961d96b.css","\/asset-cache\/web-css-component-input_groups.less.25990bc9f8479b9ef4fc28af48b1e1ab.3bafdbf8cbeff66d13b7c180e3ec4a4c.css","\/asset-cache\/web-css-component-tile_patterns.less.25990bc9f8479b9ef4fc28af48b1e1ab.9db09b8632a84e3deeb0b438935ab44a.css","\/asset-cache\/web-css-component-game_referees.less.25990bc9f8479b9ef4fc28af48b1e1ab.f066f3880e69b6886411c152cc93e13c.css","\/asset-cache\/web-css-component-camp_registrants_summary.less.25990bc9f8479b9ef4fc28af48b1e1ab.1687fce7965681766361abde7177eb8d.css","\/asset-cache\/web-css-component-credit_card.less.25990bc9f8479b9ef4fc28af48b1e1ab.5b859453e5d48432c601103e67c6818e.css","\/asset-cache\/web-css-component-pricing_schedule.less.25990bc9f8479b9ef4fc28af48b1e1ab.73851a894c2b7ab6cdb7f2539b395b67.css","\/asset-cache\/web-css-component-waiver_agreement.less.25990bc9f8479b9ef4fc28af48b1e1ab.5eccf479857f9e84f878e49238a58270.css","\/asset-cache\/web-css-module-blog.less.25990bc9f8479b9ef4fc28af48b1e1ab.f30627e3989c0b4d321b7d77b30025f8.css","\/asset-cache\/web-css-module-cms.less.25990bc9f8479b9ef4fc28af48b1e1ab.f86710659a091dbcd3813ed22f32b1c3.css","\/asset-cache\/web-css-module-product.less.25990bc9f8479b9ef4fc28af48b1e1ab.dad7b893df4282f71632fb0aa1b89cab.css","\/asset-cache\/web-css-module-event.less.25990bc9f8479b9ef4fc28af48b1e1ab.844c7e96fb249b5a4c513e7cbb2db783.css","\/asset-cache\/web-css-module-schedule.less.25990bc9f8479b9ef4fc28af48b1e1ab.bc48c6d446d58f766657cf5dda4a0cc6.css","\/asset-cache\/web-css-form-forms.less.25990bc9f8479b9ef4fc28af48b1e1ab.0dbcca76b5e65a98de55d18ff6f2c297.css","\/asset-cache\/web-css-form-colorpicker.less.25990bc9f8479b9ef4fc28af48b1e1ab.0e608cabf60e85fd81066e9031237fdc.css","\/asset-cache\/web-css-form-survey.less.25990bc9f8479b9ef4fc28af48b1e1ab.c52e718dd62eee938dda7985699912d2.css","\/asset-cache\/web-css-form-jquery-ui-custom.less.25990bc9f8479b9ef4fc28af48b1e1ab.9f1089dfab3a68dbaf43bc9407603bf8.css","\/asset-cache\/web-css-vendor-intl-tel-input-intlTelInput.css.6628d70f7a6de4d199abd31ac06a184b.css","\/asset-cache\/web-css-vendor-jquery-ui.multidatespicker.css.60c5f4fce71b3638f6f09e7015e1d70e.css","\/asset-cache\/web-css-vendor-jquery.tablesorter.default.css.a216fca518d91a3efb99db5f4907a09b.css","\/asset-cache\/web-css-vendor-spectrum.css.e1f4279e27f9e5ba0ee4151d50a608a5.css","\/asset-cache\/web-css-vendor-slick-slick.css.80ef6740567bf8f892677fdaad7f3e10.css","\/asset-cache\/web-css-vendor-slick-slick-theme.css.af2f2d6bfa4fb6db648048403095cad8.css","\/asset-cache\/web-css-theme-compact-hero_grid.less.25990bc9f8479b9ef4fc28af48b1e1ab.66551003f07eb4acd2f5530a6c35e37f.css","\/asset-cache\/web-css-theme-compact-layout.less.25990bc9f8479b9ef4fc28af48b1e1ab.f89a276e76aea9c837c549c0e3f40e2a.css","\/asset-cache\/web-css-theme-compact-media_flat.less.25990bc9f8479b9ef4fc28af48b1e1ab.7d4428041fcb42a9bbd319ac25e3ca28.css","\/asset-cache\/web-css-theme-compact-media_tile.less.25990bc9f8479b9ef4fc28af48b1e1ab.2cf91bb4da08b62c9beff3cb33913130.css","\/asset-cache\/web-css-theme-compact-navigation.less.25990bc9f8479b9ef4fc28af48b1e1ab.ef25b265ce252c6f87e681b95f11dc76.css","\/asset-cache\/web-css-component-profile.less.25990bc9f8479b9ef4fc28af48b1e1ab.0c333d6508a86fba4ac8be8dc6bd4dd3.css","\/asset-cache\/web-css-component-global_toolbar.less.25990bc9f8479b9ef4fc28af48b1e1ab.c85545742bc8450b8b190eb7b787eb6d.css"])
+ts.registerScripts(["\/asset-cache\/web-js-vendor-inflection.js.63d3424d74e5ff255d98bf7e8fee7636.js","\/js\/vendor\/jquery.2.1.4.min.js","\/asset-cache\/web-js-vendor-jquery.ui.1.8.21.js.3f63d63674cdc04315016c3201c907f3.js","\/asset-cache\/web-js-vendor-spectrum.js.1a324f8148b1fc1e1dff85c0219f9b58.js","\/asset-cache\/web-js-component-stick_on_scroll.js.5d9599c1c625c6d015e7c1abf18addc5.js","\/asset-cache\/web-js-ts.js.d830e645d10a0b8ccbe4d53f9e6794ec.js","\/asset-cache\/web-js-widget-date.js.934b931274650759e0ff8fd61425b565.js","\/asset-cache\/web-js-vendor-jquery.hoverIntent.js.5fbdc2b4477646cf1bb20abc97dbac96.js","\/asset-cache\/web-js-vendor-jquery.timePicker.js.4851f54c32372e37ce42212882ce4c7b.js","\/asset-cache\/web-js-vendor-jquery-ui.multidatespicker.js.925d69f7dc4be5a39a3f493ac781fa8c.js","\/asset-cache\/web-js-vendor-jquery.tmpl.js.d80e078aafa0d0d70e451c60a7643238.js","\/asset-cache\/web-js-widget-autocomplete.js.c8e6d0d10400524c8952fb69dc6f46ae.js","\/asset-cache\/web-js-widget-autosize.js.802253b61d70ecb184a8574f49eebf41.js","\/asset-cache\/web-js-widget-color_swatch.js.f63288d0d7145cd32a0699e333bec1f8.js","\/asset-cache\/web-js-widget-geo.js.0e62ba1a3f1504e8de68c59e3ed00040.js","\/asset-cache\/web-js-widget-html.js.359ad8f81d52604451bc3a60f6315c99.js","\/asset-cache\/web-js-widget-select.js.91526dafb2416e0e3d65ff0ae0672dd9.js","\/asset-cache\/web-js-widget-select_many.js.1768b9d9cb39d55dc0c7cb4ffc222d26.js","\/asset-cache\/web-js-widget-select_multiple.js.39cc2eddae9d559f619f3891cc5b9fc7.js","\/asset-cache\/web-js-widget-select_product.js.c3c2e89913a95d932a784b22186efa1a.js","\/asset-cache\/web-js-widget-select_transaction.js.336e7612cdc72a97ec012eb81462f997.js","\/asset-cache\/web-js-widget-slider.js.d4a3721c7ec28e73d5cc1939d2b88ab6.js","\/asset-cache\/web-js-widget-person_photo.js.1a67f4347386de4b0ae4040006023145.js","\/asset-cache\/web-js-widget-media_item.js.877930d39a23ee239c518ca649e0efb9.js","\/asset-cache\/web-js-widget-phone_numbers.js.60358e19b7c4d73ebd0953182e7ea582.js","\/asset-cache\/web-js-vendor-intl-tel-input-intlTelInput.js.0674f27e74162255daf15de363f1f00a.js","\/js\/vendor\/mailcheck.min.js","\/asset-cache\/web-js-vendor-markerclusterer.js.7ff9c27530a9edf63648003ef6ba785b.js","\/asset-cache\/web-js-vendor-slick-slick.js.b3ad4dd46cc37067c5d5f005ad556466.js","\/asset-cache\/web-js-widget-email.js.2c6ed420b75d9146581d80a57e3834e0.js","\/asset-cache\/web-js-widget-duplicate_allow.js.c8dbc6bbda13c3c8756d925e0bbcd002.js","\/asset-cache\/web-js-widget-survey_filter.js.42fd094e4890119f884e4ce00f7c859d.js","\/asset-cache\/web-js-widget-quantity.js.972e4bfcc02237846b0540ed0651616a.js","\/asset-cache\/web-js-widget-organization_select.js.6638c2bd8397dfd601556400fa2b5d6a.js","\/asset-cache\/web-js-widget-stripe.js.a96c72fc14d8735c077c01de8d8f09e2.js","\/asset-cache\/web-js-widget-payfac.js.e7036b44b7a6abd0e76a35319d7eea05.js","\/asset-cache\/web-js-api_routes.js.b49923b886533073137babfc5a8f3b5c.js","\/asset-cache\/web-js-site.js.a3dd5b6a26db9b31a95fbfab939950ca.js","\/asset-cache\/web-js-component-popup.js.310df6960eb1b5dc9e4e80ac60533136.js","\/asset-cache\/web-js-component-flashes.js.e6fdecf3e7f57f331874876939f8c539.js","\/asset-cache\/web-js-component-filter2.js.61b784e3bee2fa1f4544fd63e475b677.js","\/asset-cache\/web-js-component-game_referees.js.f293da8b579be81c9e26193161c7fab8.js","\/asset-cache\/web-js-component-navigation.js.10f09da28ec37173dc237784db9d4dba.js","\/asset-cache\/web-js-component-email_preview.js.6f7f0fd94592370fa778f4466c65b238.js","\/asset-cache\/web-js-component-event_team_roster.js.9fc788b3a90c774e3112954db4025bcd.js","\/asset-cache\/web-js-component-person_surveys.js.5136bae5a2715d5f6c0ecc66caf828e6.js","\/asset-cache\/web-js-component-export.js.3a41449a90fd383ece10a4b5223c3217.js","\/asset-cache\/web-js-component-field_reservation.js.3a1c5814b8d854043aee9f620d84cfec.js","\/asset-cache\/web-js-form-form.js.ffc230857cb3c83279727566d17f1b1a.js","\/asset-cache\/web-js-form-auth.js.de5100702d55a4de0b60c760cb201802.js","\/asset-cache\/web-js-form-blog.js.538435dddc85d5f6d70e9924e8f82ddd.js","\/asset-cache\/web-js-form-event_add.js.a5e804b2a06f4ea009f558c95e3158fa.js","\/asset-cache\/web-js-form-event_edit_registration.js.d1a79fe54aabd7ae875a9bd6f289c26c.js","\/asset-cache\/web-js-form-event_series.js.d5e80d9c8a6abbb68a1b66c80d572a8e.js","\/asset-cache\/web-js-form-initial_seeds.js.762eb2d1eb478532084f5d83bfe79165.js","\/asset-cache\/web-js-form-sales_slide_slot.js.b2a83431e0873855587c0bd10d51b3fa.js","\/asset-cache\/web-js-form-site_config_design.js.724be49de6fcec797aee93345ac064e6.js","\/asset-cache\/web-js-form-sponsor_slot.js.b965a19eaa1b216dc96fbc10c853047b.js","\/asset-cache\/web-js-form-survey_slot.js.ae3a93eb805da0fa60aec7f4f9e510de.js","\/asset-cache\/web-js-form-person_spotlight_slot.js.f14d278aa5297ee61cb824c263882fe8.js","\/asset-cache\/web-js-form-person_for_registration.js.07afa661c2ab99d5ef2d03826446955f.js","\/asset-cache\/web-js-form-blog_slot.js.e9d07e823c950b2306b75152a0f5f209.js","\/asset-cache\/web-js-form-grid_button.js.7014a181367dca69ef79f97a4099c89c.js","\/asset-cache\/web-js-form-header.js.f8e5813212014f4d7e6f3629535ed89f.js","\/asset-cache\/web-js-form-location.js.e6a85c3ca881d4200b72ee5e31f3113f.js","\/asset-cache\/web-js-form-mailing_list.js.630392a20e0f8962bc9124642e238cfd.js","\/asset-cache\/web-js-form-org_financial_info.js.cb4b2d5fea4428b842cb0fe1cf9144cd.js","\/asset-cache\/web-js-form-page.js.2df5e9f3739a35a7146e68f6ce9845f0.js","\/asset-cache\/web-js-form-person_award.js.57101c0b2af060c18848c8677daac443.js","\/asset-cache\/web-js-form-person_primary_contact.js.11dc4cda59780ae4975f66b0b79518c1.js","\/asset-cache\/web-js-form-player_list.js.8e9fbd43389ca458d411ecb79709ba2f.js","\/asset-cache\/web-js-form-price_point.js.0957d14b9705e8208d88a5251846b451.js","\/asset-cache\/web-js-form-product.js.68a4795bb569e61d39c843ac5c8ecbcf.js","\/asset-cache\/web-js-form-refund.js.83ecfdfa168714e8915c956985a6da4c.js","\/asset-cache\/web-js-form-registration_new_for_event_admin.js.f8d5eae24bb21f254462896e76814602.js","\/asset-cache\/web-js-form-survey.js.9765ed704789f70a0c8fcdd0b7670e5f.js","\/asset-cache\/web-js-form-transaction_filter.js.91a2f94087c87d30d708176813cdc1d7.js","\/asset-cache\/web-js-form-transaction_form.js.fe0a2eff21a3f45a12df5c93261d860b.js","\/asset-cache\/web-js-form-transaction_request_payment.js.a6e0d1dbecc30773d3e6a888bf577fef.js","\/asset-cache\/web-js-form-camp_registration.js.d5d2743e24f1de9b239a7dc15fff58e9.js","\/asset-cache\/web-js-form-blackout_dates.js.252da343c5b28b6617820d08dae94b45.js","\/asset-cache\/web-js-form-waiver.js.021968221c86f4911ae5f7fd0a7210f1.js","\/asset-cache\/web-js-cms-cms.js.e245f1d59cdbf9571f39856da8641236.js","\/asset-cache\/web-js-cms-event_list_carousel.js.9e54da222e7854f2da6fe32fbec66143.js","\/asset-cache\/web-js-cms-hero_image.js.6f440166acf8e5c976664e36262d988c.js","\/asset-cache\/web-js-cms-video.js.999eeb097c57ec0d3423b1f36ec5b9d8.js","\/asset-cache\/web-js-cms-product_list.js.194e72bcd194c61cabd04829c8a0088f.js","\/asset-cache\/web-js-cms-raw_html.js.5986cd43044f4797dbac66c836cf546a.js","\/asset-cache\/web-js-cms-slideshow.js.b3dca27a9e5cdcb8d069dc4f4ddf753f.js","\/asset-cache\/web-js-component-event.js.5e7ed744d419bf6dc05adff0cac92137.js","\/asset-cache\/web-js-component-hero_grid.js.6cdf137a0a03f9f75eb28779743c8d4e.js","\/asset-cache\/web-js-component-media.js.887746670afbdcb2ae376ca04a2373d7.js","\/asset-cache\/web-js-component-product.js.cf04f33a0a023e18f919f14f5dc2279d.js","\/asset-cache\/web-js-component-details_toggle.js.067f8594da5452200449dcaba1919b54.js","\/asset-cache\/web-js-component-roster_replacement.js.a52f545e89503808d350da3324ee4581.js","\/asset-cache\/web-js-component-product_membership_requirements.js.39b064ebc877048208432ae671ce7941.js","\/asset-cache\/web-js-component-organization_notification_toggle.js.d38acd9168feaaa37b30df0df9ce0aa4.js","\/asset-cache\/web-js-component-waiver.js.bcd918501b3d36e48cbf4dbb1903a415.js","\/asset-cache\/web-js-production.js.8efa58658625db95f65dcf9f2ee25dd0.js","\/asset-cache\/web-js-component-preview_controls.js.161ca0db78c0d8efd16219502d34bcc1.js","\/asset-cache\/web-js-component-global_toolbar.js.0eeb789fe9d2abd32d9d3cdee5f3f4d5.js","\/asset-cache\/web-js-component-disqus.js.5edffd98cda96786960c40bdd284e535.js","https:\/\/use.fontawesome.com\/8ac767a1e5.js","\/asset-cache\/web-js-last.js.421bc28b3049b44e9a181a9570e91989.js"])
+      }
+function runOnLoad() {
+        ts.enableGoogleAnalytics({"id":"UA-25501925-1","service":"Ultimate Central","site":"wds","userType":"Event Admin","0":""}, {"id":false,"displayFeatures":0});
+      }</script>              <script src="/asset-cache/1f814a0126835488df3c33a4cd0ba189.js" defer="defer"></script>              <script src="https://use.fontawesome.com/8ac767a1e5.js" defer="defer"></script>          </div>
+  
+
+
+  <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","licenseKey":"18c7efa99d","applicationID":"2987215","transactionName":"MVRWMkZRV0sFVxZcDAgedxNHRFZVS0QHRxAJXxsVV1hcXBFYBw==","queueTime":0,"applicationTime":1865,"atts":"HRNVRA5LREU=","errorBeacon":"bam-cell.nr-data.net","agent":""}</script></body>
+</html>

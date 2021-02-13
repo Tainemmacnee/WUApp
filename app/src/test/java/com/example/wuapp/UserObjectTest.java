@@ -41,7 +41,7 @@ public class UserObjectTest {
 
     @BeforeClass
     public static void setupUserObjects() throws Exception{
-        user = new User(new UserLoginToken(null, null), "testUser", null, null, null);
+        //user = new User(new UserLoginToken(null, null, null , null), "testUser", null, null, null);
         List<Game> gamesList = getGamesList();
         List<Event> eventsList = getEventList();
 
