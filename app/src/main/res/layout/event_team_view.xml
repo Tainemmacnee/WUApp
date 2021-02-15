@@ -19,7 +19,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center|left"
-        android:text="2020 Winter Monday mens Womexn's Leauge"
+        android:text="EVENT TEAM NAME"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

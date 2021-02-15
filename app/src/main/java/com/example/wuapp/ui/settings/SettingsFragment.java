@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wuapp.R;
 import com.example.wuapp.ReportResultActivity;
-import com.example.wuapp.databinding.FragmentReportResultBinding;
-import com.example.wuapp.databinding.ReportResultMvpBoxBinding;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
 import com.squareup.picasso.Picasso;

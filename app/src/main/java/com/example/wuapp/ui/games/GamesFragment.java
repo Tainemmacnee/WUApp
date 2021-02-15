@@ -61,7 +61,6 @@ public class GamesFragment extends Fragment implements DataReceiver {
     public <T> void receiveData(ArrayList<T> results) {
         if(results != null && results.size() > 0){
             if(results.get(0) instanceof Game){
-                System.out.println("Setting Games");
                 loadRecycleView((ArrayList<Game>) results);
             }
         }

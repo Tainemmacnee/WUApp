@@ -37,7 +37,6 @@ public class EventsFragment extends Fragment implements DataReceiver {
         MainActivity activity = (MainActivity) getActivity();
 
         makeRequest(activity.getDataManager(), this, DataManager.REQUEST_EVENTS);
-        System.out.println("Made request for events");
 
         return v;
     }

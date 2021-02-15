@@ -15,9 +15,12 @@ import com.example.wuapp.model.Team;
 import com.example.wuapp.model.User;
 import com.example.wuapp.model.UserLoginToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.*;
@@ -46,6 +49,7 @@ public class DataManager implements Parcelable {
     private Queue<Request> requestQueue = new ArrayDeque<>();
 
     private UserLoginToken loginToken;
+    private String OAuthToken;
 
     private ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -56,6 +60,7 @@ public class DataManager implements Parcelable {
 
         downloadGames();
         downloadEvents();
+        downloadOAuthKey();
 
         processQueue();
     }
@@ -63,6 +68,9 @@ public class DataManager implements Parcelable {
     protected DataManager(Parcel in) {
         gameSet.addAll(in.createTypedArrayList(Game.CREATOR));
         eventSet.addAll(in.createTypedArrayList(Event.CREATOR));
+        OAuthToken = in.readString();
+
+        processQueue();
     }
 
     private void processQueue(){
@@ -138,6 +146,7 @@ public class DataManager implements Parcelable {
         eventList.addAll(eventSet);
         parcel.writeTypedList(gameList);
         parcel.writeTypedList(eventList);
+        parcel.writeString(OAuthToken);
     }
 
     private Document downloadWebPage(String link){
@@ -195,6 +204,7 @@ public class DataManager implements Parcelable {
         });
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private Set<Team> downloadEventTeams(String eventLink) {
 
@@ -214,6 +224,52 @@ public class DataManager implements Parcelable {
                 .thenApply(r -> Stream.of(teamsPage1, teamsPage2, teamsPage3).flatMap(f -> f.join().stream()).collect(Collectors.toSet()));
 
         return (Set<Team>) combinedFutures.join();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void downloadOAuthKey() {
+
+        final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
+
+        executor.submit(() -> {
+
+            CompletableFuture.supplyAsync(() -> {
+
+                List<String> output = new ArrayList<>();
+
+                Document doc = downloadWebPage(WEB_URL);
+                Element table = doc.getElementsByClass("table no-border").first();
+
+                for (Element row : table.getElementsByTag("tr")) { //find id and secret
+                    output.add(row.getElementsByTag("td").first().text());
+                }
+
+                output.remove(2); //remove useless string
+
+                return output;
+
+            }).thenApply(r -> {
+                Document response = null;
+                try {
+                    response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
+                            .userAgent(User.USER_AGENT)
+                            .data("grant_type", "client_credentials")
+                            .data("client_id", r.get(0))
+                            .data("client_secret", r.get(1))
+                            .ignoreContentType(true)
+                            .post();
+
+                    JSONObject result = new JSONObject(response.body().text());
+
+                    return result.get("access_token");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }).thenAccept(r -> OAuthToken = (String) r
+            ).join();
+        });
     }
 
 

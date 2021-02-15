@@ -47,6 +47,8 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
         public ImageView homeTeamImage;
         public ImageView awayTeamImage;
 
+        public Button reportButton;
+
         public GameViewHolder(@NonNull View itemView) {
             super(itemView);
             this.root = itemView.findViewById(R.id.game_view_root);
@@ -57,6 +59,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
             this.location = itemView.findViewById(R.id.game_location);
             this.homeTeamImage = itemView.findViewById(R.id.team1_image);
             this.awayTeamImage = itemView.findViewById(R.id.team2_image);
+            this.reportButton = itemView.findViewById(R.id.report_button);
         }
     }
 
@@ -84,6 +87,19 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
         holder.location.setText(gamesFiltered[position].getLocation());
         Picasso.get().load(gamesFiltered[position].getHomeTeamImg()).into(holder.homeTeamImage);
         Picasso.get().load(gamesFiltered[position].getAwayTeamImg()).into(holder.awayTeamImage);
+
+        if(gamesFiltered[position].isReportable()){
+            holder.reportButton.setBackgroundResource(R.drawable.rounded_background_grey);
+            holder.reportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity activity = (MainActivity) view.getContext();
+                    activity.reportGame(view, gamesFiltered[position]); //pass a reference of the game to be reported.
+                }
+            });
+        } else {
+            holder.reportButton.setBackgroundResource(R.drawable.rounded_background_red);
+        }
 
     }
 
