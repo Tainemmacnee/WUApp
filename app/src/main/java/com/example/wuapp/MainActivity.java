@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity{
     public static final String MESSAGE_COOKIES="LOGINCOOKIE";
     public static final String MESSAGE_LOGINTOKEN = "LOGINTOKEN";
     public static final String MESSAGE_DATAMANAGER = "DATAMANAGER";
+    public static final String MESSAGE_GAME = "GAME";
 
     BottomNavigationView navigationView;
 
@@ -42,8 +43,6 @@ public class MainActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         this.dataManager = new DataManager((UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN));
-
-        loadFragment(new GameTabsFragment());
 
         navigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity{
                 return loadFragment(mfragment);
             }
         });
+        navigationView.setSelectedItemId(R.id.games);
     }
 
     public DataManager getDataManager(){
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity{
     public void reportGame(View view, Game game){
         Intent intent = new Intent(this, ReportResultActivity.class);
         intent.putExtra(MESSAGE_DATAMANAGER, dataManager);
+        intent.putExtra(MESSAGE_GAME, game);
         startActivity(intent);
     }
 

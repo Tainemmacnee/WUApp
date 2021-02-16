@@ -431,20 +431,21 @@ public class WebLoader {
                 }
             }
         }
-
-        return new ReportFormState.Builder()
-                .setHomeTeamScore(homeTeamScore)
-                .setAwayTeamScore(awayTeamScore)
-                .setRKU(RKU)
-                .setFBC(FBC)
-                .setFM(FM)
-                .setPAS(PAS)
-                .setCOM(COM)
-                .setComments(comments)
-                .setMaleMVPs(maleMVPs)
-                .setFemaleMVPs(femaleMVPs)
-                .setDocument(doc)
-                .build();
+//
+//        return new ReportFormState.Builder()
+//                .setHomeTeamScore(homeTeamScore)
+//                .setAwayTeamScore(awayTeamScore)
+//                .setRKU(RKU)
+//                .setFBC(FBC)
+//                .setFM(FM)
+//                .setPAS(PAS)
+//                .setCOM(COM)
+//                .setComments(comments)
+//                .setMaleMVPs(maleMVPs)
+//                .setFemaleMVPs(femaleMVPs)
+//                .setDocument(doc)
+//                .build();
+        return null;
     }
 
     /**

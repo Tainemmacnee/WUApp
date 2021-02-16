@@ -1,7 +1,13 @@
 package com.example.wuapp.model;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The UserLoginToken class is used to store the cookies and web page links generated when the user
@@ -25,6 +31,14 @@ public class UserLoginToken implements Serializable {
         this.links = links;
         this.name = name;
         this.profileImage = profileImage;
+    }
+
+    protected UserLoginToken(Parcel in) {
+        Bundle bundledMaps = in.readBundle();
+        cookies = (HashMap<String, String>) bundledMaps.getSerializable("cookies");
+        links = (HashMap<String, String>) bundledMaps.getSerializable("links");
+        name = in.readString();
+        profileImage = in.readString();
     }
 
     public HashMap<String, String> getCookies() {
@@ -58,4 +72,5 @@ public class UserLoginToken implements Serializable {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
 }

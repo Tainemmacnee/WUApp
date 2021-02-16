@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".ReportResultActivity">
 
+    <TextView
+        android:id="@+id/test_text"
+        android:layout_width="203dp"
+        android:layout_height="124dp"
+        android:text="TextView" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
