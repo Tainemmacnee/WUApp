@@ -1,5 +1,7 @@
 package com.example.wuapp.model;
 
+import android.widget.ArrayAdapter;
+
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
@@ -76,5 +78,12 @@ public class ReportFormState{
             this.selectedIndex = selectedIndex;
         }
 
+        public List<String> getSpinnerValues(){
+            return spinnerValues;
+        }
+
+        public int getSelectedIndex() {
+            return selectedIndex;
+        }
     }
 }

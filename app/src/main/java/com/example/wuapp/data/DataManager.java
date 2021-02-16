@@ -6,23 +6,22 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.example.wuapp.LoginActivity;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
+import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
 import com.example.wuapp.model.User;
 import com.example.wuapp.model.UserLoginToken;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -37,16 +36,19 @@ public class DataManager implements Parcelable {
 
     public static final String REQUEST_SCHEDULED_GAMES = "request_scheduled_games";
     public static final String REQUEST_RECENT_GAMES = "request_recent_games";
-    public static final String REQUEST_EVENTS = "requestevents";
+    public static final String REQUEST_EVENTS = "request_events";
+    public static final String REQUEST_REPORT_FORM = "request_form";
 
-    private final String HOME_URL = "https://wds.usetopscore.com";
+    public static final String HOME_URL = "https://wds.usetopscore.com";
 
     private boolean downloadingGames = false;
     private boolean downloadingEvents = false;
+    private boolean downloadingReportForm = false;
 
     private Set<Game> gameSet = new HashSet<>();
     private Set<Event> eventSet = new HashSet<>();
     private Queue<Request> requestQueue = new ArrayDeque<>();
+    private ReportFormState currentReportForm;
 
     private UserLoginToken loginToken;
     private String OAuthToken;
@@ -69,6 +71,7 @@ public class DataManager implements Parcelable {
         gameSet.addAll(in.createTypedArrayList(Game.CREATOR));
         eventSet.addAll(in.createTypedArrayList(Event.CREATOR));
         OAuthToken = in.readString();
+        loginToken = (UserLoginToken) in.readSerializable();
 
         processQueue();
     }
@@ -78,9 +81,10 @@ public class DataManager implements Parcelable {
         int delay = 500; //milliseconds
 
         handler.postDelayed(new Runnable(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             public void run(){
                 //do something
-                while(!requestQueue.isEmpty()){
+                if(!requestQueue.isEmpty()){
                     processRequest(requestQueue.poll());
                     System.out.println("processed request");
                 }
@@ -90,28 +94,32 @@ public class DataManager implements Parcelable {
     }
 
     private void processRequest(Request r){
-        ArrayList<Game> results = new ArrayList<>();
+        ArrayList results = new ArrayList<>();
 
         switch (r.request){
             case DataManager.REQUEST_SCHEDULED_GAMES:
-                if(downloadingGames) { break; }
+                if(downloadingGames) { requestQueue.add(r); break; }
                 for(Game g : gameSet){
                     if(g.isUpcoming()){ results.add(g); }
                 }
                 break;
             case DataManager.REQUEST_RECENT_GAMES:
-                if(downloadingGames) { break; }
+                if(downloadingGames) {  requestQueue.add(r); break; }
                 for(Game g : gameSet){
                     if(!g.isUpcoming()){ results.add(g); }
                 }
                 break;
 
             case DataManager.REQUEST_EVENTS:
-                if(downloadingEvents) { break; }
-                ArrayList res = new ArrayList();
-                res.addAll(eventSet);
-                r.callback.receiveData(res);
+                if(downloadingEvents) {  requestQueue.add(r); break; }
+                results.addAll(eventSet);
+                r.callback.receiveData(results);
                 return;
+
+            case DataManager.REQUEST_REPORT_FORM:
+                if(downloadingReportForm) {  requestQueue.add(r); break; }
+                results.add(currentReportForm);
+                r.callback.receiveData(results);
         }
 
         r.callback.receiveData(results);
@@ -129,8 +137,28 @@ public class DataManager implements Parcelable {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void makeRequest(DataReceiver callback, String request, String link){
+        requestQueue.add(new Request(callback, request));
+        downloadReportForm(link);
+    }
+
     public void makeRequest(DataReceiver callback, String request){
         requestQueue.add(new Request(callback, request));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void downloadReportForm(String link){
+        this.downloadingReportForm = true;
+        executor.submit(() -> {
+            CompletableFuture.supplyAsync(() ->
+                    downloadWebPage(link)
+            ).thenApply(r -> WDSParser.parseReportForm(r)
+            ).thenAccept(r -> {
+                currentReportForm = r;
+                this.downloadingReportForm = false;
+            }).join();
+        });
     }
 
     @Override
@@ -147,6 +175,7 @@ public class DataManager implements Parcelable {
         parcel.writeTypedList(gameList);
         parcel.writeTypedList(eventList);
         parcel.writeString(OAuthToken);
+        parcel.writeSerializable(loginToken);
     }
 
     private Document downloadWebPage(String link){
@@ -160,7 +189,7 @@ public class DataManager implements Parcelable {
                     .cookies(loginToken.getCookies())
                     .execute();
             result = loadPageResponse.parse();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;

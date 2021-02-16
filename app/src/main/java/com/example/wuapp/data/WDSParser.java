@@ -2,6 +2,7 @@ package com.example.wuapp.data;
 
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
+import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
 import com.example.wuapp.model.WebLoader;
 
@@ -159,6 +160,81 @@ public class WDSParser {
             }
         }
         return results;
+    }
+
+    /**
+     * This function is used to parse a report form page into its respective ReportFormState object
+     *
+     * In a typical report form the spinners are in order of:
+     * 1.home team score 2. away team score 3. RKU, FBC, FM, PAS, COM spinners
+     * 3. mvp spinners starting with females first.
+     *
+     * @param doc This is a JSoup Document representing a report form webpage
+     * @return A ReportFormState Object representing the given Document/page
+     */
+    public static ReportFormState parseReportForm(Document doc) {
+        String comments = null;
+
+        String homeTeamName, awayTeamName;
+
+        ReportFormState.spinnerState homeScoreSpinner, awayScoreSpinner, maleMVPSpinner,
+                femaleMVPSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+
+        int selectFormIndex = 0;
+        List<Element> selectForms = doc.getElementsByTag("select");
+        homeScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        awayScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        RKUSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        FBCSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        FMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        PASSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        COMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        femaleMVPSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+        maleMVPSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+
+        Element commentsElem = (doc.getElementById("game_home_game_report_survey_6_answer"));
+        if (commentsElem == null) {
+            commentsElem = doc.getElementById("game_away_game_report_survey_6_answer");
+        }
+        comments = commentsElem.text();
+
+        homeTeamName = doc.getElementsByClass("row-fluid-always").first()
+                .getElementsByClass("subtitled").first().text();
+        awayTeamName = doc.getElementsByClass("row-fluid-always").last()
+                .getElementsByClass("subtitled").first().text();
+
+        return new ReportFormState.Builder()
+                .setHomeScoreSpinner(homeScoreSpinner)
+                .setAwayScoreSpinner(awayScoreSpinner)
+                .setRKUSpinner(RKUSpinner)
+                .setFBCSpinner(FBCSpinner)
+                .setFMSpinner(FMSpinner)
+                .setPASSpinner(PASSpinner)
+                .setCOMSpinner(COMSpinner)
+                .setFemaleMVPSpinner(femaleMVPSpinner)
+                .setMaleMVPSpinner(maleMVPSpinner)
+                .setHomeTeamName(homeTeamName)
+                .setAwayTeamName(awayTeamName)
+                .setComments(comments)
+                .setDocument(doc)
+                .build();
+    }
+
+    private static ReportFormState.spinnerState parseSpinner(Element selectTag){
+        List<String> options = new ArrayList<>();
+        int selectedIndex = -1, currentIndex = 0;
+        for(Element option : selectTag.children()){
+            options.add(option.text());
+            if(option.attr("selected").equals("selected")){
+                selectedIndex = currentIndex;
+            }
+            currentIndex++;
+        }
+
+        System.out.println(options);
+        System.out.println(selectedIndex);
+
+        return new ReportFormState.spinnerState(options, selectedIndex);
     }
 
 }
