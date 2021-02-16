@@ -86,7 +86,6 @@ public class DataManager implements Parcelable {
                 //do something
                 if(!requestQueue.isEmpty()){
                     processRequest(requestQueue.poll());
-                    System.out.println("processed request");
                 }
                 handler.postDelayed(this, delay);
             }

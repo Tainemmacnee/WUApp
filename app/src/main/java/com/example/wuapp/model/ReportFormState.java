@@ -12,40 +12,39 @@ import java.util.List;
  */
 public class ReportFormState{
 
-    public String comments, homeTeamName, awayTeamName;
+    public String comments;
     public int homeTeamScore, awayTeamScore, RKU, FBC, FM, PAS, COM;
     public Document doc;
-    public spinnerState homeScoreSpinner, awayScoreSpinner, maleMVPSpinner, femaleMVPSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+    public spinnerState homeScoreSpinner, awayScoreSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+    public List<spinnerState> maleMVPSpinners, femaleMVPSpinners;
 
     public ReportFormState(Builder builder){
-
         this.comments = builder.comments;
         this.doc = builder.doc;
         this.homeScoreSpinner = builder.homeScoreSpinner;
         this.awayScoreSpinner = builder.awayScoreSpinner;
-        this.maleMVPSpinner = builder.maleMVPSpinner;
-        this.femaleMVPSpinner = builder.femaleMVPSpinner;
+        this.maleMVPSpinners = builder.maleMVPSpinners;
+        this.femaleMVPSpinners = builder.femaleMVPSpinners;
         this.RKUSpinner = builder.RKUSpinner;
         this.FBCSpinner = builder.FBCSpinner;
         this.FMSpinner = builder.FMSpinner;
         this.PASSpinner = builder.PASSpinner;
         this.COMSpinner = builder.COMSpinner;
-        this.homeTeamName = builder.homeTeamName;
-        this.awayTeamName = builder.awayTeamName;
     }
 
     public static class Builder{
-        private String comments, homeTeamName, awayTeamName;
+        private String comments;
         private Document doc;
-        spinnerState homeScoreSpinner, awayScoreSpinner, maleMVPSpinner, femaleMVPSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+        spinnerState homeScoreSpinner, awayScoreSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+        List<spinnerState> maleMVPSpinners, femaleMVPSpinners;
 
         public Builder setHomeScoreSpinner(spinnerState state) { this.homeScoreSpinner = state; return this; }
 
         public Builder setAwayScoreSpinner(spinnerState state) { this.awayScoreSpinner = state; return this; }
 
-        public Builder setMaleMVPSpinner(spinnerState state) { this.maleMVPSpinner = state; return this; }
+        public Builder setMaleMVPSpinners(List<spinnerState> state) { this.maleMVPSpinners = state; return this; }
 
-        public Builder setFemaleMVPSpinner(spinnerState state) { this.femaleMVPSpinner = state; return this; }
+        public Builder setFemaleMVPSpinners(List<spinnerState> state) { this.femaleMVPSpinners = state; return this; }
 
         public Builder setRKUSpinner(spinnerState state) { this.RKUSpinner = state; return this; }
 
@@ -56,10 +55,6 @@ public class ReportFormState{
         public Builder setPASSpinner(spinnerState state) { this.PASSpinner = state; return this; }
 
         public Builder setCOMSpinner(spinnerState state) { this.COMSpinner = state; return this; }
-
-        public Builder setHomeTeamName(String name) { this.homeTeamName = name; return this; }
-
-        public Builder setAwayTeamName(String name) { this.awayTeamName = name; return this; }
 
         public Builder setComments(String comments) { this.comments = comments; return this; }
 

@@ -173,51 +173,52 @@ public class WDSParser {
      * @return A ReportFormState Object representing the given Document/page
      */
     public static ReportFormState parseReportForm(Document doc) {
-        String comments = null;
+            String comments = null;
 
-        String homeTeamName, awayTeamName;
+            ReportFormState.spinnerState homeScoreSpinner, awayScoreSpinner, RKUSpinner,
+                    FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+            List<ReportFormState.spinnerState> maleMVPSpinners = new ArrayList<>(),
+                    femaleMVPSpinners = new ArrayList<>();
 
-        ReportFormState.spinnerState homeScoreSpinner, awayScoreSpinner, maleMVPSpinner,
-                femaleMVPSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
+            int selectFormIndex = 0;
+            List<Element> selectForms = doc.getElementsByTag("select");
 
-        int selectFormIndex = 0;
-        List<Element> selectForms = doc.getElementsByTag("select");
-        homeScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        awayScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        RKUSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        FBCSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        FMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        PASSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        COMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        femaleMVPSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-        maleMVPSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            homeScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            awayScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            RKUSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            FBCSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            FMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            PASSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+            COMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
 
-        Element commentsElem = (doc.getElementById("game_home_game_report_survey_6_answer"));
-        if (commentsElem == null) {
-            commentsElem = doc.getElementById("game_away_game_report_survey_6_answer");
-        }
-        comments = commentsElem.text();
+            int mvpCount = selectForms.size() - selectFormIndex;
+            while (selectFormIndex < selectForms.size()) {
+                if (selectFormIndex - 7 < mvpCount / 2) {
+                    femaleMVPSpinners.add(parseSpinner(selectForms.get(selectFormIndex++)));
+                } else {
+                    maleMVPSpinners.add(parseSpinner(selectForms.get(selectFormIndex++)));
+                }
+            }
 
-        homeTeamName = doc.getElementsByClass("row-fluid-always").first()
-                .getElementsByClass("subtitled").first().text();
-        awayTeamName = doc.getElementsByClass("row-fluid-always").last()
-                .getElementsByClass("subtitled").first().text();
+            Element commentsElem = (doc.getElementById("game_home_game_report_survey_6_answer"));
+            if (commentsElem == null) {
+                commentsElem = doc.getElementById("game_away_game_report_survey_6_answer");
+            }
+            comments = commentsElem.text();
 
-        return new ReportFormState.Builder()
-                .setHomeScoreSpinner(homeScoreSpinner)
-                .setAwayScoreSpinner(awayScoreSpinner)
-                .setRKUSpinner(RKUSpinner)
-                .setFBCSpinner(FBCSpinner)
-                .setFMSpinner(FMSpinner)
-                .setPASSpinner(PASSpinner)
-                .setCOMSpinner(COMSpinner)
-                .setFemaleMVPSpinner(femaleMVPSpinner)
-                .setMaleMVPSpinner(maleMVPSpinner)
-                .setHomeTeamName(homeTeamName)
-                .setAwayTeamName(awayTeamName)
-                .setComments(comments)
-                .setDocument(doc)
-                .build();
+            return new ReportFormState.Builder()
+                    .setHomeScoreSpinner(homeScoreSpinner)
+                    .setAwayScoreSpinner(awayScoreSpinner)
+                    .setRKUSpinner(RKUSpinner)
+                    .setFBCSpinner(FBCSpinner)
+                    .setFMSpinner(FMSpinner)
+                    .setPASSpinner(PASSpinner)
+                    .setCOMSpinner(COMSpinner)
+                    .setFemaleMVPSpinners(femaleMVPSpinners)
+                    .setMaleMVPSpinners(maleMVPSpinners)
+                    .setComments(comments)
+                    .setDocument(doc)
+                    .build();
     }
 
     private static ReportFormState.spinnerState parseSpinner(Element selectTag){

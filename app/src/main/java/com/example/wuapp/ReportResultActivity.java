@@ -1,41 +1,26 @@
 package com.example.wuapp;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.wuapp.data.DataManager;
 import com.example.wuapp.data.DataReceiver;
 import com.example.wuapp.databinding.ActivityReportResultBinding;
+import com.example.wuapp.databinding.ReportResultMvpBoxBinding;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
-import com.example.wuapp.model.Team;
-import com.example.wuapp.model.WebLoader;
-import com.example.wuapp.ui.loading.LoadingScreen;
-
-import org.w3c.dom.Text;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * An Activity to load the report form and submit any changes
@@ -66,8 +51,24 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     }
 
     private void bindReportFormState(ReportFormState formState){
-        binding.reportResultHomeName.setText(formState.homeTeamName);
-        binding.reportResultAwayName.setText(formState.awayTeamName);
+        binding.team1Name.setText(game.getHomeTeamName());
+        binding.team2Name.setText(game.getAwayTeamName());
+        Picasso.get().load(game.getHomeTeamImg()).into(binding.team1Image);
+        Picasso.get().load(game.getAwayTeamImg()).into(binding.team2Image);
+
+        binding.femaleMvpbox.removeAllViews();
+        binding.maleMvpbox.removeAllViews();
+
+        int maleMVPCount = 1, femaleMVPCount = 1;
+        for(ReportFormState.spinnerState state : formState.femaleMVPSpinners){
+            createMVPBox(binding.femaleMvpbox, "Female MVP #"+femaleMVPCount++, state);
+            System.out.println("Female MVP #"+femaleMVPCount);
+        }
+        for(ReportFormState.spinnerState state : formState.maleMVPSpinners){
+            createMVPBox(binding.maleMvpbox, "Male MVP #"+maleMVPCount++, state);
+            System.out.println("Male MVP #"+maleMVPCount);
+        }
+
         setupSpinner(binding.reportResultHomeScore, formState.homeScoreSpinner);
         setupSpinner(binding.reportResultAwayScore, formState.awayScoreSpinner);
         setupSpinner(binding.spinnerRules, formState.RKUSpinner);
@@ -78,6 +79,13 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
 
         binding.reportResultComments.setText(formState.comments);
 
+    }
+
+    private void createMVPBox(ViewGroup parent, String title, ReportFormState.spinnerState state){
+        ReportResultMvpBoxBinding mvpBoxBinding = ReportResultMvpBoxBinding.inflate(getLayoutInflater());
+        mvpBoxBinding.mvpTitle.setText(title);
+        setupSpinner(mvpBoxBinding.mvpSpinner, state);
+        parent.addView(mvpBoxBinding.getRoot());
     }
 
     private void setupSpinner(Spinner spinner, ReportFormState.spinnerState state){
