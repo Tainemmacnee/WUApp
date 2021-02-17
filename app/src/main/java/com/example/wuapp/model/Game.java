@@ -88,6 +88,8 @@ public class Game implements Parcelable {
         return String.format("%s vs %s @%s %s", homeTeamName, awayTeamName, date, time);
     }
 
+    //TODO: Add game equals code so that games in a set are unique
+
     private Game(Builder builder){
         this.homeTeamName = builder.homeTeamName;
         this.homeTeamImg = builder.homeTeamImg;
@@ -170,7 +172,7 @@ public class Game implements Parcelable {
                 Date gameDate1 = sdf.parse(String.format("%s %s", game1.date, game1.time));
                 Date gameDate2 = sdf.parse(String.format("%s %s", game2.date, game2.time));
 
-                return gameDate1.before(gameDate2) ? -1 : 1;
+                return gameDate1.before(gameDate2) ? 1 : -1;
             } catch (ParseException e) {
                 e.printStackTrace();
             }

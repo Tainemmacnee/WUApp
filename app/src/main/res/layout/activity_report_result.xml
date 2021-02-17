@@ -568,6 +568,7 @@
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/rounded_background_yellow"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="submitReportForm"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="Report Results"

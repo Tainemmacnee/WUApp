@@ -29,8 +29,12 @@ import com.example.wuapp.model.User;
 import com.example.wuapp.ui.RefreshableFragment;
 import com.example.wuapp.ui.events.EventsAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class GamesFragment extends Fragment implements DataReceiver {
 
@@ -54,6 +58,7 @@ public class GamesFragment extends Fragment implements DataReceiver {
     }
 
     private void loadRecycleView(ArrayList<Game> data){
+        Collections.sort(data, new Game.SortByDate());
         recyclerView.setAdapter(new GameAdapter2(data));
     }
 

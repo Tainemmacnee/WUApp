@@ -300,6 +300,14 @@ public class DataManager implements Parcelable {
         });
     }
 
+    public Map<String, String> getCookies() {
+        return loginToken.getCookies();
+    }
+
+    public String getOAuthToken() {
+        return this.OAuthToken;
+    }
+
 
     private class Request{
 
