@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-public class GamesFragment extends Fragment implements DataReceiver {
+public class UpcomingGamesFragment extends Fragment implements DataReceiver {
 
     private RecyclerView recyclerView;
     private GameAdapter mAdapter;
@@ -58,7 +58,7 @@ public class GamesFragment extends Fragment implements DataReceiver {
     }
 
     private void loadRecycleView(ArrayList<Game> data){
-        Collections.sort(data, new Game.SortByDate());
+        Collections.sort(data, new Game.SortByMostRecentDate());
         recyclerView.setAdapter(new GameAdapter2(data));
     }
 

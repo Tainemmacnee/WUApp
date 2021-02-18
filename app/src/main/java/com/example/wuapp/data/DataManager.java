@@ -78,7 +78,7 @@ public class DataManager implements Parcelable {
 
     private void processQueue(){
         Handler handler = new Handler();
-        int delay = 500; //milliseconds
+        int delay = 200; //milliseconds
 
         handler.postDelayed(new Runnable(){
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -87,6 +87,7 @@ public class DataManager implements Parcelable {
                 if(!requestQueue.isEmpty()){
                     processRequest(requestQueue.poll());
                 }
+                //cleanQueue();
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -119,6 +120,7 @@ public class DataManager implements Parcelable {
                 if(downloadingReportForm) {  requestQueue.add(r); break; }
                 results.add(currentReportForm);
                 r.callback.receiveData(results);
+                return;
         }
 
         r.callback.receiveData(results);

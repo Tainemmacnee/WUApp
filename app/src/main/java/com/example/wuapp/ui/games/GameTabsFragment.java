@@ -1,31 +1,16 @@
 package com.example.wuapp.ui.games;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wuapp.R;
-import com.example.wuapp.model.User;
-import com.example.wuapp.ui.RefreshableFragment;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.Collections;
 
 public class GameTabsFragment extends Fragment{
 
@@ -41,7 +26,7 @@ public class GameTabsFragment extends Fragment{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0){
-                    loadFragment(new GamesFragment());
+                    loadFragment(new UpcomingGamesFragment());
                 }
                 if(tab.getPosition() == 1){
                     loadFragment(new RecentGamesFragment());

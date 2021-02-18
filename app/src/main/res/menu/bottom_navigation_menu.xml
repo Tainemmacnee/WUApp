@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/games"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@drawable/ic_frisbee"
         android:title="Games" />
 
     <item

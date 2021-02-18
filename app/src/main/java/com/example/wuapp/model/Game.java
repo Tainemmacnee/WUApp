@@ -163,7 +163,24 @@ public class Game implements Parcelable {
         }
     }
 
-    public static class SortByDate implements Comparator<Game>{
+    public static class SortByMostRecentDate implements Comparator<Game>{
+
+        @Override
+        public int compare(Game game1, Game game2) {
+            SimpleDateFormat sdf = new SimpleDateFormat("E, dd/MM/yyyy hh:mm a");
+            try {
+                Date gameDate1 = sdf.parse(String.format("%s %s", game1.date, game1.time));
+                Date gameDate2 = sdf.parse(String.format("%s %s", game2.date, game2.time));
+
+                return gameDate1.before(gameDate2) ? -1 : 1;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+    }
+
+    public static class SortByLeastRecentDate implements Comparator<Game>{
 
         @Override
         public int compare(Game game1, Game game2) {

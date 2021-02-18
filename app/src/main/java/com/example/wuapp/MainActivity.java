@@ -11,12 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wuapp.data.DataManager;
 import com.example.wuapp.model.Game;
-import com.example.wuapp.model.User;
 import com.example.wuapp.model.UserLoginToken;
-import com.example.wuapp.model.WebLoader;
 import com.example.wuapp.ui.events.EventsFragment;
 import com.example.wuapp.ui.games.GameTabsFragment;
-import com.example.wuapp.ui.games.GamesFragment;
 import com.example.wuapp.ui.settings.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

@@ -73,7 +73,7 @@ public class User{
         ArrayList<Game> gameAsList = new ArrayList<>();
         try {
             gameAsList = (ArrayList<Game>) futureGames.get();
-            Collections.sort(gameAsList, new Game.SortByDate());
+            Collections.sort(gameAsList, new Game.SortByMostRecentDate());
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
