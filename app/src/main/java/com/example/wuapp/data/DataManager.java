@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.wuapp.model.Event;
@@ -38,17 +37,20 @@ public class DataManager implements Parcelable {
     public static final String REQUEST_RECENT_GAMES = "request_recent_games";
     public static final String REQUEST_EVENTS = "request_events";
     public static final String REQUEST_REPORT_FORM = "request_form";
+    public static final String REQUEST_STANDINGS = "request_standings";
 
     public static final String HOME_URL = "https://wds.usetopscore.com";
 
     private boolean downloadingGames = false;
     private boolean downloadingEvents = false;
     private boolean downloadingReportForm = false;
+    private boolean downloadingStandings = false;
 
     private Set<Game> gameSet = new HashSet<>();
     private Set<Event> eventSet = new HashSet<>();
     private Queue<Request> requestQueue = new ArrayDeque<>();
     private ReportFormState currentReportForm;
+    private List<Map<String, String>> currentStandings;
 
     private UserLoginToken loginToken;
     private String OAuthToken;
@@ -121,6 +123,14 @@ public class DataManager implements Parcelable {
                 results.add(currentReportForm);
                 r.callback.receiveData(results);
                 return;
+
+            case DataManager.REQUEST_STANDINGS:
+                if(downloadingStandings) { requestQueue.add(r); break; }
+                System.out.println("!!!!!!!!!!!!!!");
+                System.out.println(currentStandings);
+                results.add(currentStandings);
+                r.callback.receiveData(results);
+                return;
         }
 
         r.callback.receiveData(results);
@@ -140,8 +150,15 @@ public class DataManager implements Parcelable {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void makeRequest(DataReceiver callback, String request, String link){
+        switch (request){
+            case DataManager.REQUEST_REPORT_FORM:
+                downloadReportForm(link);
+                break;
+            case DataManager.REQUEST_STANDINGS:
+                downloadStandings(link);
+                break;
+        }
         requestQueue.add(new Request(callback, request));
-        downloadReportForm(link);
     }
 
     public void makeRequest(DataReceiver callback, String request){
@@ -158,6 +175,21 @@ public class DataManager implements Parcelable {
             ).thenAccept(r -> {
                 currentReportForm = r;
                 this.downloadingReportForm = false;
+            }).join();
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void downloadStandings(String link){
+        this.downloadingStandings = true;
+        System.out.println(link);
+        executor.submit(() -> {
+           CompletableFuture.supplyAsync(() ->
+               downloadWebPage(link)
+           ).thenApply(r -> WDSParser.parseStandings(r)
+           ).thenAccept(r -> {
+                currentStandings = r;
+                this.downloadingStandings = false;
             }).join();
         });
     }
@@ -227,7 +259,7 @@ public class DataManager implements Parcelable {
                     downloadWebPage(HOME_URL)
             ).thenApply(r -> WDSParser.parseEvents(r)
             ).thenAccept(r -> {
-                r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getStandingsLink())));
+                r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getEventLink())));
                 this.eventSet.addAll(r);
                 this.downloadingEvents = false;
             }).join();

@@ -13,20 +13,31 @@
             android:parentActivityName="com.example.wuapp.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.MainActivity" />
+                android:value="com.example.wuapp.LoginActivity" />
         </activity>
-        <activity android:name="com.example.wuapp.DisplayUserActivity" />
         <activity android:name="com.example.wuapp.ReportResultActivity"
-            android:parentActivityName="com.example.wuapp.DisplayUserActivity">
+            android:parentActivityName="com.example.wuapp.MainActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.wuapp.DisplayUserActivity" />
+            android:value="com.example.wuapp.MainActivity" />
         </activity>
         <activity android:name="com.example.wuapp.DisplayEventScoresActivity"
-            android:parentActivityName="com.example.wuapp.DisplayUserActivity">
+            android:parentActivityName="com.example.wuapp.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.DisplayUserActivity" />
+                android:value="com.example.wuapp.MainActivity" />
+        </activity>
+        <activity android:name="com.example.wuapp.DisplayEventTeamsActivity"
+            android:parentActivityName="com.example.wuapp.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wuapp.MainActivity" />
+        </activity>
+        <activity android:name="com.example.wuapp.DisplayMapActivity"
+            android:parentActivityName="com.example.wuapp.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wuapp.MainActivity" />
         </activity>
         <activity
             android:name="com.example.wuapp.LoginActivity"

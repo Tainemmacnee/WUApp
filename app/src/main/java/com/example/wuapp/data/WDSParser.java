@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -162,6 +163,35 @@ public class WDSParser {
         return results;
     }
 
+    public static List<Map<String, String>> parseStandings(Document doc) {
+        ArrayList<Map<String, String>> output = new ArrayList<>();
+
+        Element table = doc.getElementsByClass("filter-list").first();
+        Element list = table.getElementsByClass("striped-blocks spacer1").first();
+        if (list.children() == null) {
+            return null;
+        }
+        for (Element team : list.children()) {
+            HashMap<String, String> info = new HashMap<>();
+            Element img = team.getElementsByTag("img").first();
+            info.put("image", img.attr("src"));
+
+            Element name = team.getElementsByTag("a").first();
+            info.put("name", name.text());
+
+            Element record = team.getElementsByClass("plain-link plain-link").first();
+            info.put("record", record.text());
+
+            Element spirit = team.getElementsByClass("plain-link plain-link").last();
+            info.put("spirit", spirit.text());
+
+            Element pointDiff = team.getElementsByClass("row-fluid-always").last().child(0);
+            info.put("pointDiff", pointDiff.text());
+            output.add(info);
+        }
+        return output;
+    }
+
     /**
      * This function is used to parse a report form page into its respective ReportFormState object
      *
@@ -237,5 +267,4 @@ public class WDSParser {
 
         return new ReportFormState.spinnerState(options, selectedIndex);
     }
-
 }

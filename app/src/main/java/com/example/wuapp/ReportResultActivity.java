@@ -95,7 +95,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     }
 
     private void createMVPBox(ViewGroup parent, String title, ReportFormState.spinnerState state){
-        System.out.println("MVPBOX: "+title);
         ReportResultMvpBoxBinding mvpBoxBinding = ReportResultMvpBoxBinding.inflate(getLayoutInflater());
         mvpBoxBinding.mvpTitle.setText(title);
         setupSpinner(mvpBoxBinding.mvpSpinner, state);
@@ -178,8 +177,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             allMVPs.addAll(reportFormState.maleMVPSpinners);
 
             for(int i = 0; i < allMVPs.size(); i++) {
-                System.out.println(MVPBindings.get(i).mvpSpinner.getSelectedItemPosition());
-                System.out.println("I: "+MVPBindings.get(i).mvpSpinner.getSelectedItem());
                 if (allMVPs.get(i).getSelectedIndex() != MVPBindings.get(i).mvpSpinner.getSelectedItemPosition()) { //MVP has changed
                     Element mvpForm = reportPage.getElementsByClass("form-api live spacer-half keep-popup-open person-award-form").get(i);
                     //get players ID

@@ -1,5 +1,6 @@
 package com.example.wuapp.ui.events;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class EventsFragment extends Fragment implements DataReceiver {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private MainActivity activity;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class EventsFragment extends Fragment implements DataReceiver {
         recyclerView = v.findViewById(R.id.event_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
 
-        MainActivity activity = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
 
         makeRequest(activity.getDataManager(), this, DataManager.REQUEST_EVENTS);
 
@@ -42,7 +44,7 @@ public class EventsFragment extends Fragment implements DataReceiver {
     }
 
     private void loadRecycleView(ArrayList<Event> data){
-        recyclerView.setAdapter(new EventsAdapter(data));
+        recyclerView.setAdapter(new EventsAdapter(data, activity.getDataManager()));
     }
 
     @Override

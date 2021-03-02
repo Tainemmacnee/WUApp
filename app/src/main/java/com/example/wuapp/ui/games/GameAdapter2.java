@@ -48,6 +48,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
         public ImageView awayTeamImage;
 
         public Button reportButton;
+        public Button mapsButton;
 
         public GameViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +61,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
             this.homeTeamImage = itemView.findViewById(R.id.team1_image);
             this.awayTeamImage = itemView.findViewById(R.id.team2_image);
             this.reportButton = itemView.findViewById(R.id.report_button);
+            this.mapsButton = itemView.findViewById(R.id.map_button);
         }
     }
 
@@ -80,6 +82,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
     @Override
     public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
 
+        //setup views
         holder.homeTeamName.setText(gamesFiltered[position].getHomeTeamName());
         holder.awayTeamName.setText(gamesFiltered[position].getAwayTeamName());
         holder.date.setText(gamesFiltered[position].getDate());
@@ -88,6 +91,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
         Picasso.get().load(gamesFiltered[position].getHomeTeamImg()).into(holder.homeTeamImage);
         Picasso.get().load(gamesFiltered[position].getAwayTeamImg()).into(holder.awayTeamImage);
 
+        //setup buttons
         if(gamesFiltered[position].isReportable()){
             holder.reportButton.setBackgroundResource(R.drawable.rounded_background_grey);
             holder.reportButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +103,19 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
             });
         } else {
             holder.reportButton.setBackgroundResource(R.drawable.rounded_background_red);
+        }
+
+        if(!gamesFiltered[position].getLocation().contains("Liardet") &&
+            !gamesFiltered[position].getLocation().contains("MacAlister")){
+            holder.mapsButton.setBackgroundResource(R.drawable.rounded_background_red);
+        } else {
+            holder.mapsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity activity = (MainActivity) view.getContext();
+                    activity.viewGameMap(view, gamesFiltered[position]);
+                }
+            });
         }
 
     }

@@ -85,6 +85,13 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    public void viewGameMap(View view, Game game){
+        Intent intent = new Intent(this, DisplayMapActivity.class);
+        intent.putExtra(MESSAGE_DATAMANAGER, dataManager);
+        intent.putExtra(MESSAGE_GAME, game);
+        startActivity(intent);
+    }
+
     /**
      * This function is used to log the user out
      * @param view

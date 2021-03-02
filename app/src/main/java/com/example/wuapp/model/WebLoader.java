@@ -178,7 +178,7 @@ public class WebLoader {
                 Element eventNameElem = e.child(1);
                 eventName = eventNameElem.text();
 
-                output.add(new Event(eventName, eventImg, eventTeams, standingsLink, cookies));
+                //output.add(new Event(eventName, eventImg, eventTeams, standingsLink, cookies));
             }
             return output;
         });
