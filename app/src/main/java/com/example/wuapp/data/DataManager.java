@@ -100,20 +100,20 @@ public class DataManager implements Parcelable {
 
         switch (r.request){
             case DataManager.REQUEST_SCHEDULED_GAMES:
-                if(downloadingGames) { requestQueue.add(r); break; }
+                if(downloadingGames) { requestQueue.add(r); return; }
                 for(Game g : gameSet){
                     if(g.isUpcoming()){ results.add(g); }
                 }
                 break;
             case DataManager.REQUEST_RECENT_GAMES:
-                if(downloadingGames) {  requestQueue.add(r); break; }
+                if(downloadingGames) {  requestQueue.add(r); return; }
                 for(Game g : gameSet){
                     if(!g.isUpcoming()){ results.add(g); }
                 }
                 break;
 
             case DataManager.REQUEST_EVENTS:
-                if(downloadingEvents) {  requestQueue.add(r); break; }
+                if(downloadingEvents) {  requestQueue.add(r); return; }
                 results.addAll(eventSet);
                 r.callback.receiveData(results);
                 return;
@@ -126,8 +126,6 @@ public class DataManager implements Parcelable {
 
             case DataManager.REQUEST_STANDINGS:
                 if(downloadingStandings) { requestQueue.add(r); break; }
-                System.out.println("!!!!!!!!!!!!!!");
-                System.out.println(currentStandings);
                 results.add(currentStandings);
                 r.callback.receiveData(results);
                 return;
