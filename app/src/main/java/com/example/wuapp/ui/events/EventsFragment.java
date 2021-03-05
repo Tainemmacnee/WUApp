@@ -16,43 +16,49 @@ import com.example.wuapp.MainActivity;
 import com.example.wuapp.R;
 import com.example.wuapp.data.DataManager;
 import com.example.wuapp.data.DataReceiver;
+import com.example.wuapp.databinding.FragmentEventsBinding;
 import com.example.wuapp.model.Event;
+import com.example.wuapp.model.Game;
 import com.example.wuapp.model.User;
 
 import java.util.ArrayList;
 
 public class EventsFragment extends Fragment implements DataReceiver {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private MainActivity activity;
+    private FragmentEventsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_events, container, false);
+
+        binding = FragmentEventsBinding.inflate(inflater);
 
         layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = v.findViewById(R.id.event_recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
+        binding.eventRecyclerView.setLayoutManager(layoutManager);
 
         activity = (MainActivity) getActivity();
-
         makeRequest(activity.getDataManager(), this, DataManager.REQUEST_EVENTS);
 
-        return v;
+        return binding.getRoot();
     }
 
     private void loadRecycleView(ArrayList<Event> data){
-        recyclerView.setAdapter(new EventsAdapter(data, activity.getDataManager()));
+        binding.eventRecyclerView.setAdapter(new EventsAdapter(data, activity.getDataManager()));
     }
 
     @Override
     public <T> void receiveData(ArrayList<T> results) {
-        if(results != null && results.size() > 0){
-            if(results.get(0) instanceof Event){
-                System.out.println("Setting Events");
-                loadRecycleView((ArrayList<Event>) results);
+        if(results != null) {
+
+            binding.loadingView.getRoot().setVisibility(View.GONE); //Hide loading animation
+
+            if (results.size() > 0) {
+                if (results.get(0) instanceof Event) { //Display games
+                    loadRecycleView((ArrayList<Event>) results);
+                }
+            } else { //Display info text
+                binding.noEventsText.setVisibility(View.VISIBLE);
             }
         }
     }

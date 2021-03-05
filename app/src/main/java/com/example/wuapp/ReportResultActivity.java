@@ -54,9 +54,8 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.loading_view);
         binding = ActivityReportResultBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         Intent intent = getIntent();
         dataManager = intent.getParcelableExtra(MainActivity.MESSAGE_DATAMANAGER);
@@ -111,6 +110,8 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     public <T> void receiveData(ArrayList<T> results) {
         if(results != null && results.size() > 0){
             if(results.get(0) instanceof ReportFormState){
+                setContentView(binding.getRoot());
+
                 reportFormState = (ReportFormState) results.get(0);
                 bindReportFormState((ReportFormState) results.get(0));
             }

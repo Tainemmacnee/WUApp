@@ -21,7 +21,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1A1A1A"
+        android:background="@color/colorPrimaryDark"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextColor="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -14,6 +14,7 @@ import com.example.wuapp.MainActivity;
 import com.example.wuapp.R;
 import com.example.wuapp.data.DataManager;
 import com.example.wuapp.data.DataReceiver;
+import com.example.wuapp.databinding.FragmentGamesBinding;
 import com.example.wuapp.model.Game;
 
 import java.util.ArrayList;
@@ -21,35 +22,40 @@ import java.util.Collections;
 
 public class RecentGamesFragment extends Fragment implements DataReceiver {
 
-    private RecyclerView recyclerView;
-    private GameAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private FragmentGamesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_games, container, false);
+
+        binding = FragmentGamesBinding.inflate(inflater);
 
         layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
-        setHasOptionsMenu(true);
+        binding.recyclerView.setLayoutManager(layoutManager);
 
         MainActivity activity = (MainActivity) getActivity();
         makeRequest(activity.getDataManager(), this, DataManager.REQUEST_RECENT_GAMES);
 
-        return v;
+        return binding.getRoot();
     }
 
     private void loadRecycleView(ArrayList<Game> data){
         Collections.sort(data, new Game.SortByLeastRecentDate());
-        recyclerView.setAdapter(new GameAdapter2(data));
+        binding.recyclerView.setAdapter(new GameAdapter2(data));
     }
 
     @Override
     public <T> void receiveData(ArrayList<T> results) {
-        if(results != null && results.size() > 0){
-            if(results.get(0) instanceof Game){
-                loadRecycleView((ArrayList<Game>) results);
+        if(results != null) {
+
+            binding.loadingView.getRoot().setVisibility(View.GONE); //Hide loading animation
+
+            if (results.size() > 0) {
+                if (results.get(0) instanceof Game) { //Display games
+                    loadRecycleView((ArrayList<Game>) results);
+                }
+            } else { //Display info text
+                binding.noGamesText.setVisibility(View.VISIBLE);
             }
         }
     }
