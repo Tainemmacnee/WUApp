@@ -39,6 +39,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.wuapp.MainActivity" />
         </activity>
+        <activity android:name="com.example.wuapp.DisplayGameActivity"
+            android:parentActivityName="com.example.wuapp.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wuapp.MainActivity" />
+        </activity>
         <activity
             android:name="com.example.wuapp.LoginActivity"
             android:label="@string/app_name" >

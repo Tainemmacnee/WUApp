@@ -107,4 +107,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    public void viewGame(Game game) {
+        Intent intent = new Intent(this, DisplayGameActivity.class);
+        intent.putExtra(MESSAGE_DATAMANAGER, dataManager);
+        intent.putExtra(MESSAGE_GAME, game);
+        startActivity(intent);
+    }
 }

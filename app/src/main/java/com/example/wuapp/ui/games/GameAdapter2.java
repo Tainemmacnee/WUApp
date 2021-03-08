@@ -49,6 +49,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
 
         public Button reportButton;
         public Button mapsButton;
+        public Button gameButton;
 
         public GameViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +63,7 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
             this.awayTeamImage = itemView.findViewById(R.id.team2_image);
             this.reportButton = itemView.findViewById(R.id.report_button);
             this.mapsButton = itemView.findViewById(R.id.map_button);
+            this.gameButton = itemView.findViewById(R.id.game_button);
         }
     }
 
@@ -117,6 +119,14 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
                 }
             });
         }
+
+        holder.gameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity activity = (MainActivity) view.getContext();
+                activity.viewGame(gamesFiltered[position]);
+            }
+        });
 
     }
 
