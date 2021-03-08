@@ -340,6 +340,10 @@ public class DataManager implements Parcelable {
         return this.OAuthToken;
     }
 
+    public UserLoginToken getLoginToken() {
+        return this.loginToken;
+    }
+
 
     private class Request{
 
