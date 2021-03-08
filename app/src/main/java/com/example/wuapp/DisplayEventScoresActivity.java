@@ -70,22 +70,10 @@ public class DisplayEventScoresActivity extends AppCompatActivity implements Dat
         //setup activity display
         setContentView(R.layout.activity_display_event_standings);
 
-        Toolbar toolbar = findViewById(R.id.toolbar2);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void exit(View view){
+        finish();
     }
 
     private void loadTable(){
@@ -99,12 +87,6 @@ public class DisplayEventScoresActivity extends AppCompatActivity implements Dat
             binding.pointDiff.setText(team.get("pointDiff"));
             view.addView(binding.getRoot());
         }
-    }
-
-    private Space getSpace(View view){
-        Space space = new Space(getApplicationContext());
-        space.setLayoutParams(view.findViewById(R.id.spacer).getLayoutParams());
-        return space;
     }
 
     @Override

@@ -183,7 +183,13 @@ public class WDSParser {
             info.put("record", record.text());
 
             Element spirit = team.getElementsByClass("plain-link plain-link").last();
-            info.put("spirit", spirit.text());
+            if(spirit.text().length() == 2){
+                info.put("spirit", spirit.text()+".00");
+            } else if (spirit.text().length() == 4){
+                info.put("spirit", spirit.text()+"0");
+            }else {
+                info.put("spirit", spirit.text());
+            }
 
             Element pointDiff = team.getElementsByClass("row-fluid-always").last().child(0);
             info.put("pointDiff", pointDiff.text());
