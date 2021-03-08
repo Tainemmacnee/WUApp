@@ -106,6 +106,8 @@ public class DisplayEventScoresActivity extends AppCompatActivity implements Dat
                     .show();
             return;
         } else {
+            findViewById(R.id.loading_view).setVisibility(View.GONE); //Hide loading animation
+
             standings = (List<Map<String, String>>) results.get(0);
             loadTable();
         }
