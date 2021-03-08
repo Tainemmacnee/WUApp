@@ -6,9 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
     android:layout_marginLeft="4dp"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="4dp"
     android:layout_marginRight="4dp"
+    android:background="@drawable/rounded_background_dark"
     android:elevation="2dp">
 
     <TextView
@@ -18,19 +19,22 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="center|left"
-        android:text="EVENT TEAM NAME"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/view4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toEndOf="@id/scores_main_card2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020 Winter Monday mens Womexn's Leauge" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/scores_main_card2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
@@ -54,9 +58,11 @@
         android:id="@+id/constraintLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/gameview_rounded_background_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_team_name">
+        app:layout_constraintTop_toBottomOf="@id/view4">
 
         <LinearLayout
             android:id="@+id/female_matchup_container"
@@ -73,6 +79,8 @@
                 android:id="@+id/textView_female_matchups2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="Female Matchups"
@@ -142,18 +150,16 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
-        android:id="@+id/item_seperator2"
+        android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+        android:background="@android:color/darker_gray"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/scores_main_card2"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

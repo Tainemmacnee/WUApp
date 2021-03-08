@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wuapp.model.Team;
 import com.example.wuapp.ui.events.teams.EventTeamsAdapter;
@@ -28,6 +31,8 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
 
     private SearchView searchView;
     private EventTeamsAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,35 +44,22 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
 
         //setup activity display
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_display_event_teams);
-        Toolbar toolbar = findViewById(R.id.toolbar2);
-        toolbar.setTitle(eventName);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-    }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+        Team[] eventTeams = getEventTeams();
 
-    @Override
-    /**
-     * This function is used to setup the search functionality
-     */
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.display_event_teams_activity, menu);
+        recyclerView = findViewById(R.id.event_team_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new EventTeamsAdapter(eventTeams);
+        recyclerView.setAdapter(mAdapter);
+        setmAdapter(mAdapter);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = findViewById(R.id.searchView);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
@@ -86,7 +78,10 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        return true;
+    }
+
+    public void exit(View view){
+        finish();
     }
 
     public Team[] getEventTeams() {
