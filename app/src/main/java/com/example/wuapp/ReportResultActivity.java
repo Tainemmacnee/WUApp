@@ -149,10 +149,13 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
 
             String commentsReportLink;
             String comments = binding.reportResultComments.getText().toString();
+
+
+
             if (reportPage.getElementById("game_home_game_report_survey_6_answer") == null) {
-                commentsReportLink = "game_away_game_report_survey_6_answer";
+                commentsReportLink = "game[away_game_report_survey][6][answer]";
             } else {
-                commentsReportLink = "game_home_game_report_survey_6_answer";
+                commentsReportLink = "game[home_game_report_survey][6][answer]";
             }
 
             FormElement form = (FormElement) reportPage.getElementById("game-report-score-form");
