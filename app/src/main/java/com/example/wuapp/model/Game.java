@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * The Game class is used to represent and store the data for a Game
@@ -88,7 +89,23 @@ public class Game implements Parcelable {
         return String.format("%s vs %s @%s %s", homeTeamName, awayTeamName, date, time);
     }
 
-    //TODO: Add game equals code so that games in a set are unique
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return homeTeamName.equals(game.homeTeamName) &&
+                awayTeamName.equals(game.awayTeamName) &&
+                league.equals(game.league) &&
+                date.equals(game.date) &&
+                time.equals(game.time) &&
+                location.equals(game.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(homeTeamName, awayTeamName, league, date, time, location);
+    }
 
     private Game(Builder builder){
         this.homeTeamName = builder.homeTeamName;
