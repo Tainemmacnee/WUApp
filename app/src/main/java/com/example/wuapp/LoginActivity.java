@@ -58,14 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         UserLoginToken loginToken = null;
         try {
             fin = getApplicationContext().openFileInput("login.txt");
-
-//            int oneByte;
-//            while ((oneByte = fin.read()) != -1) {
-//                System.out.write(oneByte);
-//                // System.out.print((char)oneByte); // could also do this
-//            }
-//            System.out.flush();
-
             if(fin != null){
                 oin = new ObjectInputStream(fin);
                 loginToken = (UserLoginToken) oin.readObject();
@@ -139,17 +131,11 @@ public class LoginActivity extends AppCompatActivity {
         links.put(UserLoginToken.LINK_SCHEDULED_GAMES, LOGIN_URL+userButton.attr("href") + "/schedule");
         links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/with_result");
         links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
-
-        //TODO: remove legacy links
-        links.put(User.USERPAGELINK, userButton.attr("href"));
-        links.put(User.UPCOMINGGAMESLINK, userButton.attr("href") + "/schedule");
-        links.put(User.MISSINGRESULTSLINK, userButton.attr("href") + "/schedule/game_type/missing_result");
-        links.put(User.GAMESLINK, userButton.attr("href") + "/schedule/event_id/active_events_only/game_type/all");
+        
 
         return new UserLoginToken(cookies, links, name, profileImage);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void attemptLogin(View view){
         String username = binding.editText.getText().toString();
         String password = binding.editText2.getText().toString();

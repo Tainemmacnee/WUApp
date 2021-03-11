@@ -3,14 +3,12 @@ package com.example.wuapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wuapp.data.DataManager;
@@ -20,17 +18,13 @@ import com.example.wuapp.databinding.ReportResultMvpBoxBinding;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.User;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +43,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     private ActivityReportResultBinding binding;
     private List<ReportResultMvpBoxBinding> MVPBindings = new ArrayList<>();
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +110,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void submitReportForm(View view){
         ProgressDialog dialog = ProgressDialog.show(ReportResultActivity.this, "",
                 "Reporting Results. Please wait...", true);
@@ -145,7 +136,7 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             setSpinner(selectForms.get(selectFormIndex++), binding.spinnerFouls.getSelectedItemPosition());
             setSpinner(selectForms.get(selectFormIndex++), binding.spinnerFair.getSelectedItemPosition());
             setSpinner(selectForms.get(selectFormIndex++), binding.spinnerPositiveAttitude.getSelectedItemPosition());
-            setSpinner(selectForms.get(selectFormIndex++), binding.spinnerCommunication.getSelectedItemPosition());
+            setSpinner(selectForms.get(selectFormIndex), binding.spinnerCommunication.getSelectedItemPosition());
 
             String commentsReportLink;
             String comments = binding.reportResultComments.getText().toString();
@@ -159,7 +150,7 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             }
 
             FormElement form = (FormElement) reportPage.getElementById("game-report-score-form");
-            Connection.Response reportActionResponse = form.submit()
+            form.submit()
                     .data(commentsReportLink, comments)
                     .cookies(dataManager.getCookies())
                     .userAgent(User.USER_AGENT)
@@ -214,37 +205,18 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
                         link = "https://wds.usetopscore.com/api/person-award/edit";
                     }
 
-                    Document reportResponse = Jsoup.connect(link)
+                    Jsoup.connect(link)
                             .userAgent(User.USER_AGENT)
                             .ignoreContentType(true)
                             .header("Authorization", "Bearer " + dataManager.getOAuthToken())
                             .data(data)
                             .post();
-
-                    System.out.println(data);
-                    //System.out.println(reportResponse.body());
-
                 }
             }
         }catch (Exception e) {
             e.printStackTrace();
         }
         return false;
-    }
-
-    /**
-     * This function finds the id of a player from an html select tag where the players name is an option
-     * @param selectTag The encapsulating select tag
-     * @param MVPName The name of the player who id were are trying to get
-     * @return The id of the player or null if they weren't found
-     */
-    private String getMVPId(Element selectTag, String MVPName){
-        for(Element option : selectTag.children()){
-            if(option.text().contains(MVPName)){ //get mvp id from options
-                return option.attr("value");
-            }
-        }
-        return null;
     }
 
     /**

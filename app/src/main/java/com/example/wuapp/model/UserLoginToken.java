@@ -72,5 +72,4 @@ public class UserLoginToken implements Serializable {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
-
 }
