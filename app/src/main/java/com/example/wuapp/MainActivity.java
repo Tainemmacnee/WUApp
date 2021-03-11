@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.wuapp.data.Config;
 import com.example.wuapp.data.DataManager;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.UserLoginToken;
