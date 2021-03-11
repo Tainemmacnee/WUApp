@@ -27,8 +27,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,7 +49,7 @@ public class DataManager implements Parcelable {
     private boolean downloadingStandings = false;
 
     private Context context;
-    private boolean cacheEvents = true;
+    private Config config;
     private Date eventCacheTimestamp;
 
     private Set<Game> gameSet = new HashSet<>();
@@ -65,6 +63,7 @@ public class DataManager implements Parcelable {
 
     public DataManager(UserLoginToken loginToken, Context context){
         this.loginToken = loginToken;
+        this.config = Config.readConfig(context);
         this.context = context; //used to save events
 
         downloadGames();
@@ -138,7 +137,7 @@ public class DataManager implements Parcelable {
     }
 
     public void setCacheEvents(boolean bool){
-        this.cacheEvents = bool;
+        this.config.setCacheEvents(bool, context);
         if(bool == false){
             deleteCachedEvents();
         }
@@ -300,7 +299,7 @@ public class DataManager implements Parcelable {
                 this.downloadingEvents = false;
                 return r;
             }).thenAccept(r -> {
-                        if(cacheEvents) { writeEvents(r); eventCacheTimestamp = new Date(); }
+                        if(config.getCacheEvents()) { writeEvents(r); eventCacheTimestamp = new Date(); }
                     }
             );
 
@@ -410,6 +409,10 @@ public class DataManager implements Parcelable {
 
     public UserLoginToken getLoginToken() {
         return this.loginToken;
+    }
+
+    public Config getConfig() {
+        return this.config;
     }
 
 

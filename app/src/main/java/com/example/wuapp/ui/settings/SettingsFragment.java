@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
@@ -40,12 +41,33 @@ public class SettingsFragment extends Fragment {
         binding.username.setText(loginToken.getName());
         Picasso.get().load(loginToken.getProfileImage()).into(binding.userImage);
 
+        binding.eventCacheSwitch.setChecked(activity.getDataManager().getConfig().getCacheEvents());
         binding.eventCacheSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                activity.getDataManager().setCacheEvents(isChecked);
+                activity.getDataManager().getConfig().setCacheEvents(isChecked, getContext());
             }
         });
+
+
+        binding.eventCachingDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
+                binding.eventCachingDurationText.setText("" + progress);
+                binding.eventCachingDurationText.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+                //textView.setY(100); just added a value set this properly using screen with height aspect ratio , if you do not set it by default it will be there below seek bar
+
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                activity.getDataManager().getConfig().setCacheEventsDuration(seekBar.getProgress(), getContext());
+            }
+        });
+        binding.eventCachingDuration.setProgress(activity.getDataManager().getConfig().getCacheEventsDuration());
 
 
         return binding.getRoot();
