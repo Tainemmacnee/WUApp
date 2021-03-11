@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
@@ -38,6 +39,13 @@ public class SettingsFragment extends Fragment {
 
         binding.username.setText(loginToken.getName());
         Picasso.get().load(loginToken.getProfileImage()).into(binding.userImage);
+
+        binding.eventCacheSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                activity.getDataManager().setCacheEvents(isChecked);
+            }
+        });
 
 
         return binding.getRoot();

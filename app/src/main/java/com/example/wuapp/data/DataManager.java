@@ -137,6 +137,20 @@ public class DataManager implements Parcelable {
         r.callback.receiveData(results);
     }
 
+    public void setCacheEvents(boolean bool){
+        this.cacheEvents = bool;
+        if(bool == false){
+            deleteCachedEvents();
+        }
+    }
+
+    private void deleteCachedEvents(){
+        File file = new File(context.getFilesDir(), "events.txt");
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
     public static final Creator<DataManager> CREATOR = new Creator<DataManager>() {
         @Override
         public DataManager createFromParcel(Parcel in) {
@@ -293,10 +307,7 @@ public class DataManager implements Parcelable {
     }
 
     private void writeEvents(Set<Event> events){
-        File file = new File(context.getFilesDir(), "events.txt");
-        if(file.exists()){
-            file.delete();
-        }
+        deleteCachedEvents(); //Delete old events in preparation for new events to be saved
         try (FileOutputStream fout = context.openFileOutput("events.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
                 oos.writeObject(eventCacheTimestamp);
                 oos.writeObject(events);
