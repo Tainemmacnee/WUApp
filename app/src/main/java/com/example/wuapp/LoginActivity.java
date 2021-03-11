@@ -58,6 +58,14 @@ public class LoginActivity extends AppCompatActivity {
         UserLoginToken loginToken = null;
         try {
             fin = getApplicationContext().openFileInput("login.txt");
+
+//            int oneByte;
+//            while ((oneByte = fin.read()) != -1) {
+//                System.out.write(oneByte);
+//                // System.out.print((char)oneByte); // could also do this
+//            }
+//            System.out.flush();
+
             if(fin != null){
                 oin = new ObjectInputStream(fin);
                 loginToken = (UserLoginToken) oin.readObject();
@@ -163,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();
                     }
-        });
+                });
     }
 
     private void saveLoginToken(UserLoginToken token){

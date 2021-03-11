@@ -1,12 +1,9 @@
 package com.example.wuapp.data;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
@@ -21,6 +18,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -46,6 +50,10 @@ public class DataManager implements Parcelable {
     private boolean downloadingReportForm = false;
     private boolean downloadingStandings = false;
 
+    private Context context;
+    private boolean cacheEvents = true;
+    private Date eventCacheTimestamp;
+
     private Set<Game> gameSet = new HashSet<>();
     private Set<Event> eventSet = new HashSet<>();
     private Queue<Request> requestQueue = new ArrayDeque<>();
@@ -55,15 +63,12 @@ public class DataManager implements Parcelable {
     private UserLoginToken loginToken;
     private String OAuthToken;
 
-    private ExecutorService executor = Executors.newCachedThreadPool();
-
-    //TODO: Remove test constructor
-    @SuppressLint("NewApi")
-    public DataManager(UserLoginToken loginToken){
+    public DataManager(UserLoginToken loginToken, Context context){
         this.loginToken = loginToken;
+        this.context = context; //used to save events
 
         downloadGames();
-        downloadEvents();
+        loadEvents();
         downloadOAuthKey();
 
         processQueue();
@@ -83,13 +88,11 @@ public class DataManager implements Parcelable {
         int delay = 200; //milliseconds
 
         handler.postDelayed(new Runnable(){
-            @RequiresApi(api = Build.VERSION_CODES.N)
             public void run(){
                 //do something
                 if(!requestQueue.isEmpty()){
                     processRequest(requestQueue.poll());
                 }
-                //cleanQueue();
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -146,7 +149,6 @@ public class DataManager implements Parcelable {
         }
     };
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void makeRequest(DataReceiver callback, String request, String link){
         switch (request){
             case DataManager.REQUEST_REPORT_FORM:
@@ -163,33 +165,26 @@ public class DataManager implements Parcelable {
         requestQueue.add(new Request(callback, request));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void downloadReportForm(String link){
         this.downloadingReportForm = true;
-        executor.submit(() -> {
             CompletableFuture.supplyAsync(() ->
                     downloadWebPage(link)
-            ).thenApply(r -> WDSParser.parseReportForm(r)
+            ).thenApply(WDSParser::parseReportForm
             ).thenAccept(r -> {
                 currentReportForm = r;
                 this.downloadingReportForm = false;
-            }).join();
-        });
+            });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void downloadStandings(String link){
         this.downloadingStandings = true;
-        System.out.println(link);
-        executor.submit(() -> {
            CompletableFuture.supplyAsync(() ->
                downloadWebPage(link)
-           ).thenApply(r -> WDSParser.parseStandings(r)
+           ).thenApply(WDSParser::parseStandings
            ).thenAccept(r -> {
                 currentStandings = r;
                 this.downloadingStandings = false;
-            }).join();
-        });
+            });
     }
 
     @Override
@@ -199,10 +194,8 @@ public class DataManager implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        List<Game> gameList = new ArrayList<>();
-        List<Event> eventList = new ArrayList<>();
-        gameList.addAll(gameSet);
-        eventList.addAll(eventSet);
+        List<Game> gameList = new ArrayList<>(gameSet);
+        List<Event> eventList = new ArrayList<>(eventSet);
         parcel.writeTypedList(gameList);
         parcel.writeTypedList(eventList);
         parcel.writeString(OAuthToken);
@@ -226,46 +219,114 @@ public class DataManager implements Parcelable {
         return result;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    /**
+     * This function checks that if the events are already downloaded, then
+     * for all the games in the given set the games event exists
+     */
+    private boolean checkEventIsCached(Game game){
+        //if we are downloading the events, it is safe to assume we will download the event for the game.
+        if(downloadingEvents) { return true; }
+
+        for(Event event : eventSet){
+            if(event.getName().equals(game.getLeague())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void downloadGames(){
         this.downloadingGames = true;
-        executor.submit(() -> {
+
             CompletableFuture<Void> scheduledGames = CompletableFuture.supplyAsync(() ->
                     downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
-            ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
+            ).thenApply( r -> {
+                Set<Game> games = WDSParser.parseGames(r);
+                if(games.stream().noneMatch(g -> checkEventIsCached(g))){ downloadEvents(); }
+                return games;
+            }).thenAccept( r -> gameSet.addAll(r));
 
-            CompletableFuture<Void> gamesWithResult = CompletableFuture.supplyAsync(() ->
+            CompletableFuture<Void> gameWithResult = CompletableFuture.supplyAsync(() ->
                     downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_WITH_RESULTS))
-            ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
+            ).thenApply( r -> {
+                Set<Game> games = WDSParser.parseGames(r);
+                if(games.stream().noneMatch(g -> checkEventIsCached(g))){ downloadEvents(); }
+                return games;
+            }).thenAccept( r -> gameSet.addAll(r));
 
             CompletableFuture<Void> gamesWithoutResult = CompletableFuture.supplyAsync(() ->
                     downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS))
-            ).thenAccept( r -> gameSet.addAll(WDSParser.parseGames(r)));
+            ).thenApply( r -> {
+                Set<Game> games = WDSParser.parseGames(r);
+                if(games.stream().noneMatch(g -> checkEventIsCached(g))){ downloadEvents(); }
+                return games;
+            }).thenAccept( r -> gameSet.addAll(r));
 
-            CompletableFuture combinedFutures = CompletableFuture.allOf(gamesWithoutResult, gamesWithResult, scheduledGames)
+            CompletableFuture combinedFutures = CompletableFuture.allOf(gamesWithoutResult, gameWithResult, scheduledGames)
                     .thenAccept(r -> this.downloadingGames = false);
-
-            combinedFutures.join();
-        });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void loadEvents(){
+        File file = new File(context.getFilesDir(), "events.txt");
+        if(file.exists()) {
+            readEvents();
+        } else {
+            downloadEvents();
+        }
+    }
+
     private void downloadEvents() {
         this.downloadingEvents = true;
-            executor.submit(() -> {
-            CompletableFuture.supplyAsync(() ->
-                    downloadWebPage(HOME_URL)
+
+            CompletableFuture.supplyAsync(() -> downloadWebPage(HOME_URL)
             ).thenApply(r -> WDSParser.parseEvents(r)
-            ).thenAccept(r -> {
-                r.stream().forEach(event -> event.setTeams(downloadEventTeams(event.getEventLink())));
+            ).thenApply(r -> {
+                r.parallelStream().forEach(event -> event.setTeams(downloadEventTeams(event.getEventLink())));
                 this.eventSet.addAll(r);
                 this.downloadingEvents = false;
-            }).join();
-        });
+                return r;
+            }).thenAccept(r -> {
+                        if(cacheEvents) { writeEvents(r); eventCacheTimestamp = new Date(); }
+                    }
+            );
+
     }
 
+    private void writeEvents(Set<Event> events){
+        File file = new File(context.getFilesDir(), "events.txt");
+        if(file.exists()){
+            file.delete();
+        }
+        try (FileOutputStream fout = context.openFileOutput("events.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+                oos.writeObject(eventCacheTimestamp);
+                oos.writeObject(events);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void readEvents(){
+        FileInputStream fin = null;
+        ObjectInputStream oin = null;
+        try {
+            fin = context.openFileInput("events.txt");
+            if(fin != null){
+                oin = new ObjectInputStream(fin);
+                eventCacheTimestamp = (Date) oin.readObject();
+                eventSet = (Set<Event>) oin.readObject();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try { if (fin != null) fin.close(); } catch(IOException ignored) {}
+            try { if (oin != null) oin.close(); } catch(IOException ignored) {}
+        }
+    }
+
     private Set<Team> downloadEventTeams(String eventLink) {
 
         CompletableFuture<Set<Team>> teamsPage1 = CompletableFuture.supplyAsync(() ->
@@ -286,12 +347,10 @@ public class DataManager implements Parcelable {
         return (Set<Team>) combinedFutures.join();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void downloadOAuthKey() {
 
         final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
 
-        executor.submit(() -> {
 
             CompletableFuture.supplyAsync(() -> {
 
@@ -327,9 +386,7 @@ public class DataManager implements Parcelable {
                     e.printStackTrace();
                     return null;
                 }
-            }).thenAccept(r -> OAuthToken = (String) r
-            ).join();
-        });
+            }).thenAccept(r -> OAuthToken = (String) r);
     }
 
     public Map<String, String> getCookies() {
@@ -365,5 +422,3 @@ public class DataManager implements Parcelable {
                 '}';
     }
 }
-
-

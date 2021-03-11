@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        this.dataManager = new DataManager((UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN));
+        this.dataManager = new DataManager((UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN), getApplicationContext());
 
         navigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -90,6 +90,14 @@ public class MainActivity extends AppCompatActivity{
         intent.putExtra(MESSAGE_DATAMANAGER, dataManager);
         intent.putExtra(MESSAGE_GAME, game);
         startActivity(intent);
+    }
+
+    public void forceReload(View view){
+        File file = new File(getApplicationContext().getFilesDir(), "events.txt");
+        if(file.exists()) {
+            file.delete();
+        }
+        this.dataManager = new DataManager(dataManager.getLoginToken(), getApplicationContext());
     }
 
     /**
