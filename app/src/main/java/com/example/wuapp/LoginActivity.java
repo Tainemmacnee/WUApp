@@ -53,22 +53,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        FileInputStream fin = null;
-        ObjectInputStream oin = null;
         UserLoginToken loginToken = null;
-        try {
-            fin = getApplicationContext().openFileInput("login.txt");
-            if(fin != null){
-                oin = new ObjectInputStream(fin);
-                loginToken = (UserLoginToken) oin.readObject();
-            }
+        try (FileInputStream fin = getApplicationContext().openFileInput("login.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
+            loginToken = (UserLoginToken) oin.readObject();
         }catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            try { if (fin != null) fin.close(); } catch(IOException ignored) {}
-            try { if (oin != null) oin.close(); } catch(IOException ignored) {}
         }
 
         if(loginToken != null) {
@@ -132,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
         links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/with_result");
         links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
         
-
         return new UserLoginToken(cookies, links, name, profileImage);
     }
 
