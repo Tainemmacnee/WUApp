@@ -56,6 +56,10 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         dataManager.makeRequest(this, DataManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink());
     }
 
+    public void exit(View view){
+        finish();
+    }
+
     private void bindReportFormState(ReportFormState formState){
         binding.team1Name.setText(game.getHomeTeamName());
         binding.team2Name.setText(game.getAwayTeamName());
