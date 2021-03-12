@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.wuapp.MainActivity.MESSAGE_DATAMANAGER;
+import static com.example.wuapp.MainActivity.MESSAGE_GAME;
+
 /**
  * An Activity to load and display the teams for an event
  */
@@ -43,8 +47,8 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
 
         //retrieve required info from intent
         Intent intent = getIntent();
-        dataManager = intent.getParcelableExtra(MainActivity.MESSAGE_DATAMANAGER);
-        game = intent.getParcelableExtra(MainActivity.MESSAGE_GAME);
+        dataManager = intent.getParcelableExtra(MESSAGE_DATAMANAGER);
+        game = intent.getParcelableExtra(MESSAGE_GAME);
 
         binding.team1Name.setText(game.getHomeTeamName());
         binding.team2Name.setText(game.getAwayTeamName());
@@ -60,12 +64,49 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
         makeRequest(dataManager, this, DataManager.REQUEST_EVENTS);
     }
 
+    public void setupButtons(){
+        if(game.isReportable()){
+            binding.gameReportButton.setBackgroundResource(R.drawable.rounded_background_grey);
+            binding.gameReportButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), ReportResultActivity.class);
+                    intent.putExtra(MESSAGE_DATAMANAGER, dataManager);
+                    intent.putExtra(MESSAGE_GAME, game);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            binding.gameReportButton.setBackgroundResource(R.drawable.rounded_background_red);
+        }
+
+        if(!game.getLocation().contains("Liardet") &&
+                !game.getLocation().contains("MacAlister")){
+            binding.gameMapButton.setBackgroundResource(R.drawable.rounded_background_red);
+        } else {
+            binding.gameMapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), DisplayMapActivity.class);
+                    intent.putExtra(MESSAGE_DATAMANAGER, dataManager);
+                    intent.putExtra(MESSAGE_GAME, game);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    public void exit(View view){
+        finish();
+    }
+
     private void bindGameTeams(Team team1, Team team2){
 
         binding.maleMatchupContainer.setVisibility(View.VISIBLE);
         for(String name : team1.getMaleMatchups()){
             TextView newtextview = new TextView(binding.maleMatchupDisplay.getContext());
             newtextview.setText(name);
+            newtextview.setGravity(Gravity.CENTER);
             newtextview.setTextColor(getResources().getColor(R.color.colorPrimary));
             binding.maleMatchupDisplay.addView(newtextview);
         }
@@ -74,6 +115,7 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
         for(String name : team1.getFemaleMatchups()){
             TextView newtextview = new TextView(binding.femaleMatchupDisplay.getContext());
             newtextview.setText(name);
+            newtextview.setGravity(Gravity.CENTER);
             newtextview.setTextColor(getResources().getColor(R.color.colorPrimary));
             binding.femaleMatchupDisplay.addView(newtextview);
         }
@@ -82,6 +124,7 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
         for(String name : team2.getMaleMatchups()){
             TextView newtextview = new TextView(binding.team2MaleMatchupDisplay.getContext());
             newtextview.setText(name);
+            newtextview.setGravity(Gravity.CENTER);
             newtextview.setTextColor(getResources().getColor(R.color.colorPrimary));
             binding.team2MaleMatchupDisplay.addView(newtextview);
         }
@@ -90,19 +133,11 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
         for(String name : team2.getFemaleMatchups()){
             TextView newtextview = new TextView(binding.team2FemaleMatchupDisplay.getContext());
             newtextview.setText(name);
+            newtextview.setGravity(Gravity.CENTER);
             newtextview.setTextColor(getResources().getColor(R.color.colorPrimary));
             binding.team2FemaleMatchupDisplay.addView(newtextview);
         }
 
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -116,6 +151,7 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
                         binding.loadingView.getRoot().setVisibility(View.GONE); //hide loading animation
                         binding.gameViewRoot.setVisibility(View.VISIBLE);
                         bindGameTeams(event.getTeam(game.getHomeTeamName()), event.getTeam(game.getAwayTeamName()));
+                        setupButtons();
                     }
                 }
             }
