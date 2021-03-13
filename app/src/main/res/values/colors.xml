@@ -15,5 +15,7 @@
     <color name="colorNewDark">#353537</color>
     <color name="testerBeno">#4F4D54</color>
     <color name="newLightText">#ffe300</color>
+    <color name="backgroundDark">#121212</color>
+
 
 </resources>
