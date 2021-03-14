@@ -136,13 +136,6 @@ public class DataManager implements Parcelable {
         r.callback.receiveData(results);
     }
 
-    public void setCacheEvents(boolean bool){
-        this.config.setCacheEvents(bool, context);
-        if(bool == false){
-            deleteCachedEvents();
-        }
-    }
-
     private void deleteCachedEvents(){
         File file = new File(context.getFilesDir(), "events.txt");
         if(file.exists()){
