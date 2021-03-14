@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.wuapp.MainActivity;
 import com.example.wuapp.R;
 import com.example.wuapp.ReportResultActivity;
+import com.example.wuapp.data.DataManager;
 import com.example.wuapp.databinding.FragmentSettingsBinding;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
@@ -29,6 +30,7 @@ import java.util.List;
 public class SettingsFragment extends Fragment {
 
     FragmentSettingsBinding binding;
+    DataManager dataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,37 +39,26 @@ public class SettingsFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         UserLoginToken loginToken = activity.getDataManager().getLoginToken();
+        dataManager = activity.getDataManager();
 
         binding.username.setText(loginToken.getName());
         Picasso.get().load(loginToken.getProfileImage()).into(binding.userImage);
 
-        binding.eventCacheSwitch.setChecked(activity.getDataManager().getConfig().getCacheEvents());
+        binding.eventCacheSwitch.setChecked(dataManager.getConfig().getCacheEvents());
         binding.eventCacheSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                activity.getDataManager().getConfig().setCacheEvents(isChecked, getContext());
+                dataManager.getConfig().setCacheEvents(isChecked, getContext());
             }
         });
 
-
-        binding.eventCachingDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.loginCacheSwitch.setChecked(dataManager.getConfig().getCacheLogin());
+        binding.loginCacheSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
-                binding.eventCachingDurationText.setText("" + progress);
-                binding.eventCachingDurationText.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
-                //textView.setY(100); just added a value set this properly using screen with height aspect ratio , if you do not set it by default it will be there below seek bar
-
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                activity.getDataManager().getConfig().setCacheEventsDuration(seekBar.getProgress(), getContext());
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                dataManager.getConfig().setCacheLogin(isChecked, getContext());
             }
         });
-        binding.eventCachingDuration.setProgress(activity.getDataManager().getConfig().getCacheEventsDuration());
 
 
         return binding.getRoot();

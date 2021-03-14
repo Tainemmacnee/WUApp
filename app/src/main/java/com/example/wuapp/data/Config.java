@@ -3,6 +3,7 @@ package com.example.wuapp.data;
 import android.content.Context;
 
 import com.example.wuapp.model.Event;
+import com.example.wuapp.model.UserLoginToken;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,15 +16,15 @@ import java.io.ObjectOutputStream;
 public class Config {
 
     private boolean cacheEvents;
-    private int cacheEventsDuration;
+    private boolean cacheLogin;
 
-    public Config(boolean cacheEvents, int cacheEventsDuration){
+    public Config(boolean cacheEvents, boolean cacheLogin){
         this.cacheEvents = cacheEvents;
-        this.cacheEventsDuration = cacheEventsDuration;
+        this.cacheLogin = cacheLogin;
     }
 
     public static Config getDefaultConfig(){
-        return new Config(true, 30);
+        return new Config(true, true);
     }
 
     public void saveConfig(Context context){
@@ -34,7 +35,7 @@ public class Config {
 
         try (FileOutputStream fout = context.openFileOutput("config.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
             oos.writeObject(cacheEvents);
-            oos.writeObject(cacheEventsDuration);
+            oos.writeObject(cacheLogin);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -45,12 +46,12 @@ public class Config {
 
     public static Config readConfig(Context context){
         boolean cacheEvents;
-        int cacheEventsDuration;
+        boolean cacheLogin;
         try (FileInputStream fin = context.openFileInput("config.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
             cacheEvents = (boolean) oin.readObject();
-            cacheEventsDuration = (int) oin.readObject();
+            cacheLogin = (boolean) oin.readObject();
 
-            return new Config(cacheEvents, cacheEventsDuration);
+            return new Config(cacheEvents, cacheLogin);
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
         } catch (IOException ioException) {
@@ -71,12 +72,12 @@ public class Config {
         saveConfig(context);
     }
 
-    public int getCacheEventsDuration() {
-        return cacheEventsDuration;
+    public boolean getCacheLogin() {
+        return this.cacheLogin;
     }
 
-    public void setCacheEventsDuration(int cacheEventsDuration, Context context) {
-        this.cacheEventsDuration = cacheEventsDuration;
+    public void setCacheLogin(boolean isChecked, Context context) {
+        this.cacheLogin = isChecked;
         saveConfig(context);
     }
 }
