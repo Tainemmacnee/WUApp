@@ -37,10 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/point_diff"
             app:layout_constraintStart_toEndOf="@+id/record"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,11 +49,12 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center_horizontal"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spirit"
             app:layout_constraintTop_toTopOf="parent" />
 

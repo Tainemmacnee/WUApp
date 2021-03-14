@@ -45,10 +45,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:text="Record"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView32"
             app:layout_constraintStart_toEndOf="@+id/textView5"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,12 +56,12 @@
             android:id="@+id/textView32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="24dp"
             android:gravity="center"
             android:text="Spirit"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView33"
             app:layout_constraintStart_toEndOf="@+id/textView34"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,13 +69,14 @@
             android:id="@+id/textView33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_horizontal|fill_horizontal"
             android:text="Point Diff"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView32"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
