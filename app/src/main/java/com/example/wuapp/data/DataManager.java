@@ -50,7 +50,6 @@ public class DataManager implements Parcelable {
 
     private Context context;
     private Config config;
-    private Date eventCacheTimestamp;
 
     private Set<Game> gameSet = new HashSet<>();
     private Set<Event> eventSet = new HashSet<>();
@@ -291,17 +290,13 @@ public class DataManager implements Parcelable {
                 this.eventSet.addAll(r);
                 this.downloadingEvents = false;
                 return r;
-            }).thenAccept(r -> {
-                        if(config.getCacheEvents()) { writeEvents(r); eventCacheTimestamp = new Date(); }
-                    }
-            );
-
+            }).thenAccept(r -> { if(config.getCacheEvents()) { writeEvents(r); }
+            });
     }
 
     private void writeEvents(Set<Event> events){
         deleteCachedEvents(); //Delete old events in preparation for new events to be saved
         try (FileOutputStream fout = context.openFileOutput("events.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
-                oos.writeObject(eventCacheTimestamp);
                 oos.writeObject(events);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -311,22 +306,14 @@ public class DataManager implements Parcelable {
     }
 
     private void readEvents(){
-        FileInputStream fin = null;
-        ObjectInputStream oin = null;
-        try {
-            fin = context.openFileInput("events.txt");
-            if(fin != null){
-                oin = new ObjectInputStream(fin);
-                eventCacheTimestamp = (Date) oin.readObject();
+        try (FileInputStream fin = context.openFileInput("events.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
                 eventSet = (Set<Event>) oin.readObject();
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try { if (fin != null) fin.close(); } catch(IOException ignored) {}
-            try { if (oin != null) oin.close(); } catch(IOException ignored) {}
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
         }
     }
 
@@ -354,42 +341,40 @@ public class DataManager implements Parcelable {
 
         final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
 
+        CompletableFuture.supplyAsync(() -> {
+            List<String> output = new ArrayList<>();
 
-            CompletableFuture.supplyAsync(() -> {
+            //grab client_id and client_secret from webpage
+            Document doc = downloadWebPage(WEB_URL);
+            Element table = doc.getElementsByClass("table no-border").first();
 
-                List<String> output = new ArrayList<>();
+            for (Element row : table.getElementsByTag("tr")) { //find id and secret in table
+                output.add(row.getElementsByTag("td").first().text());
+            }
 
-                Document doc = downloadWebPage(WEB_URL);
-                Element table = doc.getElementsByClass("table no-border").first();
+            output.remove(2); //last row is a useless string
+            return output;
 
-                for (Element row : table.getElementsByTag("tr")) { //find id and secret
-                    output.add(row.getElementsByTag("td").first().text());
-                }
+        }).thenApply(r -> {
+            Document response = null;
+            try {
+                response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
+                        .userAgent(User.USER_AGENT)
+                        .data("grant_type", "client_credentials")
+                        .data("client_id", r.get(0))
+                        .data("client_secret", r.get(1))
+                        .ignoreContentType(true)
+                        .post();
+                //Take oauth token from JSON response
+                JSONObject result = new JSONObject(response.body().text());
 
-                output.remove(2); //remove useless string
+                return result.get("access_token");
 
-                return output;
-
-            }).thenApply(r -> {
-                Document response = null;
-                try {
-                    response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
-                            .userAgent(User.USER_AGENT)
-                            .data("grant_type", "client_credentials")
-                            .data("client_id", r.get(0))
-                            .data("client_secret", r.get(1))
-                            .ignoreContentType(true)
-                            .post();
-
-                    JSONObject result = new JSONObject(response.body().text());
-
-                    return result.get("access_token");
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }).thenAccept(r -> OAuthToken = (String) r);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }).thenAccept(r -> OAuthToken = (String) r);
     }
 
     public Map<String, String> getCookies() {
