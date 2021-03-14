@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.wuapp.data.Config;
 import com.example.wuapp.data.DataManager;
 import com.example.wuapp.databinding.ActivityLoginBinding;
 import com.example.wuapp.model.User;
@@ -52,20 +53,24 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
+        //check config to see if we should use saved login
+        Config config = Config.readConfig(getApplicationContext());
+        if(config.getCacheLogin()) {
 
-        UserLoginToken loginToken = null;
-        try (FileInputStream fin = getApplicationContext().openFileInput("login.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
-            loginToken = (UserLoginToken) oin.readObject();
-        }catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+            UserLoginToken loginToken = null;
+            try (FileInputStream fin = getApplicationContext().openFileInput("login.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
+                loginToken = (UserLoginToken) oin.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
-        if(loginToken != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, loginToken);
-            startActivity(intent);
+            if (loginToken != null) {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, loginToken);
+                startActivity(intent);
+            }
         }
     }
 
@@ -122,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         links.put(UserLoginToken.LINK_SCHEDULED_GAMES, LOGIN_URL+userButton.attr("href") + "/schedule");
         links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/with_result");
         links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
-        
+
         return new UserLoginToken(cookies, links, name, profileImage);
     }
 
