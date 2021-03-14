@@ -41,9 +41,9 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
         public TextView homeTeamName;
         public TextView awayTeamName;
 
-        public TextView date;
-        public TextView time;
+        public TextView datetime;
         public TextView location;
+        public TextView league;
         public ImageView homeTeamImage;
         public ImageView awayTeamImage;
 
@@ -56,9 +56,9 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
             this.root = itemView.findViewById(R.id.game_view_root);
             this.homeTeamName = itemView.findViewById(R.id.team1_name);
             this.awayTeamName = itemView.findViewById(R.id.team2_name);
-            this.date = itemView.findViewById(R.id.game_date);
-            this.time = itemView.findViewById(R.id.game_time);
+            this.datetime = itemView.findViewById(R.id.game_datetime);
             this.location = itemView.findViewById(R.id.game_location);
+            this.league = itemView.findViewById(R.id.game_league);
             this.homeTeamImage = itemView.findViewById(R.id.team1_image);
             this.awayTeamImage = itemView.findViewById(R.id.team2_image);
             this.reportButton = itemView.findViewById(R.id.report_button);
@@ -87,9 +87,9 @@ public class GameAdapter2 extends RecyclerView.Adapter<GameAdapter2.GameViewHold
         //setup views
         holder.homeTeamName.setText(gamesFiltered[position].getHomeTeamName());
         holder.awayTeamName.setText(gamesFiltered[position].getAwayTeamName());
-        holder.date.setText(gamesFiltered[position].getDate());
-        holder.time.setText(gamesFiltered[position].getTime());
+        holder.datetime.setText(gamesFiltered[position].getTime() + "   " + gamesFiltered[position].getDate());
         holder.location.setText(gamesFiltered[position].getLocation());
+        holder.league.setText(gamesFiltered[position].getLeague());
         Picasso.get().load(gamesFiltered[position].getHomeTeamImg()).into(holder.homeTeamImage);
         Picasso.get().load(gamesFiltered[position].getAwayTeamImg()).into(holder.awayTeamImage);
 

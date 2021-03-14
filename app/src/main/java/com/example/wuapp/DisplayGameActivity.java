@@ -52,9 +52,9 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
 
         binding.team1Name.setText(game.getHomeTeamName());
         binding.team2Name.setText(game.getAwayTeamName());
-        binding.gameDate.setText(game.getDate());
-        binding.gameTime.setText(game.getTime());
+        binding.gameDatetime.setText(game.getTime() + "   " + game.getDate());
         binding.gameLocation.setText(game.getLocation());
+        binding.gameLeague.setText(game.getLeague());
         Picasso.get().load(game.getHomeTeamImg()).into(binding.team1Image);
         Picasso.get().load(game.getAwayTeamImg()).into(binding.team2Image);
 
