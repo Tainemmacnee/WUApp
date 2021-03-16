@@ -44,10 +44,10 @@ public class UpcomingGamesFragment extends Fragment implements RefreshableFragme
 
     private void loadDisplay(View v){
         if(user.getUpcomingGamesAsArray().length == 0){
-            TextView textView = v.findViewById(R.id.empty_events_text); //display text showing no games
+            TextView textView = v.findViewById(R.id.no_events_text); //display text showing no games
             textView.setVisibility(View.VISIBLE);
         } else {
-            TextView textView = v.findViewById(R.id.empty_events_text);
+            TextView textView = v.findViewById(R.id.no_events_text);
             textView.setVisibility(View.GONE);
 
             recyclerView.setHasFixedSize(true);
@@ -69,7 +69,7 @@ public class UpcomingGamesFragment extends Fragment implements RefreshableFragme
 
         //Clear text and recyclers to show they are being reloaded
         recyclerView.setAdapter(new UpcomingAdapter(new Game[0])); //clear current displayed events
-        getView().findViewById(R.id.empty_events_text).setVisibility(View.GONE);
+        getView().findViewById(R.id.no_events_text).setVisibility(View.GONE);
 
         //wait for data to load and display once done
         Handler handler = new Handler();

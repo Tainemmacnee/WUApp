@@ -21,10 +21,10 @@
 
         <TextView
             android:id="@+id/record"
-            android:layout_width="60dp"
-            android:layout_height="18dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:gravity="center"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,9 +34,10 @@
 
         <TextView
             android:id="@+id/spirit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -46,11 +47,11 @@
 
         <TextView
             android:id="@+id/point_diff"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center|center_horizontal"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,9 +69,8 @@
 
             <TextView
                 android:id="@+id/team_name"
-                android:layout_width="130dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:lines="2"
                 android:text="TextView"
@@ -87,15 +87,12 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/scores_main_card"
+                app:layout_constraintEnd_toStartOf="@+id/team_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 

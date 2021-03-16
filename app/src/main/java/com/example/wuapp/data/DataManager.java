@@ -9,7 +9,6 @@ import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
-import com.example.wuapp.model.User;
 import com.example.wuapp.model.UserLoginToken;
 
 import org.json.JSONObject;
@@ -42,6 +41,7 @@ public class DataManager implements Parcelable {
     public static final String REQUEST_STANDINGS = "request_standings";
 
     public static final String HOME_URL = "https://wds.usetopscore.com";
+    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
 
     private boolean downloadingGames = false;
     private boolean downloadingEvents = false;
@@ -214,7 +214,7 @@ public class DataManager implements Parcelable {
         try {
             Connection.Response loadPageResponse = Jsoup.connect(link)
                     .method(Connection.Method.GET)
-                    .userAgent(User.USER_AGENT)
+                    .userAgent(USER_AGENT)
                     .cookies(loginToken.getCookies())
                     .execute();
             result = loadPageResponse.parse();
@@ -359,7 +359,7 @@ public class DataManager implements Parcelable {
             Document response = null;
             try {
                 response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
-                        .userAgent(User.USER_AGENT)
+                        .userAgent(USER_AGENT)
                         .data("grant_type", "client_credentials")
                         .data("client_id", r.get(0))
                         .data("client_secret", r.get(1))

@@ -1,7 +1,5 @@
 package com.example.wuapp.data;
 
-import com.example.wuapp.MainActivity;
-
 import java.util.ArrayList;
 
 public interface DataReceiver {

@@ -4,7 +4,6 @@ import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
-import com.example.wuapp.model.WebLoader;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -82,7 +81,6 @@ public class WDSParser {
 
         Set<Game> results = new HashSet<>();
 
-        System.out.println(htmlDOC.location() + " " + htmlDOC.getElementsByClass("game-list-item").size());
         for(Element gameDiv : htmlDOC.getElementsByClass("game-list-item")){
             try {
                 String homeTeamName, homeTeamImg, awayTeamName, awayTeamImg, Event, date, time, location,
@@ -267,9 +265,6 @@ public class WDSParser {
             }
             currentIndex++;
         }
-
-        System.out.println(options);
-        System.out.println(selectedIndex);
 
         return new ReportFormState.spinnerState(options, selectedIndex);
     }
