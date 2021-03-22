@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.wuapp.exceptions.ConnectionTimeoutException;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
@@ -116,30 +117,20 @@ public class DataManager implements Parcelable {
             case DataManager.REQUEST_EVENTS:
                 if(downloadingEvents) {  requestQueue.add(r); return; }
                 results.addAll(eventSet);
-                r.callback.receiveData(results);
-                return;
+                break;
 
             case DataManager.REQUEST_REPORT_FORM:
-                if(downloadingReportForm) {  requestQueue.add(r); break; }
+                if(downloadingReportForm) {  requestQueue.add(r); return; }
                 results.add(currentReportForm);
-                r.callback.receiveData(results);
-                return;
+                break;
 
             case DataManager.REQUEST_STANDINGS:
-                if(downloadingStandings) { requestQueue.add(r); break; }
+                if(downloadingStandings) { requestQueue.add(r); return; }
                 results.add(currentStandings);
-                r.callback.receiveData(results);
-                return;
+                break;
         }
 
         r.callback.receiveData(results);
-    }
-
-    private void deleteCachedEvents(){
-        File file = new File(context.getFilesDir(), "events.txt");
-        if(file.exists()){
-            file.delete();
-        }
     }
 
     public static final Creator<DataManager> CREATOR = new Creator<DataManager>() {
@@ -172,24 +163,22 @@ public class DataManager implements Parcelable {
 
     public void downloadReportForm(String link){
         this.downloadingReportForm = true;
-            CompletableFuture.supplyAsync(() ->
-                    downloadWebPage(link)
-            ).thenApply(WDSParser::parseReportForm
-            ).thenAccept(r -> {
-                currentReportForm = r;
-                this.downloadingReportForm = false;
-            });
+            CompletableFuture.supplyAsync(() -> downloadWebPage(link))
+                    .thenApply(WDSParser::parseReportForm)
+                    .thenAccept(r -> {
+                        currentReportForm = r;
+                        this.downloadingReportForm = false;
+                    });
     }
 
     public void downloadStandings(String link){
         this.downloadingStandings = true;
-           CompletableFuture.supplyAsync(() ->
-               downloadWebPage(link)
-           ).thenApply(WDSParser::parseStandings
-           ).thenAccept(r -> {
-                currentStandings = r;
-                this.downloadingStandings = false;
-            });
+        CompletableFuture.supplyAsync(() -> downloadWebPage(link))
+                .thenApply(WDSParser::parseStandings)
+                .thenAccept(r -> {
+                    currentStandings = r;
+                    this.downloadingStandings = false;
+                });
     }
 
     @Override
@@ -274,7 +263,11 @@ public class DataManager implements Parcelable {
     private void loadEvents(){
         File file = new File(context.getFilesDir(), "events.txt");
         if(file.exists()) {
-            readEvents();
+            try { //try read events file
+                readEvents();
+            } catch (Exception e) { //if reading fails, just download it
+                downloadEvents();
+            }
         } else {
             downloadEvents();
         }
@@ -295,7 +288,12 @@ public class DataManager implements Parcelable {
     }
 
     private void writeEvents(Set<Event> events){
-        deleteCachedEvents(); //Delete old events in preparation for new events to be saved
+        //Delete old events in preparation for new events to be saved
+        File eventsFile = new File(context.getFilesDir(), "events.txt");
+        if(eventsFile.exists()){
+            eventsFile.delete();
+        }
+
         try (FileOutputStream fout = context.openFileOutput("events.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
                 oos.writeObject(events);
         } catch (FileNotFoundException e) {
@@ -305,15 +303,9 @@ public class DataManager implements Parcelable {
         }
     }
 
-    private void readEvents(){
+    private void readEvents() throws Exception{
         try (FileInputStream fin = context.openFileInput("events.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
                 eventSet = (Set<Event>) oin.readObject();
-        } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } catch (ClassNotFoundException classNotFoundException) {
-            classNotFoundException.printStackTrace();
         }
     }
 
