@@ -39,7 +39,6 @@ public class DisplayEventScoresActivity extends AppCompatActivity implements Dat
         return standings;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +47,6 @@ public class DisplayEventScoresActivity extends AppCompatActivity implements Dat
         Intent intent = getIntent();
         standingsLink = (String) intent.getSerializableExtra(DisplayEventScoresActivity.MESSAGESCORESLINK);
         dataManager = intent.getParcelableExtra(MainActivity.MESSAGE_DATAMANAGER);
-
 
         dataManager.makeRequest(this, DataManager.REQUEST_STANDINGS, standingsLink);
 
@@ -76,7 +74,6 @@ public class DisplayEventScoresActivity extends AppCompatActivity implements Dat
 
     @Override
     public <T> void receiveData(ArrayList<T> results) {
-        if(results.isEmpty()) { return; }
         if(results.get(0) == null){
             new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom))
                     .setTitle("ERROR")
