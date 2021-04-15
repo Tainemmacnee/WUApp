@@ -5,13 +5,16 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.wuapp.exceptions.ConnectionTimeoutException;
+import com.example.wuapp.exceptions.ElementNotFoundException;
+import com.example.wuapp.exceptions.InvalidLinkException;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
 import com.example.wuapp.model.Team;
 import com.example.wuapp.model.UserLoginToken;
+import com.example.wuapp.data.DataReceiver.*;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -25,8 +28,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,12 +54,18 @@ public class DataManager implements Parcelable {
     private boolean downloadingReportForm = false;
     private boolean downloadingStandings = false;
 
+    private Throwable gameLoadException;
+    private Throwable eventLoadException;
+    private Throwable standingsLoadException;
+    private Throwable reportResultLoadException;
+
     private Context context;
     private Config config;
 
     private Set<Game> gameSet = new HashSet<>();
     private Set<Event> eventSet = new HashSet<>();
-    private Queue<Request> requestQueue = new ArrayDeque<>();
+    private Queue<DataReceiver.Request> requestQueue = new ArrayDeque<>();
+    private Request currentRequest;
     private ReportFormState currentReportForm;
     private List<Map<String, String>> currentStandings;
 
@@ -82,6 +93,31 @@ public class DataManager implements Parcelable {
         processQueue();
     }
 
+    public void addRequest(Request request){
+        switch (request.request){
+            case DataManager.REQUEST_REPORT_FORM:
+                downloadReportForm(request.link);
+                break;
+            case DataManager.REQUEST_STANDINGS:
+                downloadStandings(request.link);
+                break;
+            case DataManager.REQUEST_EVENTS:
+                if(eventSet.isEmpty() && !downloadingEvents){
+                    downloadEvents();
+                }
+            case DataManager.REQUEST_SCHEDULED_GAMES:
+                if(gameSet.isEmpty() && !downloadingGames){
+                    downloadGames();
+                }
+            case DataManager.REQUEST_RECENT_GAMES:
+                if(gameSet.isEmpty() && !downloadingGames){
+                    downloadGames();
+                }
+        }
+        currentRequest = request;
+        processQueue();
+    }
+
     private void processQueue(){
         Handler handler = new Handler();
         int delay = 200; //milliseconds
@@ -89,48 +125,54 @@ public class DataManager implements Parcelable {
         handler.postDelayed(new Runnable(){
             public void run(){
                 //do something
-                if(!requestQueue.isEmpty()){
-                    processRequest(requestQueue.poll());
+                if(currentRequest != null){
+                    if(!processRequest(currentRequest)){
+                        handler.postDelayed(this, delay);
+                    }
                 }
-                handler.postDelayed(this, delay);
             }
         }, delay);
     }
 
-    private void processRequest(Request r){
+    private boolean processRequest(Request r){
         ArrayList results = new ArrayList<>();
 
         switch (r.request){
             case DataManager.REQUEST_SCHEDULED_GAMES:
-                if(downloadingGames) { requestQueue.add(r); return; }
+                if(downloadingGames) { return false; }
                 for(Game g : gameSet){
                     if(g.isUpcoming()){ results.add(g); }
                 }
+                r.callback.receiveResponse(new Response<Game>(results, gameLoadException));
                 break;
+
             case DataManager.REQUEST_RECENT_GAMES:
-                if(downloadingGames) {  requestQueue.add(r); return; }
+                if(downloadingGames) {  return false; }
                 for(Game g : gameSet){
                     if(!g.isUpcoming()){ results.add(g); }
                 }
+                r.callback.receiveResponse(new Response<Game>(results, gameLoadException));
                 break;
 
             case DataManager.REQUEST_EVENTS:
-                if(downloadingEvents) {  requestQueue.add(r); return; }
+                if(downloadingEvents) {  return false; }
                 results.addAll(eventSet);
+                r.callback.receiveResponse(new Response<Game>(results, eventLoadException));
                 break;
 
             case DataManager.REQUEST_REPORT_FORM:
-                if(downloadingReportForm) {  requestQueue.add(r); return; }
+                if(downloadingReportForm) {  return false; }
                 results.add(currentReportForm);
+                r.callback.receiveResponse(new Response<Game>(results, reportResultLoadException));
                 break;
 
             case DataManager.REQUEST_STANDINGS:
-                if(downloadingStandings) { requestQueue.add(r); return; }
-                results.add(currentStandings);
+                if(downloadingStandings) { return false; }
+                r.callback.receiveResponse(new Response<Map<String, String>>(currentStandings, standingsLoadException));
                 break;
         }
-
-        r.callback.receiveData(results);
+        currentRequest = null;
+        return true;
     }
 
     public static final Creator<DataManager> CREATOR = new Creator<DataManager>() {
@@ -144,42 +186,6 @@ public class DataManager implements Parcelable {
             return new DataManager[size];
         }
     };
-
-    public void makeRequest(DataReceiver callback, String request, String link){
-        switch (request){
-            case DataManager.REQUEST_REPORT_FORM:
-                downloadReportForm(link);
-                break;
-            case DataManager.REQUEST_STANDINGS:
-                downloadStandings(link);
-                break;
-        }
-        requestQueue.add(new Request(callback, request));
-    }
-
-    public void makeRequest(DataReceiver callback, String request){
-        requestQueue.add(new Request(callback, request));
-    }
-
-    public void downloadReportForm(String link){
-        this.downloadingReportForm = true;
-            CompletableFuture.supplyAsync(() -> downloadWebPage(link))
-                    .thenApply(WDSParser::parseReportForm)
-                    .thenAccept(r -> {
-                        currentReportForm = r;
-                        this.downloadingReportForm = false;
-                    });
-    }
-
-    public void downloadStandings(String link){
-        this.downloadingStandings = true;
-        CompletableFuture.supplyAsync(() -> downloadWebPage(link))
-                .thenApply(WDSParser::parseStandings)
-                .thenAccept(r -> {
-                    currentStandings = r;
-                    this.downloadingStandings = false;
-                });
-    }
 
     @Override
     public int describeContents() {
@@ -196,21 +202,93 @@ public class DataManager implements Parcelable {
         parcel.writeSerializable(loginToken);
     }
 
-    private Document downloadWebPage(String link){
+    private Document downloadWebPage(String link) throws IOException, InvalidLinkException {
         System.out.println(link);
-        if(link == null) {return null;}
-        Document result = null;
-        try {
-            Connection.Response loadPageResponse = Jsoup.connect(link)
-                    .method(Connection.Method.GET)
-                    .userAgent(USER_AGENT)
-                    .cookies(loginToken.getCookies())
-                    .execute();
-            result = loadPageResponse.parse();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(link == null) { throw new InvalidLinkException(); }
+            return Jsoup.connect(link)
+                .method(Connection.Method.GET)
+                .userAgent(USER_AGENT)
+                .cookies(loginToken.getCookies())
+                .execute()
+                .parse();
+    }
+
+    public void downloadReportForm(String link){
+        this.downloadingReportForm = true;
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    return downloadWebPage(link);
+                } catch (Exception | InvalidLinkException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }).thenApply(WDSParser::parseReportForm
+            ).thenAccept(r -> {
+                        currentReportForm = r;
+                        this.downloadingReportForm = false;
+            }).whenComplete((msg, ex) -> reportResultLoadException = ex);
+    }
+
+    public void downloadStandings(String link){
+        this.downloadingStandings = true;
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return downloadWebPage(link);
+            } catch (Exception | InvalidLinkException e) {
+                throw new CompletionException(e);
+            }
+        }).thenApply(r -> {
+                    try {
+                        return WDSParser.parseStandings(r);
+                    } catch (ParseException e) {
+                        throw new CompletionException(e);
+                    } catch (ElementNotFoundException e){
+                        throw new CompletionException(e);
+                    }
+                }
+        ).thenAccept(r -> {
+                    currentStandings = r;
+                    this.downloadingStandings = false;
+        }).whenComplete((msg, ex) -> {
+            standingsLoadException = ex.getCause();
+            downloadingStandings = false;
+        });
+    }
+
+    private void downloadGames(){
+        this.downloadingGames = true;
+        CompletableFuture scheduledGames = downloadGamesFromLink(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES));
+
+        CompletableFuture gameWithResult = downloadGamesFromLink(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_WITH_RESULTS));
+
+        CompletableFuture gamesWithoutResult = downloadGamesFromLink(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS));
+
+        CompletableFuture.allOf(gamesWithoutResult, gameWithResult, scheduledGames)
+                .whenComplete((result, ex) -> this.downloadingGames = false);
+    }
+
+    private CompletableFuture downloadGamesFromLink(String link){
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return downloadWebPage(link);
+            } catch (Exception | InvalidLinkException e) { //pass exception on to whenComplete function
+                throw new CompletionException(e);
+            }
         }
-        return result;
+        ).thenAcceptAsync( r -> { //parse and store games
+            try {
+                Set<Game> games = WDSParser.parseGames(r);
+                if (games.stream().noneMatch(g -> checkEventIsCached(g))) { //check we have relevant event data
+                    downloadEvents();
+                }
+                gameSet.addAll(games);
+            } catch (ParseException e){ //pass exception on to whenComplete function
+                throw new CompletionException(e);
+            }
+        }).whenComplete( //catches any exceptions that occur/were passed on
+                (msg, ex) -> gameLoadException = ex.getCause()
+        );
+        return future;
     }
 
     /**
@@ -229,37 +307,6 @@ public class DataManager implements Parcelable {
         return false;
     }
 
-    private void downloadGames(){
-        this.downloadingGames = true;
-
-            CompletableFuture<Void> scheduledGames = CompletableFuture.supplyAsync(() ->
-                    downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_SCHEDULED_GAMES))
-            ).thenApply( r -> {
-                Set<Game> games = WDSParser.parseGames(r);
-                if(games.stream().noneMatch(g -> checkEventIsCached(g))){ downloadEvents(); }
-                return games;
-            }).thenAccept( r -> gameSet.addAll(r));
-
-            CompletableFuture<Void> gameWithResult = CompletableFuture.supplyAsync(() ->
-                    downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_WITH_RESULTS))
-            ).thenApply( r -> {
-                Set<Game> games = WDSParser.parseGames(r);
-                if(games.stream().noneMatch(g -> checkEventIsCached(g))){ downloadEvents(); }
-                return games;
-            }).thenAccept( r -> gameSet.addAll(r));
-
-            CompletableFuture<Void> gamesWithoutResult = CompletableFuture.supplyAsync(() ->
-                    downloadWebPage(loginToken.getLinks().get(UserLoginToken.LINK_GAMES_MISSING_RESULTS))
-            ).thenApply( r -> {
-                Set<Game> games = WDSParser.parseGames(r);
-                if(games.stream().noneMatch(g -> checkEventIsCached(g))){ downloadEvents(); }
-                return games;
-            }).thenAccept( r -> gameSet.addAll(r));
-
-            CompletableFuture combinedFutures = CompletableFuture.allOf(gamesWithoutResult, gameWithResult, scheduledGames)
-                    .thenAccept(r -> this.downloadingGames = false);
-    }
-
     private void loadEvents(){
         File file = new File(context.getFilesDir(), "events.txt");
         if(file.exists()) {
@@ -275,16 +322,28 @@ public class DataManager implements Parcelable {
 
     private void downloadEvents() {
         this.downloadingEvents = true;
-
-            CompletableFuture.supplyAsync(() -> downloadWebPage(HOME_URL)
-            ).thenApply(r -> WDSParser.parseEvents(r)
-            ).thenApply(r -> {
-                r.parallelStream().forEach(event -> event.setTeams(downloadEventTeams(event.getEventLink())));
-                this.eventSet.addAll(r);
-                this.downloadingEvents = false;
-                return r;
-            }).thenAccept(r -> { if(config.getCacheEvents()) { writeEvents(r); }
-            });
+            CompletableFuture.supplyAsync(() -> {
+                        try {
+                            return downloadWebPage(HOME_URL);
+                        } catch (Exception | InvalidLinkException e) {
+                            throw new CompletionException(e);
+                        }
+                    }
+            ).thenAcceptAsync(r -> {
+                try {
+                    Set<Event> events = WDSParser.parseEvents(r);
+                    events.parallelStream().forEach(event -> event.setTeams(downloadEventTeams(event.getEventLink())));
+                    this.eventSet.addAll(events);
+                    this.downloadingEvents = false;
+                    if (config.getCacheEvents()) {
+                        writeEvents(events);
+                    }
+                } catch(ParseException e){
+                    throw new CompletionException(e);
+                }
+            }).whenComplete( //catches any exceptions that occur/were passed on
+                    (msg, ex) -> { eventLoadException = ex.getCause(); this.downloadingEvents = false; }
+            );
     }
 
     private void writeEvents(Set<Event> events){
@@ -294,8 +353,10 @@ public class DataManager implements Parcelable {
             eventsFile.delete();
         }
 
-        try (FileOutputStream fout = context.openFileOutput("events.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
-                oos.writeObject(events);
+        try (FileOutputStream fout = context.openFileOutput("events.txt", Context.MODE_PRIVATE);
+             ObjectOutputStream oos = new ObjectOutputStream(fout)
+        ){
+            oos.writeObject(events);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -303,7 +364,7 @@ public class DataManager implements Parcelable {
         }
     }
 
-    private void readEvents() throws Exception{
+    private void readEvents() throws IOException, ClassNotFoundException {
         try (FileInputStream fin = context.openFileInput("events.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
                 eventSet = (Set<Event>) oin.readObject();
         }
@@ -311,22 +372,35 @@ public class DataManager implements Parcelable {
 
     private Set<Team> downloadEventTeams(String eventLink) {
 
-        CompletableFuture<Set<Team>> teamsPage1 = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(eventLink+"/teams?page=1")
-        ).thenApply(r -> WDSParser.parseTeams(r));
-
-        CompletableFuture<Set<Team>> teamsPage2 = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(eventLink+"/teams?page=2")
-        ).thenApply(r -> WDSParser.parseTeams(r));
-
-        CompletableFuture<Set<Team>> teamsPage3 = CompletableFuture.supplyAsync(() ->
-                downloadWebPage(eventLink+"/teams?page=3")
-        ).thenApply(r -> WDSParser.parseTeams(r));
+        CompletableFuture<Set<Team>> teamsPage1 = downloadEventTeamsPage(eventLink, 1);
+        CompletableFuture<Set<Team>> teamsPage2 = downloadEventTeamsPage(eventLink, 2);
+        CompletableFuture<Set<Team>> teamsPage3 = downloadEventTeamsPage(eventLink, 3);
 
         CompletableFuture combinedFutures = CompletableFuture.allOf(teamsPage1, teamsPage2, teamsPage3)
-                .thenApply(r -> Stream.of(teamsPage1, teamsPage2, teamsPage3).flatMap(f -> f.join().stream()).collect(Collectors.toSet()));
+                .thenApply(r -> Stream.of(teamsPage1, teamsPage2, teamsPage3).flatMap(f -> f.join().stream()).collect(Collectors.toSet()))
+                .whenComplete(
+                        (msg, ex) -> eventLoadException = ex
+                );
 
         return (Set<Team>) combinedFutures.join();
+    }
+
+    private CompletableFuture downloadEventTeamsPage(String eventLink, int pageNum){
+        return CompletableFuture.supplyAsync(() ->
+                {
+                    try {
+                        return downloadWebPage(eventLink+"/teams?page="+pageNum);
+                    } catch (Exception | InvalidLinkException e) {
+                        throw new CompletionException(e);
+                    }
+                }
+        ).thenApply(r -> {
+            try {
+                return WDSParser.parseTeams(r);
+            } catch (ParseException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     private void downloadOAuthKey() {
@@ -334,39 +408,43 @@ public class DataManager implements Parcelable {
         final String WEB_URL = "https://wds.usetopscore.com/u/oauth-key";
 
         CompletableFuture.supplyAsync(() -> {
-            List<String> output = new ArrayList<>();
-
-            //grab client_id and client_secret from webpage
-            Document doc = downloadWebPage(WEB_URL);
+            try {
+                return downloadWebPage(WEB_URL);
+            } catch (InvalidLinkException | IOException e) {
+                throw new CompletionException(e);
+            }
+        }).thenApply(doc -> {
+            //grab client_id and client_secret from web page
             Element table = doc.getElementsByClass("table no-border").first();
+            List<String> oAuthInfo = new ArrayList<>();
 
             for (Element row : table.getElementsByTag("tr")) { //find id and secret in table
-                output.add(row.getElementsByTag("td").first().text());
+                oAuthInfo.add(row.getElementsByTag("td").first().text());
             }
 
-            output.remove(2); //last row is a useless string
-            return output;
+            oAuthInfo.remove(2); //last row is a useless string
+            return oAuthInfo;
 
-        }).thenApply(r -> {
-            Document response = null;
+        }).thenApply(oAuthInfo -> {
             try {
-                response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
+                Document response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
                         .userAgent(USER_AGENT)
                         .data("grant_type", "client_credentials")
-                        .data("client_id", r.get(0))
-                        .data("client_secret", r.get(1))
+                        .data("client_id", oAuthInfo.get(0))
+                        .data("client_secret", oAuthInfo.get(1))
                         .ignoreContentType(true)
                         .post();
                 //Take oauth token from JSON response
                 JSONObject result = new JSONObject(response.body().text());
 
                 return result.get("access_token");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+            } catch (JSONException | IOException e) {
+                throw new CompletionException(e);
             }
-        }).thenAccept(r -> OAuthToken = (String) r);
+        }).thenAccept(r -> OAuthToken = (String) r)
+        .whenComplete((msg, ex) -> { //catch & handle any errors that occurred
+            //Todo: manage OAUTHKey errors
+        });
     }
 
     public Map<String, String> getCookies() {
@@ -383,19 +461,6 @@ public class DataManager implements Parcelable {
 
     public Config getConfig() {
         return this.config;
-    }
-
-
-    private class Request{
-
-        public final String request;
-        public final DataReceiver callback;
-
-        public Request(DataReceiver callback, String request){
-            this.request = request;
-            this.callback = callback;
-        }
-
     }
 
     @Override
