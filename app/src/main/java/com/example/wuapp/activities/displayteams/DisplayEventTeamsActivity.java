@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.activity;
+package com.example.wuapp.activities.displayteams;
 
 
 import android.app.SearchManager;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wuapp.R;
 import com.example.wuapp.model.Team;
-import com.example.wuapp.ui.fragment.events.teams.EventTeamsAdapter;
+import com.example.wuapp.activities.main.MainActivity;
 
 import java.util.List;
 
@@ -44,16 +44,11 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_display_event_teams);
 
-        Team[] eventTeams = getEventTeams();
-
-        recyclerView = findViewById(R.id.event_team_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        mAdapter = new EventTeamsAdapter(eventTeams);
-        recyclerView.setAdapter(mAdapter);
-        setmAdapter(mAdapter);
+        if(eventTeams.isEmpty()){
+            loadNoTeamsMessage();
+        } else {
+            loadRecycleView(getEventTeams());
+        }
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = findViewById(R.id.searchView);
@@ -75,6 +70,21 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void loadNoTeamsMessage(){
+        findViewById(R.id.info_message3).setVisibility(View.VISIBLE);
+    }
+
+    public void loadRecycleView(Team[] teams){
+        recyclerView = findViewById(R.id.event_team_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new EventTeamsAdapter(teams);
+        recyclerView.setAdapter(mAdapter);
+        setmAdapter(mAdapter);
     }
 
     public void exit(View view){
