@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.fragment.settings;
+package com.example.wuapp.activities.main.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,19 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
-import androidx.fragment.app.Fragment;
-
-import com.example.wuapp.ui.activity.MainActivity;
-import com.example.wuapp.data.DataManager;
+import com.example.wuapp.datamanagers.ConfigManager;
+import com.example.wuapp.datamanagers.EventsManager;
+import com.example.wuapp.activities.main.MainActivity;
 import com.example.wuapp.databinding.FragmentSettingsBinding;
 import com.example.wuapp.model.UserLoginToken;
+import com.example.wuapp.activities.main.DisplayFragment;
 import com.squareup.picasso.Picasso;
 
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends DisplayFragment {
 
     FragmentSettingsBinding binding;
-    DataManager dataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,25 +25,24 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater);
 
         MainActivity activity = (MainActivity) getActivity();
-        UserLoginToken loginToken = activity.getDataManager().getLoginToken();
-        dataManager = activity.getDataManager();
+        UserLoginToken loginToken = EventsManager.getInstance().getLoginToken();
 
         binding.username.setText(loginToken.getName());
         Picasso.get().load(loginToken.getProfileImage()).into(binding.userImage);
 
-        binding.eventCacheSwitch.setChecked(dataManager.getConfig().getCacheEvents());
+        binding.eventCacheSwitch.setChecked(ConfigManager.getInstance().getCacheEvents());
         binding.eventCacheSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                dataManager.getConfig().setCacheEvents(isChecked, getContext());
+                ConfigManager.getInstance().setCacheEvents(isChecked, getContext());
             }
         });
 
-        binding.loginCacheSwitch.setChecked(dataManager.getConfig().getCacheLogin());
+        binding.loginCacheSwitch.setChecked(ConfigManager.getInstance().getCacheLogin());
         binding.loginCacheSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                dataManager.getConfig().setCacheLogin(isChecked, getContext());
+                ConfigManager.getInstance().setCacheLogin(isChecked, getContext());
             }
         });
 
