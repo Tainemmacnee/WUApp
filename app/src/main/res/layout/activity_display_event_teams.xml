@@ -6,7 +6,20 @@
     android:layout_height="match_parent"
     android:background="#121212"
     android:orientation="vertical"
-    tools:context=".ui.activity.DisplayEventTeamsActivity">
+    tools:context=".activities.displayteams.DisplayEventTeamsActivity">
+
+    <TextView
+        android:id="@+id/info_message3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Teams Were Found"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/event_team_recycler_view"
@@ -61,7 +74,8 @@
             app:layout_constraintEnd_toStartOf="@+id/searchView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            app:srcCompat="?attr/actionModeCloseDrawable"
+            android:contentDescription="@string/description_back_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

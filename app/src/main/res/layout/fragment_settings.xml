@@ -38,8 +38,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/rounded_background_red"
+            android:background="@drawable/rounded_background_grey"
             android:foreground="?attr/selectableItemBackground"
             android:onClick="logout"
             android:text="Logout"
@@ -123,16 +122,46 @@
 
     <Button
         android:id="@+id/button5"
-        style="@style/StandardButton"
+        style="@style/EmphasizedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:onClick="forceReload"
-        android:text="Force Reload"
+        android:onClick="reloadEvents"
+        android:text="Reload Events"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/event_caching_setting_wrapper" />
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/EmphasizedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="reloadGames"
+        android:text="Reload Games"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button5" />
+
+    <Button
+        android:id="@+id/button3"
+        style="@style/EmphasizedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="forceReloadAll"
+        android:text="Force Reload ALL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,10 @@
     android:background="@color/white">
 
     <FrameLayout
+        android:id="@+id/tabLayout_framelayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#121212"
-        android:id="@+id/tabLayout_framelayout"
         app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

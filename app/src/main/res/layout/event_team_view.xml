@@ -60,16 +60,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/gameview_rounded_background_grey"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view4">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/female_matchup_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/male_matchup_container"
             app:layout_constraintTop_toTopOf="parent"
@@ -79,20 +81,23 @@
                 android:id="@+id/textView_female_matchups2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="Female Matchups"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/female_matchup_display"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_female_matchups2">
 
                 <TextView
                     android:id="@+id/female_matchup_textview"
@@ -101,16 +106,16 @@
                     android:layout_marginTop="4dp"
                     android:text="Devon Melvor"
                     android:textColor="@color/colorPrimary"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/male_matchup_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="clip_horizontal"
             android:orientation="vertical"
             android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/female_matchup_container"
@@ -123,21 +128,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="Male Matchups"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/male_matchup_display"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_male_matchups">
 
                 <TextView
                     android:id="@+id/male_matchup_textview"
@@ -146,10 +154,11 @@
                     android:layout_marginTop="4dp"
                     android:text="Devon Melvor"
                     android:textColor="@color/colorPrimary"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

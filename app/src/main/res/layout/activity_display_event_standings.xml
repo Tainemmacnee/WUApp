@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212"
@@ -32,7 +31,7 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Team"
+            android:text="@string/standings_team_name_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:text="Record"
+            android:text="@string/standings_team_record_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:text="Spirit"
+            android:text="@string/standings_team_spirit_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,7 +73,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            android:text="Point Diff"
+            android:text="@string/standings_team_pointdiff_title"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,6 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -104,9 +104,38 @@
             <LinearLayout
                 android:id="@+id/scores_box"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
         </ScrollView>
+
+        <include
+            android:id="@+id/error_view"
+            layout="@layout/fragment_exception_display"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/info_message2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Standings Were Found"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -134,7 +163,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            app:srcCompat="?attr/actionModeCloseDrawable"
+            android:contentDescription="@string/description_back_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
