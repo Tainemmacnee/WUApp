@@ -1,7 +1,9 @@
-package com.example.wuapp.ui.activity;
+package com.example.wuapp.activities.reportresult;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,19 +14,27 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wuapp.R;
-import com.example.wuapp.data.DataManager;
-import com.example.wuapp.data.DataReceiver;
+import com.example.wuapp.datamanagers.DataReceiver;
+import com.example.wuapp.datamanagers.DataManager;
+import com.example.wuapp.datamanagers.OAuthManager;
+import com.example.wuapp.datamanagers.ReportFormManager;
 import com.example.wuapp.databinding.ActivityReportResultBinding;
 import com.example.wuapp.databinding.ReportResultMvpBoxBinding;
+import com.example.wuapp.exceptions.InvalidLinkException;
 import com.example.wuapp.model.Game;
 import com.example.wuapp.model.ReportFormState;
+import com.example.wuapp.activities.main.MainActivity;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
+
+import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +47,12 @@ import java.util.concurrent.CompletableFuture;
 public class ReportResultActivity extends AppCompatActivity implements DataReceiver {
 
     ReportFormState reportFormState;
-    DataManager dataManager;
     Game game;
 
     private ActivityReportResultBinding binding;
     private List<ReportResultMvpBoxBinding> MVPBindings = new ArrayList<>();
+    private boolean binded = false;
+    private String oAuthToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +61,29 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         binding = ActivityReportResultBinding.inflate(getLayoutInflater());
 
         Intent intent = getIntent();
-        dataManager = intent.getParcelableExtra(MainActivity.MESSAGE_DATAMANAGER);
         game = intent.getParcelableExtra(MainActivity.MESSAGE_GAME);
 
-        dataManager.makeRequest(this, DataManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink());
+        OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
+        ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink()));
     }
 
     public void exit(View view){
         finish();
     }
 
+    public void reload(){
+        oAuthToken = null;
+        reportFormState = null;
+
+        OAuthManager.getInstance().reload();
+
+        ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink()));
+        OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
+    }
+
     private void bindReportFormState(ReportFormState formState){
+        setContentView(binding.getRoot());
+        binded = true;
         binding.team1Name.setText(game.getHomeTeamName());
         binding.team2Name.setText(game.getAwayTeamName());
         Picasso.get().load(game.getHomeTeamImg()).into(binding.team1Image);
@@ -103,29 +126,61 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     }
 
     @Override
-    public <T> void receiveData(ArrayList<T> results) {
-        if(results != null && results.size() > 0){
-            if(results.get(0) instanceof ReportFormState){
-                setContentView(binding.getRoot());
+    public <T> void receiveResponse(Response<T> response) {
+        if(response.exception == null && !response.results.isEmpty()){
+            if (response.results.get(0) instanceof ReportFormState) { //received report form state
 
-                reportFormState = (ReportFormState) results.get(0);
-                bindReportFormState((ReportFormState) results.get(0));
+                reportFormState = (ReportFormState) response.results.get(0);
+
+            }
+            if(response.results.get(0) instanceof String){ //OAuthToken received
+                oAuthToken = (String) response.results.get(0);
+            }
+            if(!binded && oAuthToken != null && reportFormState != null) {
+                bindReportFormState((ReportFormState)reportFormState);
+            }
+        } else {
+            try{
+                throw response.exception.getCause();
+            } catch (UnknownHostException e){
+                loadErrorMessage("Couldn't connect to: wds.usetopscore.com \n please check you are connected to the internet");
+            } catch (InvalidLinkException e) {
+                loadErrorMessage("Couldn't find that report form \n has the wds website changed?");
+            } catch (ParseException e) {
+                loadErrorMessage("We encountered a problem while parsing the report form \n has the wds website changed?");
+            } catch (Throwable throwable) {
+                if(response.initialRequest.request.equals(ReportFormManager.REQUEST_REPORT_FORM)){
+                    loadErrorMessage("There was an unknown error while loading the report form");
+                } else {
+                    loadErrorMessage("There was an unknown error while loading your OAuth2Token");
+                }
             }
         }
+    }
+
+    private void loadErrorMessage(String message){
+        ExceptionDialog.newInstance(message)
+                .show(getSupportFragmentManager(), "dialog");
     }
 
     public void submitReportForm(View view){
         ProgressDialog dialog = ProgressDialog.show(ReportResultActivity.this, "",
                 "Reporting Results. Please wait...", true);
 
-        CompletableFuture.allOf( CompletableFuture.supplyAsync(this::submitSpiritAndScores),
-                CompletableFuture.supplyAsync(this::submitMVPs))
-                .thenAccept(r -> {
-                    dialog.dismiss();
-                    this.finish();
-                });
-
-
+        CompletableFuture future = CompletableFuture.supplyAsync(this::submitSpiritAndScores)
+                .thenAcceptBoth(CompletableFuture.supplyAsync(this::submitMVPs),
+                        (s1, s2) -> {
+                            dialog.dismiss();
+                            if(s1 && s2){  finish(); }
+                            else {
+                                String message = "";
+                                if(!s1 && !s2){ message = "Failed To Report"; }
+                                else if(s1 && !s2) { message = "Failed to report MVP's"; }
+                                else if(!s1 && s2) { message = "Failed to report Scores and Spirit"; }
+                                    SubmissionExceptionDialog.newInstance(message)
+                                .show(getSupportFragmentManager(), "diarog");
+                            }
+                        });
     }
 
     private boolean submitSpiritAndScores(){
@@ -154,20 +209,18 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             }
 
             FormElement form = (FormElement) reportPage.getElementById("game-report-score-form");
-            form.submit()
+            Connection.Response response = form.submit()
                     .data(commentsReportLink, comments)
-                    .cookies(dataManager.getCookies())
-                    .userAgent(dataManager.USER_AGENT)
+                    .cookies(ReportFormManager.getInstance().getLoginToken().getCookies())
+                    .userAgent(DataManager.USER_AGENT)
                     .execute();
+            if(response.statusCode() != 200){ return false; }
         } catch (Exception e){
-            e.printStackTrace();
             return false;
         }
-
         return true;
     }
 
-    //TODO: Error handling
     private boolean submitMVPs(){
         try{
             Document reportPage = reportFormState.doc;
@@ -210,17 +263,19 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
                     }
 
                     Jsoup.connect(link)
-                            .userAgent(dataManager.USER_AGENT)
+                            .userAgent(DataManager.USER_AGENT)
                             .ignoreContentType(true)
-                            .header("Authorization", "Bearer " + dataManager.getOAuthToken())
+                            .header("Authorization", "Bearer " + oAuthToken)
                             .data(data)
+                            .ignoreHttpErrors(false)
                             .post();
                 }
             }
         }catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
