@@ -48,7 +48,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\baseline_filter_alt_black_18dp.png" />
+                                                <entry key="imagePath" value="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\assets\error_placeholder.png" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -82,9 +82,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\baseline_filter_alt_black_18dp.png" />
-                                      <entry key="outputName" value="ic_action_filter" />
-                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="imageAsset" value="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\assets\error_placeholder.png" />
+                                      <entry key="outputName" value="error_placeholder" />
+                                      <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="ffdd00" />
                                     </map>
                                   </option>

@@ -21,4 +21,10 @@
     <string name="title_activity_display_event_teams">DisplayEventTeamsActivity</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="standings_team_name_title">Team</string>
+    <string name="standings_team_record_title">Record</string>
+    <string name="standings_team_spirit_title">Spirit</string>
+    <string name="standings_team_pointdiff_title">Point Diff</string>
+    <string name="description_back_button">back button</string>
+    <string name="REQUEST_SCHEDULED_GAMES">request_scheduled_games</string>
 </resources>

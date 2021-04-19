@@ -9,44 +9,44 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name="com.example.wuapp.ui.activity.MainActivity"
-            android:parentActivityName="com.example.wuapp.ui.activity.LoginActivity">
+        <activity android:name=".activities.main.MainActivity"
+            android:parentActivityName=".activities.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.ui.activity.LoginActivity" />
+                android:value=".activities.login.LoginActivity" />
         </activity>
-        <activity android:name="com.example.wuapp.ui.activity.ReportResultActivity"
-            android:parentActivityName="com.example.wuapp.ui.activity.MainActivity">
+        <activity android:name=".activities.reportresult.ReportResultActivity"
+            android:parentActivityName=".activities.main.MainActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.wuapp.ui.activity.MainActivity" />
+            android:value=".activities.main.MainActivity" />
         </activity>
-        <activity android:name="com.example.wuapp.ui.activity.DisplayEventScoresActivity"
-            android:parentActivityName="com.example.wuapp.ui.activity.MainActivity">
+        <activity android:name=".activities.displaystandings.DisplayEventStandingsActivity"
+            android:parentActivityName=".activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.ui.activity.MainActivity" />
+                android:value=".activities.main.MainActivity" />
         </activity>
-        <activity android:name="com.example.wuapp.ui.activity.DisplayEventTeamsActivity"
-            android:parentActivityName="com.example.wuapp.ui.activity.MainActivity">
+        <activity android:name=".activities.displayteams.DisplayEventTeamsActivity"
+            android:parentActivityName=".activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.ui.activity.MainActivity" />
+                android:value=".activities.main.MainActivity" />
         </activity>
-        <activity android:name="com.example.wuapp.ui.activity.DisplayMapActivity"
-            android:parentActivityName="com.example.wuapp.ui.activity.MainActivity">
+        <activity android:name=".activities.displaymap.DisplayMapActivity"
+            android:parentActivityName=".activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.ui.activity.MainActivity" />
+                android:value=".activities.main.MainActivity" />
         </activity>
-        <activity android:name="com.example.wuapp.ui.activity.DisplayGameActivity"
-            android:parentActivityName="com.example.wuapp.ui.activity.MainActivity">
+        <activity android:name=".activities.displaygame.DisplayGameActivity"
+            android:parentActivityName=".activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wuapp.ui.activity.MainActivity" />
+                android:value=".activities.main.MainActivity" />
         </activity>
         <activity
-            android:name="com.example.wuapp.ui.activity.LoginActivity"
+            android:name=".activities.login.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

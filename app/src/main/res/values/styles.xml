@@ -9,69 +9,21 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.AppBar" parent="AppTheme">
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimary</item>
-        <item name="actionMenuTextColor">@color/colorPrimary</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Used for the buttons -->
-        <item name="colorAccent">@color/white</item>
-        <!-- Used for the title and text -->
-        <item name="android:textColorPrimary">@color/white</item>
-        <!-- Used for the background -->
-        <item name="android:background">@color/colorOldDark</item>
-    </style>
-
-    <style name="FilterMenuCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Used for the buttons -->
-        <item name="colorAccent">@color/white</item>
-        <!-- Used for the title and text -->
-        <item name="android:color">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorHint">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
-        <!-- Used for the background -->
-        <item name="android:background">@color/colorOldDark</item>
-    </style>
-
-    <style name="FilterMenu" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Used for the buttons -->
-        <item name="colorAccent">@color/colorPrimary</item>
-        <!-- Used for the title and text -->
+    <style name="DefaultTextColor" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimary</item>
-        <item name="android:textColorAlertDialogListItem">@color/colorPrimary</item>
-        <!-- Used for the background -->
-        <item name="android:background">@color/colorOldDark</item>
     </style>
+
 
     <style name="StandardButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/rounded_background_grey</item>
+        <item name="android:background">@drawable/button_color_selector</item>
         <item name="android:elevation" tools:targetApi="lollipop">8dp</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
     </style>
 
-    <style name="StandardInactiveButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/rounded_background_red</item>
-        <item name="android:elevation" tools:targetApi="lollipop">8dp</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+    <style name="EmphasizedButton" parent="StandardButton">
+        <item name="android:background">@drawable/rounded_background_yellow</item>
     </style>
 
 </resources>

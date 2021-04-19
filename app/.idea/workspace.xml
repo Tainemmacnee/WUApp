@@ -2,7 +2,11 @@
 <project version="4">
   <component name="AndroidLayouts">
     <shared>
-      <config />
+      <config>
+        <device id="pixel" />
+        <device id="3.4in WQVGA" />
+        <device id="4.7in WXGA" />
+      </config>
     </shared>
   </component>
   <component name="AndroidLogFilters">
@@ -12,19 +16,43 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/settings/SettingsFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/ic_calendar_today_24px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_settings.xml" afterDir="false" />
+    <list default="true" id="7bf7fdbc-4670-44a7-a72c-472e7d651195" name="Default Changelist" comment="updated">
+      <change afterPath="$PROJECT_DIR$/archive/DataManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive/layout/fragment_events.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archive/layout/fragment_games.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/assets/error_placeholder.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable-mdpi/error.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable-mdpi/error_placeholder.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable-mdpi/success.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/button_color_selector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/event_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/game_view2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/game_view2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/menu/bottom_navigation_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/menu/bottom_navigation_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/Navigation/mobile_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/archive/Navigation/mobile_navigation.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/src/activity/DisplayUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/src/activity/DisplayUserActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/src/fragment/FilterDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/src/fragment/FilterDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/src/fragment/GameAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/src/fragment/GameAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/src/fragment/NoScrollLinearLayoutManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/src/fragment/NoScrollLinearLayoutManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/src/fragment/scores/scoresFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/src/fragment/scores/scoresFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/DataManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/DataReceiver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/activity/DisplayEventScoresActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/fragment/events/EventsFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/fragment/events/teams/EventTeamsFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/fragment/games/RecentGamesFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/fragment/games/UpcomingGamesFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_events.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_games.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/game_view2.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/drawables.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/drawables.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/wuapp/WDSParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/wuapp/WDSParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../old-Kivvy/wuapp-mechanizm/wuapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/../old-Kivvy/wuapp-mechanizm/wuapp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../old-Kivvy/wuapp-requests/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../old-Kivvy/wuapp-requests/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +68,26 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <projects_view />
+        <task path="$PROJECT_DIR$/..">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/../jsoup-1.13.1">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Wuapp" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -49,8 +96,8 @@
       <list>
         <option value="Interface" />
         <option value="resourceFile" />
-        <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -79,47 +126,64 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DEBUGGABLE_DEVICE" value="Pixel_2_API_30 [emulator-5554]" />
+    <property name="DEBUGGABLE_PROCESS" value="com.example.wuapp" />
+    <property name="DEBUGGER_ID" value="Auto" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_30" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-30T02:30:17.375Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2021-04-08T02:58:34.080Z" />
+    <property name="ResourceManagerPrefKey.ResourceType" value="STRING" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="android-custom-viewC:/Users/Taine-PC/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED" value="RecyclerView" />
     <property name="android-custom-viewC:/Users/Taine-PC/.gradle/caches/modules-2/files-2.1/com.airbnb.android/lottie/3.4.4/71cb88076b1258bd19cc275223a6cc680e3df3b7/lottie-3.4.4-sources.jar!/com/airbnb/lottie/LottieAnimationView.java_SELECTED" value="LottieAnimationView" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/activities/main" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
+    <property name="multi-representation-previewC:/Users/Taine-PC/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_selected" value="Custom views" />
     <property name="multi-representation-previewC:/Users/Taine-PC/.gradle/caches/modules-2/files-2.1/com.airbnb.android/lottie/3.4.4/71cb88076b1258bd19cc275223a6cc680e3df3b7/lottie-3.4.4-sources.jar!/com/airbnb/lottie/LottieAnimationView.java_selected" value="Custom views" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="PsdUISettings">
     <option name="MODULE_TAB" value="Default Config" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\raw" />
+    <key name="android.template.-598303784">
+      <recent name="com.example.firstapp" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\layout" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable-mdpi" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\assets" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\java\com\example\Wuapp\ui\games" />
     </key>
     <key name="android.template.1160011513">
       <recent name="com.example.firstapp" />
     </key>
-    <key name="android.template.-598303784">
-      <recent name="com.example.firstapp" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable-mdpi" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\assets" />
+      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\raw" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.wuapp" />
+      <recent name="com.example.wuapp.ui.activities.main" />
+      <recent name="com.example.wuapp.data.datamanagers" />
+      <recent name="com.example.wuapp.ui.fragment" />
+      <recent name="com.example.wuapp.ui.activity" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.wuapp.activities.reportresult" />
+      <recent name="com.example.wuapp" />
       <recent name="com.example.wuapp.ui.settings" />
       <recent name="com.example.wuapp.ui.games" />
       <recent name="com.example.Wuapp.ui.feedback" />
-      <recent name="com.example.firstapp" />
-      <recent name="com.example.firstapp.ui.events.teams" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\layout" />
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\drawable" />
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\java\com\example\Wuapp\ui\games" />
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\navigation" />
-      <recent name="C:\Users\Taine-PC\AndroidStudioProjects\WUApp\app\src\main\res\menu" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -127,7 +191,7 @@
       <module name="First_App.app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.wuapp.*" />
+          <option name="PATTERN" value="com.example.wuapp.activities.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -143,7 +207,7 @@
       <module name="Wuapp.app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.wuapp.*" />
+          <option name="PATTERN" value="com.example.wuapp.activities.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -159,7 +223,7 @@
       <module name="Wuapp.app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.wuapp.*" />
+          <option name="PATTERN" value="com.example.wuapp.activities.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -175,7 +239,7 @@
       <module name="Wuapp.app" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.wuapp.*" />
+          <option name="PATTERN" value="com.example.wuapp.activities.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -324,459 +388,574 @@
       <option name="presentableId" value="Default" />
       <updated>1597574471091</updated>
     </task>
-    <task id="LOCAL-00001" summary="Test commit">
-      <created>1597574605971</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
+    <task id="LOCAL-00064" summary="Added helper code for layout changes">
+      <created>1615216579577</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
       <option name="project" value="LOCAL" />
-      <updated>1597574605971</updated>
+      <updated>1615216579577</updated>
     </task>
-    <task id="LOCAL-00002" summary="Finished rebuilding login system to improve performance">
-      <created>1597578603816</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
+    <task id="LOCAL-00065" summary="Fixed a bug where comments weren't being submitted due to a typo">
+      <created>1615469011581</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
       <option name="project" value="LOCAL" />
-      <updated>1597578603816</updated>
+      <updated>1615469011581</updated>
     </task>
-    <task id="LOCAL-00003" summary="Started implementing logout button">
-      <created>1597581621105</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
+    <task id="LOCAL-00066" summary="Implemented Caching of Events to improve loading times">
+      <created>1615469396753</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
       <option name="project" value="LOCAL" />
-      <updated>1597581621105</updated>
+      <updated>1615469396753</updated>
     </task>
-    <task id="LOCAL-00004" summary="Fixed an issue with events titles being displayed incorrectly">
-      <created>1597582033756</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
+    <task id="LOCAL-00067" summary="Added equals and hashcode functions so that games in a set are unique">
+      <created>1615471695686</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
       <option name="project" value="LOCAL" />
-      <updated>1597582033756</updated>
+      <updated>1615471695686</updated>
     </task>
-    <task id="LOCAL-00005" summary="changed how users are loaded and made user info update correctly">
-      <created>1597723739357</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
+    <task id="LOCAL-00068" summary="Setup toggle so user can decide if they want to chache events">
+      <created>1615473011706</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
       <option name="project" value="LOCAL" />
-      <updated>1597723739357</updated>
+      <updated>1615473011706</updated>
     </task>
-    <task id="LOCAL-00006" summary="user home now correctly displays users about section from their profile">
-      <created>1597727218196</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
+    <task id="LOCAL-00069" summary="Implemented settings for event caching">
+      <created>1615476073050</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
       <option name="project" value="LOCAL" />
-      <updated>1597727218196</updated>
+      <updated>1615476073050</updated>
     </task>
-    <task id="LOCAL-00007" summary="Started implementing loading of Teams for each event. Removed support for events not on wds">
-      <created>1597757658833</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
+    <task id="LOCAL-00070" summary=" Implemented Config">
+      <created>1615476102888</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
       <option name="project" value="LOCAL" />
-      <updated>1597757658833</updated>
+      <updated>1615476102888</updated>
     </task>
-    <task id="LOCAL-00008" summary="Started implementing displaying event teams but stopped due to issues.">
-      <created>1597828997773</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
+    <task id="LOCAL-00071" summary=" Implemented settings for event caching">
+      <created>1615476123720</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
       <option name="project" value="LOCAL" />
-      <updated>1597828997773</updated>
+      <updated>1615476123720</updated>
     </task>
-    <task id="LOCAL-00009" summary="Huge Update! viewing event teams is now implemented. pools and standings button changed">
-      <created>1597853683725</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
+    <task id="LOCAL-00072" summary="Code Cleanup">
+      <created>1615476152050</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
       <option name="project" value="LOCAL" />
-      <updated>1597853683726</updated>
+      <updated>1615476152050</updated>
     </task>
-    <task id="LOCAL-00010" summary="Implemented loading and displaying of missing games">
-      <created>1597905519657</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
+    <task id="LOCAL-00073" summary="Updated view to be similar to rest of the app">
+      <created>1615540763701</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
       <option name="project" value="LOCAL" />
-      <updated>1597905519657</updated>
+      <updated>1615540763702</updated>
     </task>
-    <task id="LOCAL-00011" summary="Login failed message displayed using snackbar">
-      <created>1597906152778</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
+    <task id="LOCAL-00074" summary="Added exit function for new view">
+      <created>1615540789555</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
       <option name="project" value="LOCAL" />
-      <updated>1597906152778</updated>
+      <updated>1615540789555</updated>
     </task>
-    <task id="LOCAL-00012" summary="started implementing ReportResultActivity and made slight changes to ui">
-      <created>1597989684138</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
+    <task id="LOCAL-00075" summary="Code Cleanup">
+      <created>1615555857338</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
       <option name="project" value="LOCAL" />
-      <updated>1597989684138</updated>
+      <updated>1615555857338</updated>
     </task>
-    <task id="LOCAL-00013" summary="Implemented Reporting of score and spirit">
-      <created>1598155109715</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
+    <task id="LOCAL-00076" summary="Updated Layout to be more in line with the rest of the app">
+      <created>1615558884389</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
       <option name="project" value="LOCAL" />
-      <updated>1598155109715</updated>
+      <updated>1615558884389</updated>
     </task>
-    <task id="LOCAL-00014" summary="Implemented Reporting of mvps">
-      <created>1598243711184</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
+    <task id="LOCAL-00077" summary="Added constraints to scroll view to avoid potential bugs">
+      <created>1615558919541</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
       <option name="project" value="LOCAL" />
-      <updated>1598243711184</updated>
+      <updated>1615558919541</updated>
     </task>
-    <task id="LOCAL-00015" summary="changed app icon and title. implemented loading screen at login">
-      <created>1598250767767</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
+    <task id="LOCAL-00078" summary=" Implemented activity for displaying map for field locations">
+      <created>1615658586550</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
       <option name="project" value="LOCAL" />
-      <updated>1598250767768</updated>
+      <updated>1615658586551</updated>
     </task>
-    <task id="LOCAL-00016" summary="implemented search for event teams">
-      <created>1598436188821</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
+    <task id="LOCAL-00079" summary="Colour Change">
+      <created>1615658629739</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
       <option name="project" value="LOCAL" />
-      <updated>1598436188821</updated>
+      <updated>1615658629739</updated>
     </task>
-    <task id="LOCAL-00017" summary="implemented login retention">
-      <created>1598442468926</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
+    <task id="LOCAL-00080" summary="Code Cleanup">
+      <created>1615693869899</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
       <option name="project" value="LOCAL" />
-      <updated>1598442468926</updated>
+      <updated>1615693869900</updated>
     </task>
-    <task id="LOCAL-00018" summary="changed layout and spacing of text for game views. changes to home fragment">
-      <created>1598501444691</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
+    <task id="LOCAL-00081" summary="Code Cleanup">
+      <created>1615730836047</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
       <option name="project" value="LOCAL" />
-      <updated>1598501444691</updated>
+      <updated>1615730836048</updated>
     </task>
-    <task id="LOCAL-00019" summary="implemented loading screen for report forms">
-      <created>1598503552215</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
+    <task id="LOCAL-00082" summary="Removed event timeout config and added login save config">
+      <created>1615730887296</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
       <option name="project" value="LOCAL" />
-      <updated>1598503552215</updated>
+      <updated>1615730887296</updated>
     </task>
-    <task id="LOCAL-00020" summary="implemented standing for events">
-      <created>1598596201891</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
+    <task id="LOCAL-00083" summary="Modified layout to help layout display properly on small screens">
+      <created>1615730926945</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
       <option name="project" value="LOCAL" />
-      <updated>1598596201891</updated>
+      <updated>1615730926945</updated>
     </task>
-    <task id="LOCAL-00021" summary="removed api requirement tags and updated methods to support correct api version">
-      <created>1598790233380</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
+    <task id="LOCAL-00084" summary="Now checks config before loading user token">
+      <created>1615730964445</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
       <option name="project" value="LOCAL" />
-      <updated>1598790233380</updated>
+      <updated>1615730964445</updated>
     </task>
-    <task id="LOCAL-00022" summary="fixed bug with login layout">
-      <created>1598830634840</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
+    <task id="LOCAL-00085" summary="Modified layout to show the games league">
+      <created>1615745213424</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
       <option name="project" value="LOCAL" />
-      <updated>1598830634840</updated>
+      <updated>1615745213425</updated>
     </task>
-    <task id="LOCAL-00023" summary="Updated loading screens for better code reuse">
-      <created>1598941048692</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
+    <task id="LOCAL-00086" summary="Archived all old code. Removed unused references and imports and updated package structure">
+      <created>1615882802974</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
       <option name="project" value="LOCAL" />
-      <updated>1598941048692</updated>
+      <updated>1615882802975</updated>
     </task>
-    <task id="LOCAL-00024" summary="reworked user login to be much faster. implemented refreshing in a more clear way">
-      <created>1599195978249</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
+    <task id="LOCAL-00087" summary="Updated minSdkVersion to match project requirements">
+      <created>1615882841720</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
       <option name="project" value="LOCAL" />
-      <updated>1599195978249</updated>
+      <updated>1615882841720</updated>
     </task>
-    <task id="LOCAL-00025" summary="Begun UI 2.0 update!">
-      <created>1599219619599</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
+    <task id="LOCAL-00088" summary="Fixed a bug causing requests to callback with empty results while still downloading">
+      <created>1616420978242</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
       <option name="project" value="LOCAL" />
-      <updated>1599219619599</updated>
+      <updated>1616420978243</updated>
     </task>
-    <task id="LOCAL-00026" summary="All main screens done for UI update">
-      <created>1599274094514</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
+    <task id="LOCAL-00089" summary="code cleanup">
+      <created>1616420997404</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
       <option name="project" value="LOCAL" />
-      <updated>1599274094514</updated>
+      <updated>1616420997404</updated>
     </task>
-    <task id="LOCAL-00027" summary="updated ui for displaying scores!">
-      <created>1599454375588</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
+    <task id="LOCAL-00090" summary="Significant changes to allow handling of errors when downloading data">
+      <created>1618475563666</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
       <option name="project" value="LOCAL" />
-      <updated>1599454375588</updated>
+      <updated>1618475563667</updated>
     </task>
-    <task id="LOCAL-00028" summary="implemented dashboard for easy access to important info">
-      <created>1600054594960</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
+    <task id="LOCAL-00091" summary="Updated to use new ConfigManager">
+      <created>1618801784992</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
       <option name="project" value="LOCAL" />
-      <updated>1600054594960</updated>
+      <updated>1618801784992</updated>
     </task>
-    <task id="LOCAL-00029" summary="implemented error message for failed loading of standings. some small bug fixes too">
-      <created>1600138712448</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
+    <task id="LOCAL-00092" summary="Updated to show message when no teams are present">
+      <created>1618801901364</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
       <option name="project" value="LOCAL" />
-      <updated>1600138712448</updated>
+      <updated>1618801901364</updated>
     </task>
-    <task id="LOCAL-00030" summary="moved all code for loading from website to one place to make classes more concise">
-      <created>1600225395375</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
+    <task id="LOCAL-00093" summary="removed separators">
+      <created>1618801935142</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
       <option name="project" value="LOCAL" />
-      <updated>1600225395375</updated>
+      <updated>1618801935142</updated>
     </task>
-    <task id="LOCAL-00031" summary="changes to layout of games views to remove some small visual bugs that sometimes appear">
-      <created>1600228281143</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
+    <task id="LOCAL-00094" summary="renamed activity, improved error handling">
+      <created>1618801982853</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
       <option name="project" value="LOCAL" />
-      <updated>1600228281143</updated>
+      <updated>1618801982853</updated>
     </task>
-    <task id="LOCAL-00032" summary="more changes to layout to fix issues with small displays">
-      <created>1600304293216</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
+    <task id="LOCAL-00095" summary="added import for main activity">
+      <created>1618802070598</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
       <option name="project" value="LOCAL" />
-      <updated>1600304293216</updated>
+      <updated>1618802070598</updated>
     </task>
-    <task id="LOCAL-00033" summary="changed how game objects are made and moved code for reporting scores to web loader">
-      <created>1600401169727</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
+    <task id="LOCAL-00096" summary="improved error handling, updated to use new data managers.">
+      <created>1618802148489</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
       <option name="project" value="LOCAL" />
-      <updated>1600401169727</updated>
+      <updated>1618802148489</updated>
     </task>
-    <task id="LOCAL-00034" summary="fixed small bug with some layouts using app:theme instead of android:theme">
-      <created>1600401792953</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
+    <task id="LOCAL-00097" summary="Separated Datamanager into separate classes to manage different kinds of data">
+      <created>1618802232974</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
       <option name="project" value="LOCAL" />
-      <updated>1600401792953</updated>
+      <updated>1618802232974</updated>
     </task>
-    <task id="LOCAL-00035" summary="Added java docs">
-      <created>1600486489110</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
+    <task id="LOCAL-00098" summary="updated layout">
+      <created>1618802333671</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
       <option name="project" value="LOCAL" />
-      <updated>1600486489110</updated>
+      <updated>1618802333671</updated>
     </task>
-    <task id="LOCAL-00036" summary="changes and stuff idk lmao">
-      <created>1601008963824</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
+    <task id="LOCAL-00099" summary="added dialogs to inform user when errors occur">
+      <created>1618802420414</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
       <option name="project" value="LOCAL" />
-      <updated>1601008963824</updated>
+      <updated>1618802420414</updated>
     </task>
-    <task id="LOCAL-00037" summary="huge update">
-      <created>1603152699974</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
+    <task id="LOCAL-00100" summary="improved error handling">
+      <created>1618802441730</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
       <option name="project" value="LOCAL" />
-      <updated>1603152699974</updated>
+      <updated>1618802441730</updated>
     </task>
-    <task id="LOCAL-00038" summary="huge update">
-      <created>1604022851704</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
+    <task id="LOCAL-00101" summary="updated to use new data managers">
+      <created>1618802527138</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
       <option name="project" value="LOCAL" />
-      <updated>1604022851704</updated>
+      <updated>1618802527138</updated>
     </task>
-    <task id="LOCAL-00039" summary="Simplified representation of Games and added an expandable layout to games that shows the players on each team">
-      <created>1605174970183</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
+    <task id="LOCAL-00102" summary="updated to display scores/spirit info if it is available">
+      <created>1618802558595</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
       <option name="project" value="LOCAL" />
-      <updated>1605174970183</updated>
+      <updated>1618802558595</updated>
     </task>
-    <task id="LOCAL-00040" summary="Implemented Databinding">
-      <created>1609718001240</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
+    <task id="LOCAL-00103" summary="generalised class so it can be reused">
+      <created>1618802621422</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
       <option name="project" value="LOCAL" />
-      <updated>1609718001240</updated>
+      <updated>1618802621422</updated>
     </task>
-    <task id="LOCAL-00041" summary="Started simple implementation of DataManager">
-      <created>1610679412576</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
+    <task id="LOCAL-00104" summary="added new buttons so you can reload only specific kinds of data. also now uses new data managers">
+      <created>1618802657284</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
       <option name="project" value="LOCAL" />
-      <updated>1610679412576</updated>
+      <updated>1618802657284</updated>
     </task>
-    <task id="LOCAL-00042" summary="implemented downloading of game data and made games parcelable. Also implemented parsing of games in WDSParser">
-      <created>1610956687515</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
+    <task id="LOCAL-00105" summary="updated to use new data managers">
+      <created>1618802675167</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
       <option name="project" value="LOCAL" />
-      <updated>1610956687515</updated>
+      <updated>1618802675167</updated>
     </task>
-    <task id="LOCAL-00043" summary="Implemented downloading of events and event teams. Also made Teams and Events parcelable and setup parsing of team and event data.">
-      <created>1611033114780</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
+    <task id="LOCAL-00106" summary="refactored to increase code reuse">
+      <created>1618802740369</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
       <option name="project" value="LOCAL" />
-      <updated>1611033114780</updated>
+      <updated>1618802740369</updated>
     </task>
-    <task id="LOCAL-00044" summary="Implemented new LoginActivity which uses Completable futures to manage the login better.">
-      <created>1611225438741</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
+    <task id="LOCAL-00107" summary="this class now holds all the code that is commonly used in fragments that display data">
+      <created>1618802838362</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
       <option name="project" value="LOCAL" />
-      <updated>1611225438741</updated>
+      <updated>1618802838362</updated>
     </task>
-    <task id="LOCAL-00045" summary="Implemented new bottom navigation. Fixed bugs with data manager">
-      <created>1611451548975</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
+    <task id="LOCAL-00108" summary="updated to use new data managers">
+      <created>1618802870916</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
       <option name="project" value="LOCAL" />
-      <updated>1611451548975</updated>
+      <updated>1618802870916</updated>
     </task>
-    <task id="LOCAL-00046" summary="Updated some layouts to create a more consistent colour scheme">
-      <created>1612271653996</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
+    <task id="LOCAL-00109" summary="added throwables to make it easy to differentiate between errors">
+      <created>1618802928447</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
       <option name="project" value="LOCAL" />
-      <updated>1612271653996</updated>
+      <updated>1618802928447</updated>
     </task>
-    <task id="LOCAL-00047" summary="updated layouts for gameviews and event views">
-      <created>1612848160639</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
+    <task id="LOCAL-00110" summary="updated so events are now unique when in a set">
+      <created>1618802960064</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
       <option name="project" value="LOCAL" />
-      <updated>1612848160639</updated>
+      <updated>1618802960064</updated>
     </task>
-    <task id="LOCAL-00048" summary="Fixed a bug with the WDS Parser that would fail to load when some layouts were not as expected, it will now just ignore the game that failed to parse. changed some bottom navigation icons.">
-      <created>1613226482025</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
+    <task id="LOCAL-00111" summary="added function to check if the game has data for the games scores">
+      <created>1618802995679</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
       <option name="project" value="LOCAL" />
-      <updated>1613226482025</updated>
+      <updated>1618802995679</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00112" summary="added error catching to prevent crashes">
+      <created>1618803038384</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1618803038384</updated>
+    </task>
+    <option name="localTasksCounter" value="113" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Updated loading screens for better code reuse" />
-    <MESSAGE value="reworked user login to be much faster. implemented refreshing in a more clear way" />
-    <MESSAGE value="Begun UI 2.0 update!" />
-    <MESSAGE value="All main screens done for UI update" />
-    <MESSAGE value="updated ui for displaying scores!" />
-    <MESSAGE value="implemented dashboard for easy access to important info" />
-    <MESSAGE value="implemented error message for failed loading of standings. some small bug fixes too" />
-    <MESSAGE value="moved all code for loading from website to one place to make classes more concise" />
-    <MESSAGE value="changes to layout of games views to remove some small visual bugs that sometimes appear" />
-    <MESSAGE value="more changes to layout to fix issues with small displays" />
-    <MESSAGE value="changed how game objects are made and moved code for reporting scores to web loader" />
-    <MESSAGE value="fixed small bug with some layouts using app:theme instead of android:theme" />
-    <MESSAGE value="Added java docs" />
-    <MESSAGE value="changes and stuff idk lmao" />
-    <MESSAGE value="huge update" />
-    <MESSAGE value="Simplified representation of Games and added an expandable layout to games that shows the players on each team" />
-    <MESSAGE value="Implemented Databinding" />
-    <MESSAGE value="Started simple implementation of DataManager" />
-    <MESSAGE value="implemented downloading of game data and made games parcelable. Also implemented parsing of games in WDSParser" />
-    <MESSAGE value="Implemented downloading of events and event teams. Also made Teams and Events parcelable and setup parsing of team and event data." />
-    <MESSAGE value="Implemented new LoginActivity which uses Completable futures to manage the login better." />
-    <MESSAGE value="Implemented new bottom navigation. Fixed bugs with data manager" />
-    <MESSAGE value="Updated some layouts to create a more consistent colour scheme" />
-    <MESSAGE value="updated layouts for gameviews and event views" />
-    <MESSAGE value="Fixed a bug with the WDS Parser that would fail to load when some layouts were not as expected, it will now just ignore the game that failed to parse. changed some bottom navigation icons." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed a bug with the WDS Parser that would fail to load when some layouts were not as expected, it will now just ignore the game that failed to parse. changed some bottom navigation icons." />
+    <MESSAGE value="Updated minSdkVersion to match project requirements" />
+    <MESSAGE value="Fixed a bug causing requests to callback with empty results while still downloading" />
+    <MESSAGE value="code cleanup" />
+    <MESSAGE value="Significant changes to allow handling of errors when downloading data" />
+    <MESSAGE value="Updated to use new ConfigManager" />
+    <MESSAGE value="Updated to show message when no teams are present" />
+    <MESSAGE value="removed separators" />
+    <MESSAGE value="renamed activity, improved error handling" />
+    <MESSAGE value="added import for main activity" />
+    <MESSAGE value="improved error handling, updated to use new data managers." />
+    <MESSAGE value="Separated Datamanager into separate classes to manage different kinds of data" />
+    <MESSAGE value="updated layout" />
+    <MESSAGE value="added dialogs to inform user when errors occur" />
+    <MESSAGE value="improved error handling" />
+    <MESSAGE value="updated to display scores/spirit info if it is available" />
+    <MESSAGE value="generalised class so it can be reused" />
+    <MESSAGE value="added new buttons so you can reload only specific kinds of data. also now uses new data managers" />
+    <MESSAGE value="refactored to increase code reuse" />
+    <MESSAGE value="this class now holds all the code that is commonly used in fragments that display data" />
+    <MESSAGE value="updated to use new data managers" />
+    <MESSAGE value="added throwables to make it easy to differentiate between errors" />
+    <MESSAGE value="updated so events are now unique when in a set" />
+    <MESSAGE value="added function to check if the game has data for the games scores" />
+    <MESSAGE value="added error catching to prevent crashes" />
+    <MESSAGE value="updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="989" y="286" key="#app" timestamp="1612318958979">
+    <state x="797" y="446" key="#PSD" timestamp="1618493335498">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="989" y="286" key="#app/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612318958979" />
-    <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser" timestamp="1612320442487">
+    <state x="797" y="446" key="#PSD/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615261051124" />
+    <state x="797" y="446" key="#PSD/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618493335498" />
+    <state x="989" y="286" key="#app" timestamp="1618117331696">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607320490810" />
-    <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612320442487" />
+    <state x="989" y="286" key="#app/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618117331696" />
+    <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser" timestamp="1618749688027">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617426856053" />
+    <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618749688027" />
+    <state x="1010" y="478" key="#com.intellij.ide.util.PackageChooserDialog" timestamp="1618496549698">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1010" y="478" key="#com.intellij.ide.util.PackageChooserDialog/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615881794445" />
+    <state x="1010" y="478" key="#com.intellij.ide.util.PackageChooserDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618496549698" />
+    <state x="864" y="624" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1618717767086">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="864" y="624" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615881787862" />
+    <state x="864" y="624" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618717767086" />
+    <state x="1063" y="568" width="523" height="271" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1618717371246">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1063" y="568" width="473" height="271" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615881673493" />
+    <state x="1063" y="568" width="523" height="271" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618717371246" />
+    <state x="1076" y="581" width="450" height="238" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1618717772187">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1076" y="581" width="484" height="238" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615881796497" />
+    <state x="1076" y="581" width="450" height="238" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618717772187" />
+    <state x="929" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1618495788283">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="929" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618495788283" />
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1618552640564">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1616590754538" />
+    <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618552640564" />
+    <state x="1027" y="534" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1615883068144">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1027" y="534" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615883068144" />
+    <state x="92" y="92" width="2376" height="1216" key="AVDManager" timestamp="1617851076492">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="92" y="92" width="2376" height="1216" key="AVDManager/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1616419718590" />
+    <state x="92" y="92" width="2376" height="1216" key="AVDManager/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1617851076492" />
     <state x="860" y="454" key="AndroidCreateResourceDirectoryDialog" timestamp="1613224101643">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="860" y="454" key="AndroidCreateResourceDirectoryDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613224101643" />
-    <state x="720" y="320" key="AndroidCreateResourceFileDialog" timestamp="1613227320562">
+    <state x="720" y="320" key="AndroidCreateResourceFileDialog" timestamp="1618313264347">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="720" y="320" key="AndroidCreateResourceFileDialog/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607316192242" />
-    <state x="720" y="320" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613227320562" />
-    <state x="481" y="39" width="1510" height="1075" key="CommitChangelistDialog2" timestamp="1613226480347">
+    <state x="720" y="320" key="AndroidCreateResourceFileDialog/-1920.-116.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1614483765824" />
+    <state x="720" y="320" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617429047862" />
+    <state x="720" y="320" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618313264347" />
+    <state x="1124" y="489" key="AndroidCreateXmlResourceDialog" timestamp="1615903378928">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1124" y="489" key="AndroidCreateXmlResourceDialog/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615903378928" />
+    <state x="988" y="446" key="AndroidProcessChooserDialog" timestamp="1618803787039">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="988" y="446" key="AndroidProcessChooserDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618803787039" />
+    <state x="873" y="170" width="1262" height="1141" key="CommitChangelistDialog2" timestamp="1618804085852">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="489" y="223" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225436590" />
-    <state x="481" y="39" width="1510" height="1075" key="CommitChangelistDialog2/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226480347" />
-    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1612848998147">
+    <state x="856" y="132" width="1262" height="1141" key="CommitChangelistDialog2/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1616420994782" />
+    <state x="873" y="170" width="1510" height="1075" key="CommitChangelistDialog2/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085852" />
+    <state width="392" height="466" key="DebuggerActiveHint" timestamp="1618568221894">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612848998147" />
-    <state width="2517" height="252" key="GridCell.Tab.0.bottom" timestamp="1613226859002">
+    <state width="392" height="466" key="DebuggerActiveHint/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618568221894" />
+    <state x="204" y="0" key="DiffContextDialog" timestamp="1615882757426">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="204" y="0" key="DiffContextDialog/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615882757426" />
+    <state x="204" y="0" key="DiffContextDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613618655070" />
+    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1616590634224">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1616590634224" />
+    <state x="1060" y="454" key="FileChooserDialogImpl/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613564666846" />
+    <state width="2517" height="506" key="GridCell.Tab.0.bottom" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
-    <state width="2517" height="252" key="GridCell.Tab.0.center" timestamp="1613226859002">
+    <state width="2517" height="312" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.0.center" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
-    <state width="2517" height="252" key="GridCell.Tab.0.left" timestamp="1613226859002">
+    <state width="2517" height="312" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.0.left" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
-    <state width="2517" height="252" key="GridCell.Tab.0.right" timestamp="1613226859002">
+    <state width="2517" height="312" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.0.right" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="252" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226859002" />
-    <state width="2517" height="347" key="GridCell.Tab.1.bottom" timestamp="1613226071489">
+    <state width="2517" height="312" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.1.bottom" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="347" key="GridCell.Tab.1.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
-    <state width="2517" height="347" key="GridCell.Tab.1.center" timestamp="1613226071489">
+    <state width="2517" height="312" key="GridCell.Tab.1.bottom/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.1.bottom/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.1.center" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="347" key="GridCell.Tab.1.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
-    <state width="2517" height="347" key="GridCell.Tab.1.left" timestamp="1613226071489">
+    <state width="2517" height="312" key="GridCell.Tab.1.center/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.1.center/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.1.left" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="347" key="GridCell.Tab.1.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
-    <state width="2517" height="347" key="GridCell.Tab.1.right" timestamp="1613226071489">
+    <state width="2517" height="312" key="GridCell.Tab.1.left/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.1.left/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state width="2517" height="506" key="GridCell.Tab.1.right" timestamp="1618804085921">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="348" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611225505036" />
-    <state width="2517" height="347" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613226071489" />
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2" timestamp="1612271655401">
+    <state width="2517" height="312" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1617427765581" />
+    <state width="2517" height="506" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618804085921" />
+    <state x="781" y="344" key="SettingsEditor" timestamp="1617604632134">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1609718022633" />
-    <state x="506" y="359" key="Vcs.Push.Dialog.v2/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1612271655401" />
-    <state x="1391" y="221" width="959" height="788" key="find.popup" timestamp="1607485899677">
+    <state x="781" y="344" key="SettingsEditor/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1617604632134" />
+    <state x="553" y="313" key="Vcs.Push.Dialog.v2" timestamp="1615476162765">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1391" y="221" width="959" height="788" key="find.popup/-1920.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607485899677" />
+    <state x="553" y="313" key="Vcs.Push.Dialog.v2/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615476162765" />
+    <state x="553" y="313" key="Vcs.Push.Dialog.v2/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613454817550" />
+    <state width="1288" height="708" key="XDebugger.FullValuePopup" timestamp="1618469497647">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="1288" height="708" key="XDebugger.FullValuePopup/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618469497647" />
+    <state x="1096" y="477" width="592" height="510" key="chooseDestDirectoryDialog" timestamp="1618717368957">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1096" y="477" width="592" height="510" key="chooseDestDirectoryDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618717368957" />
+    <state x="547" y="116" width="959" height="788" key="find.popup" timestamp="1618324752677">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="547" y="116" width="959" height="788" key="find.popup/0.0.2560.1400/-1920.-116.1920.1040@0.0.2560.1400" timestamp="1615882090515" />
+    <state x="547" y="116" width="959" height="788" key="find.popup/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618324752677" />
+    <state width="600" height="428" key="javadoc.popup" timestamp="1618114263052">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="600" height="428" key="javadoc.popup/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618114263052" />
+    <state x="986" y="457" key="refactoring.ChangeSignatureDialog" timestamp="1617800040222">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="986" y="457" key="refactoring.ChangeSignatureDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1617800040222" />
+    <state x="936" y="330" key="run.anything.popup" timestamp="1613548656240">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="936" y="330" key="run.anything.popup/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1613548656240" />
+    <state x="1098" y="518" width="490" height="397" key="scopes" timestamp="1618315146141">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1098" y="518" width="490" height="397" key="scopes/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618315146141" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1618492653888">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1618492653888" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/wuapp/data/WDSParser.java</url>
-          <line>160</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/wuapp/ui/fragment/reportresult/ReportResultFragment.java</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/wuapp/parsers/WDSParser.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

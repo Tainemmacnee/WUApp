@@ -1,25 +1,15 @@
 package com.example.wuapp;
 
-import com.example.wuapp.data.WDSParser;
+import com.example.wuapp.parsers.WDSParser;
 import com.example.wuapp.model.Game;
-import com.example.wuapp.model.User;
-import com.example.wuapp.model.UserLoginToken;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.nio.Buffer;
-import java.util.ArrayList;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class WDSParserTest {
 
