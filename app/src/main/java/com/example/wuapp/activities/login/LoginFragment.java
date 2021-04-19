@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.fragment.login;
+package com.example.wuapp.activities.login;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.wuapp.ui.activity.MainActivity;
+import com.example.wuapp.activities.main.MainActivity;
 import com.example.wuapp.R;
 
 

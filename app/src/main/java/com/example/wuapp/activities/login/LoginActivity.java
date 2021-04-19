@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.activity;
+package com.example.wuapp.activities.login;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,10 +9,11 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wuapp.R;
-import com.example.wuapp.data.Config;
-import com.example.wuapp.data.DataManager;
+import com.example.wuapp.datamanagers.ConfigManager;
+import com.example.wuapp.datamanagers.DataManager;
 import com.example.wuapp.databinding.ActivityLoginBinding;
 import com.example.wuapp.model.UserLoginToken;
+import com.example.wuapp.activities.main.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Connection;
@@ -41,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ConfigManager.initialise(getApplicationContext());
+
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
@@ -51,9 +54,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        //check config to see if we should use saved login
-        Config config = Config.readConfig(getApplicationContext());
-        if(config.getCacheLogin()) {
+        //check configManager to see if we should use saved login
+        ConfigManager configManager = ConfigManager.getInstance();
+        if(configManager.getCacheLogin()) {
 
             UserLoginToken loginToken = null;
             try (FileInputStream fin = getApplicationContext().openFileInput("login.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
