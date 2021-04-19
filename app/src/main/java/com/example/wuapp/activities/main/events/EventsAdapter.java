@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.fragment.events;
+package com.example.wuapp.activities.main.events;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wuapp.ui.activity.DisplayEventScoresActivity;
-import com.example.wuapp.ui.activity.DisplayEventTeamsActivity;
-import com.example.wuapp.ui.activity.MainActivity;
+import com.example.wuapp.activities.displaystandings.DisplayEventStandingsActivity;
+import com.example.wuapp.activities.displayteams.DisplayEventTeamsActivity;
+import com.example.wuapp.activities.main.MainActivity;
 import com.example.wuapp.R;
-import com.example.wuapp.data.DataManager;
 import com.example.wuapp.model.Event;
 import com.example.wuapp.model.Team;
 import com.squareup.picasso.Picasso;
@@ -27,7 +26,6 @@ import java.util.List;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewHolder> {
 
     private Event[] events;
-    private DataManager dataManager;
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
@@ -45,10 +43,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         }
     }
 
-    public EventsAdapter(List<Event> events, DataManager dataManager) {
+    public EventsAdapter(List<Event> events) {
         Event[] eventsArray = events.toArray(new Event[events.size()]);
         this.events = eventsArray;
-        this.dataManager = dataManager;
     }
 
     public EventsAdapter.EventViewHolder onCreateViewHolder(ViewGroup parent,
@@ -81,9 +78,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         holder.eventStandingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), DisplayEventScoresActivity.class);
-                intent.putExtra(DisplayEventScoresActivity.MESSAGESCORESLINK, events[position].getEventLink()+"/standings");
-                intent.putExtra(MainActivity.MESSAGE_DATAMANAGER, dataManager);
+                Intent intent = new Intent(view.getContext(), DisplayEventStandingsActivity.class);
+                intent.putExtra(DisplayEventStandingsActivity.MESSAGESCORESLINK, events[position].getEventLink()+"/standings");
                 view.getContext().startActivity(intent);
             }
         });
