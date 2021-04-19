@@ -1,9 +1,6 @@
-package com.example.wuapp.data;
+package com.example.wuapp.datamanagers;
 
 import android.content.Context;
-
-import com.example.wuapp.model.Event;
-import com.example.wuapp.model.UserLoginToken;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,21 +10,52 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class Config {
+public class ConfigManager {
+
+    private static ConfigManager configManager;
 
     private boolean cacheEvents;
     private boolean cacheLogin;
+    private Context context;
 
-    public Config(boolean cacheEvents, boolean cacheLogin){
+    public ConfigManager(boolean cacheEvents, boolean cacheLogin, Context context){
         this.cacheEvents = cacheEvents;
         this.cacheLogin = cacheLogin;
+        this.context = context;
     }
 
-    public static Config getDefaultConfig(){
-        return new Config(true, true);
+    public static void initialise(Context context) {
+        if(configManager == null) {
+            configManager = readConfig(context);
+        }
     }
 
-    public void saveConfig(Context context){
+    public static ConfigManager getInstance(){ return configManager; }
+
+    private static ConfigManager getDefaultConfig(Context context){
+        return new ConfigManager(true, true, context);
+    }
+
+    private static ConfigManager readConfig(Context context){
+        boolean cacheEvents;
+        boolean cacheLogin;
+        try (FileInputStream fin = context.openFileInput("config.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
+            cacheEvents = (boolean) oin.readObject();
+            cacheLogin = (boolean) oin.readObject();
+
+            return new ConfigManager(cacheEvents, cacheLogin, context);
+        } catch (FileNotFoundException fileNotFoundException) {
+            //fileNotFoundException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
+
+        return ConfigManager.getDefaultConfig(context);
+    }
+
+    private void saveConfig(Context context){
         File file = new File(context.getFilesDir(), "config.txt");
         if(file.exists()){
             file.delete();
@@ -42,25 +70,6 @@ public class Config {
             e.printStackTrace();
         }
 
-    }
-
-    public static Config readConfig(Context context){
-        boolean cacheEvents;
-        boolean cacheLogin;
-        try (FileInputStream fin = context.openFileInput("config.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
-            cacheEvents = (boolean) oin.readObject();
-            cacheLogin = (boolean) oin.readObject();
-
-            return new Config(cacheEvents, cacheLogin);
-        } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } catch (ClassNotFoundException classNotFoundException) {
-            classNotFoundException.printStackTrace();
-        }
-
-        return Config.getDefaultConfig();
     }
 
     public boolean getCacheEvents() {
