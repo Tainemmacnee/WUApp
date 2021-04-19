@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.fragment.events.teams;
+package com.example.wuapp.activities.displayteams;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wuapp.R;
@@ -22,15 +23,14 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
 
     private Team[] teams;
     private Team[] teamsFiltered;
-    private boolean showSeperators = true;
 
     public class EventTeamViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout femaleMatchupDisplay;
         public LinearLayout maleMatchupDisplay;
         public TextView textView;
         public ImageView imageView;
-        public LinearLayout maleMatchupContainer;
-        public LinearLayout femaleMatchupContainer;
+        public ConstraintLayout maleMatchupContainer;
+        public ConstraintLayout femaleMatchupContainer;
         public TextView maleMatchupTextView;
         public TextView femaleMatchupTextView;
 
@@ -60,14 +60,6 @@ public class EventTeamsAdapter extends RecyclerView.Adapter<EventTeamsAdapter.Ev
 
         EventTeamViewHolder vh = new EventTeamViewHolder(v);
         return vh;
-    }
-
-    public void hideSeperators(){
-        showSeperators = false;
-    }
-
-    public void showSeperators(){
-        showSeperators = true;
     }
 
     @Override
