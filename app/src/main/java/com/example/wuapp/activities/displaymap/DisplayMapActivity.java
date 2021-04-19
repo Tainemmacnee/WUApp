@@ -1,4 +1,4 @@
-package com.example.wuapp.ui.activity;
+package com.example.wuapp.activities.displaymap;
 
 
 import android.content.Intent;
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wuapp.R;
 import com.example.wuapp.model.Game;
+import com.example.wuapp.activities.main.MainActivity;
 
 /**
  * An Activity to load and display the standings for an event
