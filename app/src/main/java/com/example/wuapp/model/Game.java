@@ -85,6 +85,10 @@ public class Game implements Parcelable {
         return gameDate.after(new Date());
     }
 
+    public boolean hasScores(){
+        return !homeTeamScore.equals("?") && !awayTeamScore.equals("?");
+    }
+
     public String toString(){
         return String.format("%s vs %s @%s %s", homeTeamName, awayTeamName, date, time);
     }
