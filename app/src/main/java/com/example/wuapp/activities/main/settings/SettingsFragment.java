@@ -49,4 +49,8 @@ public class SettingsFragment extends DisplayFragment {
 
         return binding.getRoot();
     }
+
+    @Override
+    protected void refresh() {
+    }
 }

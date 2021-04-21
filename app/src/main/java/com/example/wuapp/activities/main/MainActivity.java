@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     Fragment currentFragment;
     BottomNavigationView navigationView;
+    UserLoginToken loginToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        UserLoginToken loginToken = (UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN);
+        loginToken = (UserLoginToken) intent.getExtras().getSerializable(MainActivity.MESSAGE_LOGINTOKEN);
 
-        //initialise data managers
         EventsManager.initialise(loginToken, getApplicationContext());
         GamesManager.initialise(loginToken);
         StandingsManager.initialise(loginToken);
@@ -82,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         navigationView.setSelectedItemId(R.id.games);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GamesManager.getInstance().reload();
+        navigationView.setSelectedItemId(navigationView.getSelectedItemId());
     }
 
     private boolean loadFragment(Fragment fragment) {

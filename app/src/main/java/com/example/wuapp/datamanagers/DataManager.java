@@ -28,7 +28,6 @@ public abstract class DataManager {
     public abstract void reload();
 
     protected Document downloadWebPage(String link) throws IOException, InvalidLinkException {
-        System.out.println(link);
         if(link == null) { throw new InvalidLinkException(); }
         return Jsoup.connect(link)
                 .method(Connection.Method.GET)

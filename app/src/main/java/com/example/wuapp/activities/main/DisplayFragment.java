@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.wuapp.databinding.DisplayFragmentBinding;
 import com.example.wuapp.databinding.FragmentExceptionDisplayBinding;
@@ -25,20 +26,31 @@ public abstract class DisplayFragment<T> extends Fragment implements DataReceive
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         binding = DisplayFragmentBinding.inflate(inflater);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                binding.swipeRefresh.setRefreshing(true);
+            }
+        });
         return binding.getRoot();
     }
 
-    public <T> void loadData(List data){}
+    public <T> void loadData(List data){ binding.swipeRefresh.setRefreshing(false);}
+
+    protected abstract void refresh();
 
     public void loadNoDataMessage(){
+        binding.swipeRefresh.setRefreshing(false);
         binding.loadingView.getRoot().setVisibility(View.GONE);//Hide loading animation
         binding.infoMessage.setVisibility(View.VISIBLE);
     }
 
     public void loadErrorMessage(String message){
+        binding.swipeRefresh.setRefreshing(false);
         FragmentExceptionDisplayBinding errorView = binding.errorView;
         Button reloadButton = errorView.reloadButton;
         errorView.errorMessage.setText(message);
