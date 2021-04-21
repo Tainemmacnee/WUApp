@@ -69,7 +69,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 ArrayList<Team> teams = new ArrayList<>();
                 teams.addAll(events[position].getTeams());
                 Intent intent = new Intent(view.getContext(), DisplayEventTeamsActivity.class);
-                intent.putExtra(MainActivity.MESSAGE_EVENTNAME, events[position].getName());
                 intent.putExtra(MainActivity.MESSAGE_EVENTTEAMS, teams);
                 view.getContext().startActivity(intent);
 

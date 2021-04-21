@@ -27,4 +27,6 @@
     <string name="standings_team_pointdiff_title">Point Diff</string>
     <string name="description_back_button">back button</string>
     <string name="REQUEST_SCHEDULED_GAMES">request_scheduled_games</string>
+    <string name="MESSAGE_LOGINTOKEN">LOGINTOKEN</string>
+    <string name="MESSAGE_GAME">GAME</string>
 </resources>

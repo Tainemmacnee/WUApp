@@ -38,7 +38,7 @@ public class DisplayMapActivity extends AppCompatActivity {
 
         //retrieve required info from intent
         Intent intent = getIntent();
-        game = intent.getParcelableExtra(MainActivity.MESSAGE_GAME);
+        game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
 
         Button button7s = findViewById(R.id.button_7s);
         button7s.setOnClickListener(new View.OnClickListener() {

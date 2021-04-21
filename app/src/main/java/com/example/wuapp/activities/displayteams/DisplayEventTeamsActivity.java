@@ -23,9 +23,7 @@ import java.util.List;
  */
 public class DisplayEventTeamsActivity extends AppCompatActivity {
 
-    private String eventName = null;
     private List<Team> eventTeams = null;
-
     private SearchView searchView;
     private EventTeamsAdapter mAdapter;
     private RecyclerView recyclerView;
@@ -36,7 +34,6 @@ public class DisplayEventTeamsActivity extends AppCompatActivity {
 
         //retrieve required info from intent
         Intent intent = getIntent();
-        eventName = (String) intent.getSerializableExtra(MainActivity.MESSAGE_EVENTNAME);
         eventTeams = (List<Team>) intent.getSerializableExtra(MainActivity.MESSAGE_EVENTTEAMS);
 
         //setup activity display

@@ -39,16 +39,33 @@ public abstract class DisplayFragment<T> extends Fragment implements DataReceive
         return binding.getRoot();
     }
 
-    public <T> void loadData(List data){ binding.swipeRefresh.setRefreshing(false);}
+    /**
+     * This function is used when it successfully receives data to load
+     * that data into a display fragments recycler view and do any other necessary setup
+     * @param data the data to be displayed
+     */
+    public void loadData(List data){ binding.swipeRefresh.setRefreshing(false);}
 
+    /**
+     * This function is used to refresh the data. It should make the relevant data manager
+     * re-download its data.
+     */
     protected abstract void refresh();
 
+    /**
+     * This function is used to display a message when no the app fails to find any data to display
+     */
     public void loadNoDataMessage(){
         binding.swipeRefresh.setRefreshing(false);
         binding.loadingView.getRoot().setVisibility(View.GONE);//Hide loading animation
         binding.infoMessage.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * This function is used to display an error message when something unexpected happens while
+     * downloading/parsing the relevant data
+     * @param message A message associated to the error that occurred
+     */
     public void loadErrorMessage(String message){
         binding.swipeRefresh.setRefreshing(false);
         FragmentExceptionDisplayBinding errorView = binding.errorView;

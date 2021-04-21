@@ -23,8 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.example.wuapp.activities.main.MainActivity.MESSAGE_GAME;
-
 /**
  * An Activity to load and display the teams for an event
  */
@@ -40,7 +38,7 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
 
         //retrieve required info from intent
         Intent intent = getIntent();
-        game = intent.getParcelableExtra(MESSAGE_GAME);
+        game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
 
         binding.team1Name.setText(game.getHomeTeamName());
         binding.team1Name.setMaxLines(3);
@@ -76,7 +74,7 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), ReportResultActivity.class);
-                    intent.putExtra(MESSAGE_GAME, game);
+                    intent.putExtra(getString(R.string.MESSAGE_GAME), game);
                     startActivity(intent);
                 }
             });
@@ -91,7 +89,7 @@ public class DisplayGameActivity extends AppCompatActivity implements DataReceiv
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), DisplayMapActivity.class);
-                    intent.putExtra(MESSAGE_GAME, game);
+                    intent.putExtra(getString(R.string.MESSAGE_GAME), game);
                     startActivity(intent);
                 }
             });

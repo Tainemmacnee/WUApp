@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (loginToken != null) {
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, loginToken);
+                intent.putExtra(getString(R.string.MESSAGE_LOGINTOKEN), loginToken);
                 startActivity(intent);
             }
         }
@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                         saveLoginToken(r);
 
                         Intent intent = new Intent(this, MainActivity.class);
-                        intent.putExtra(MainActivity.MESSAGE_LOGINTOKEN, r);
+                        intent.putExtra(getString(R.string.MESSAGE_LOGINTOKEN), r);
                         startActivity(intent);
                     } else {
                         Snackbar.make(findViewById(R.id.login_layout), "Login Failed", Snackbar.LENGTH_SHORT).show();

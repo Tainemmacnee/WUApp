@@ -61,7 +61,7 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         binding = ActivityReportResultBinding.inflate(getLayoutInflater());
 
         Intent intent = getIntent();
-        game = intent.getParcelableExtra(MainActivity.MESSAGE_GAME);
+        game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
 
         OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
         ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink()));

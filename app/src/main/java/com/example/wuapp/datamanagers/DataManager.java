@@ -37,10 +37,13 @@ public abstract class DataManager {
                 .parse();
     }
 
-    public boolean isDownloading(){ return downloading; }
-
     public UserLoginToken getLoginToken(){ return this.loginToken; }
 
+    /**
+     * This function is used to send the response to the Data Receiver. The response is delayed to avoid
+     * sending the response too early.
+     * @param response The response to send
+     */
     protected void submitResponse(DataReceiver.Response response){
         int delay = 100; //milliseconds
 
