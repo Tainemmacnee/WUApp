@@ -1,5 +1,7 @@
 package com.macneet.wuapp.datamanagers;
 
+import android.content.Context;
+
 import com.macneet.wuapp.exceptions.InvalidLinkException;
 import com.macneet.wuapp.model.UserLoginToken;
 
@@ -9,7 +11,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -21,15 +29,18 @@ public class OAuthManager extends DataManager {
     public final String OAUTH_URL = "https://wds.usetopscore.com/u/oauth-key";
     public static final String REQUEST_OAUTH_TOKEN = "requestoauthtoken";
     private String oAuthToken;
+    private Context context;
 
-    private OAuthManager(UserLoginToken loginToken){
+    private OAuthManager(UserLoginToken loginToken, Context context){
         this.loginToken = loginToken;
-        downloadOAuthKey();
+        this.context = context;
+        oAuthToken = readToken(context);
+        if(oAuthToken == null) { downloadOAuthKey(); } //if token still null, try download it
     }
 
-    public static void initialise(UserLoginToken loginToken){
+    public static void initialise(UserLoginToken loginToken, Context context){
         if(oAuthManager == null) {
-            oAuthManager = new OAuthManager(loginToken);
+            oAuthManager = new OAuthManager(loginToken, context);
         }
     }
 
@@ -43,9 +54,10 @@ public class OAuthManager extends DataManager {
 
     @Override
     public void reload() {
-        oAuthToken = null;
         exception = null;
-        downloadOAuthKey();
+        if(oAuthToken != null) { return; }
+        oAuthToken = readToken(context);
+        if(oAuthToken == null) { downloadOAuthKey(); } //if token still null, try download it
     }
 
     private void prepareResponse(){
@@ -53,6 +65,38 @@ public class OAuthManager extends DataManager {
         ArrayList<String> data = new ArrayList<>();
         data.add(oAuthToken);
         submitResponse(new DataReceiver.Response(data, exception, request));
+    }
+
+    private static String readToken(Context context){
+        String OAuthToken;
+        try (FileInputStream fin = context.openFileInput("token.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
+            OAuthToken = (String) oin.readObject();
+            return OAuthToken;
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private void saveToken(Context context){
+        File file = new File(context.getFilesDir(), "token.txt");
+        if(file.exists()){
+            file.delete();
+        }
+
+        try (FileOutputStream fout = context.openFileOutput("token.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+            oos.writeObject(oAuthToken);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void downloadOAuthKey() {
@@ -90,7 +134,10 @@ public class OAuthManager extends DataManager {
             } catch (JSONException | IOException e) {
                 throw new CompletionException(e);
             }
-        }).thenAccept(r -> oAuthToken = (String) r
+        }).thenAccept(r -> {
+            oAuthToken = (String) r;
+            if(oAuthToken != null) { saveToken(context); } //save token if loaded
+        }
         ).whenComplete((msg, ex) -> { //catch & handle any errors that occurred
             exception = ex;
             downloading = false;
