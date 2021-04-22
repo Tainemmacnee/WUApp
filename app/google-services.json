@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "437277908792",
+    "project_id": "wuapp-406b9",
+    "storage_bucket": "wuapp-406b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437277908792:android:bbb519a133103e88d3ebcd",
+        "android_client_info": {
+          "package_name": "com.macneet.wuapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437277908792-4nps191783osa7r455qf18p6ir8hrcj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC8qOImpYRsAZjntLaKGrpQq4-dwoK8wo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437277908792-4nps191783osa7r455qf18p6ir8hrcj1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
