@@ -48,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
         loginToken = (UserLoginToken) intent.getExtras().getSerializable(getString(R.string.MESSAGE_LOGINTOKEN));
 
         //setup data managers
-        EventsManager.initialise(loginToken, getApplicationContext());
+        EventsManager.initialise(loginToken, this);
         GamesManager.initialise(loginToken);
         StandingsManager.initialise(loginToken);
         ReportFormManager.initialise(loginToken);
-        OAuthManager.initialise(loginToken);
+        OAuthManager.initialise(loginToken, this);
 
         //setup navigation
         navigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
