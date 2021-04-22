@@ -63,9 +63,10 @@ public class StandingsManager extends DataManager {
         ).thenAccept(r -> {
             standings = r;
             this.downloading = false;
-            prepareResponse();
         }).whenComplete((msg, ex) -> {
-            exception = ex.getCause();
+            if(ex != null) {
+                exception = ex.getCause();
+            }
             downloading = false;
             prepareResponse();
         });
