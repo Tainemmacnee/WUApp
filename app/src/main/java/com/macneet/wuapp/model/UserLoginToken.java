@@ -30,14 +30,6 @@ public class UserLoginToken implements Serializable {
         this.profileImage = profileImage;
     }
 
-    protected UserLoginToken(Parcel in) {
-        Bundle bundledMaps = in.readBundle();
-        cookies = (HashMap<String, String>) bundledMaps.getSerializable("cookies");
-        links = (HashMap<String, String>) bundledMaps.getSerializable("links");
-        name = in.readString();
-        profileImage = in.readString();
-    }
-
     public HashMap<String, String> getCookies() {
         return cookies;
     }
