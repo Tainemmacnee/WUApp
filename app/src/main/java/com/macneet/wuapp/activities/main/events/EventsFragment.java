@@ -18,6 +18,7 @@ public class EventsFragment extends DisplayFragment {
 
     @Override
     protected void refresh() {
+        EventsManager.getInstance().reload();
         EventsManager.getInstance().requestData(new Request(this, EventsManager.REQUEST_EVENTS));
     }
 
