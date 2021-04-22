@@ -29,7 +29,7 @@ public class SubmissionExceptionDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_exception_display, container);
     }
-//
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -37,7 +37,7 @@ public class SubmissionExceptionDialog extends DialogFragment {
 
         // Get field from view
         Button backButton = view.findViewById(R.id.reload_button);
-        backButton.setText("close");
+        backButton.setText("back");
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
