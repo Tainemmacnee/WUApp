@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wuapp" >
+    package="com.macneet.wuapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-sdk android:minSdkVersion="24"
+        android:targetSdkVersion="30" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".activities.main.MainActivity"
-            android:parentActivityName=".activities.login.LoginActivity">
+        android:theme="@style/AppTheme"
+        android:versionCode="1"
+        android:versionName="1.0.0">
+        <activity android:name="com.macneet.wuapp.activities.main.MainActivity"
+            android:parentActivityName="com.macneet.wuapp.activities.login.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.login.LoginActivity" />
+                android:value="com.macneet.wuapp.activities.login.LoginActivity" />
         </activity>
-        <activity android:name=".activities.reportresult.ReportResultActivity"
-            android:parentActivityName=".activities.main.MainActivity">
+        <activity android:name="com.macneet.wuapp.activities.reportresult.ReportResultActivity"
+            android:parentActivityName="com.macneet.wuapp.activities.main.MainActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".activities.main.MainActivity" />
+            android:value="com.macneet.wuapp.activities.main.MainActivity" />
         </activity>
-        <activity android:name=".activities.displaystandings.DisplayEventStandingsActivity"
-            android:parentActivityName=".activities.main.MainActivity">
+        <activity android:name="com.macneet.wuapp.activities.displaystandings.DisplayEventStandingsActivity"
+            android:parentActivityName="com.macneet.wuapp.activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.main.MainActivity" />
+                android:value="com.macneet.wuapp.activities.main.MainActivity" />
         </activity>
-        <activity android:name=".activities.displayteams.DisplayEventTeamsActivity"
-            android:parentActivityName=".activities.main.MainActivity">
+        <activity android:name="com.macneet.wuapp.activities.displayteams.DisplayEventTeamsActivity"
+            android:parentActivityName="com.macneet.wuapp.activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.main.MainActivity" />
+                android:value="com.macneet.wuapp.activities.main.MainActivity" />
         </activity>
-        <activity android:name=".activities.displaymap.DisplayMapActivity"
-            android:parentActivityName=".activities.main.MainActivity">
+        <activity android:name="com.macneet.wuapp.activities.displaymap.DisplayMapActivity"
+            android:parentActivityName="com.macneet.wuapp.activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.main.MainActivity" />
+                android:value="com.macneet.wuapp.activities.main.MainActivity" />
         </activity>
-        <activity android:name=".activities.displaygame.DisplayGameActivity"
-            android:parentActivityName=".activities.main.MainActivity">
+        <activity android:name="com.macneet.wuapp.activities.displaygame.DisplayGameActivity"
+            android:parentActivityName="com.macneet.wuapp.activities.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.main.MainActivity" />
+                android:value="com.macneet.wuapp.activities.main.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.login.LoginActivity"
+            android:name="com.macneet.wuapp.activities.login.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
