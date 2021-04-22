@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.macneet.wuapp.R;
 import com.macneet.wuapp.datamanagers.DataReceiver;
 import com.macneet.wuapp.datamanagers.DataManager;
+import com.macneet.wuapp.datamanagers.GamesManager;
 import com.macneet.wuapp.datamanagers.OAuthManager;
 import com.macneet.wuapp.datamanagers.ReportFormManager;
 import com.macneet.wuapp.databinding.ActivityReportResultBinding;
@@ -168,8 +169,10 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
                 .thenAcceptBoth(CompletableFuture.supplyAsync(this::submitMVPs),
                         (s1, s2) -> {
                             dialog.dismiss();
-                            if(s1 && s2){  finish(); }
-                            else {
+                            if(s1 && s2){
+                                GamesManager.getInstance().reload();
+                                finish();
+                            } else {
                                 String message = "";
                                 if(!s1 && !s2){ message = "Failed To Report"; }
                                 else if(s1 && !s2) { message = "Failed to report MVP's"; }
