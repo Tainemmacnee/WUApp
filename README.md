@@ -1,4 +1,5 @@
 Wellington Ultimate Android App (WUApp)
+https://play.google.com/store/apps/details?id=com.macneet.wuapp
 
 An app designed to streamline day-to-day interactions with the Wellington Disc Sports website (https://wellington.ultimate.org.nz), It allows you to complete a number of common tasks with ease and efficiency such as:
 
