@@ -70,7 +70,7 @@ public class DisplayMapActivity extends AppCompatActivity {
         //The field number is always the last character (there are < 10 fields so always a single digit)
         String fieldNumber = ""+game.getLocation().charAt(game.getLocation().length()-1);
         //mimic file name
-        String imagePath = fieldName+"_field_"+fieldNumber+"_"+numPlayers+".png";
+        String imagePath = fieldName+"_field_"+fieldNumber+"_"+numPlayers+".webp";
         //Fake html for webview to consume
         String html = "<style>body {background-color: #121212;}</style><html><head></head><body> <img src=\""+ imagePath + "\" onerror=\"this.onerror=null; this.src='fail.png'\"> </body></html>";
         //Load the image
