@@ -1,6 +1,7 @@
 package com.macneet.wuapp.activities.displaymap;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class DisplayMapActivity extends AppCompatActivity {
     private WebView webView;
     private Game game;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,25 +41,26 @@ public class DisplayMapActivity extends AppCompatActivity {
         Intent intent = getIntent();
         game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
 
+        //try and workout how many players
+        if(game.getLeague().contains("4")){
+            loadDisplay(4);
+        }
+        if(game.getLeague().contains("7")){
+            loadDisplay(7);
+        }
+
+        //ask user how many players
         Button button7s = findViewById(R.id.button_7s);
-        button7s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.button_wrapper).setVisibility(View.GONE);
-                webView.setVisibility(View.VISIBLE);
-                displayImage(7);
-            }
-        });
+        button7s.setOnClickListener(view -> loadDisplay(7));
 
         Button button4s = findViewById(R.id.button_4s);
-        button4s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.button_wrapper).setVisibility(View.GONE);
-                webView.setVisibility(View.VISIBLE);
-                displayImage(4);
-            }
-        });
+        button4s.setOnClickListener(view -> loadDisplay(4));
+    }
+
+    private void loadDisplay(int numPlayers){
+        findViewById(R.id.button_wrapper).setVisibility(View.GONE);
+        webView.setVisibility(View.VISIBLE);
+        displayImage(numPlayers);
     }
 
     public void exit(View view){
