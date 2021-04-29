@@ -116,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
      * @param view needed to be able to bind function to button. usually null
      */
     public void forceReloadAll(View view){
+        File file = new File(this.getFilesDir(), "token.txt");
+        if(file.exists()) {
+            file.delete();
+        }
         EventsManager.getInstance().reload();
         GamesManager.getInstance().reload();
         OAuthManager.getInstance().reload();

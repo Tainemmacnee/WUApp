@@ -267,7 +267,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
                             .ignoreContentType(true)
                             .header("Authorization", "Bearer " + oAuthToken)
                             .data(data)
-                            .ignoreHttpErrors(false)
                             .post();
                 }
             }
