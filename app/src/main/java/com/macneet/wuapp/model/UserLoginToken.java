@@ -12,6 +12,8 @@ import java.util.HashMap;
  */
 public class UserLoginToken implements Serializable {
 
+    private static final long serialVersionUID = 42L;
+
     public static final String LINK_USER = "linkuser";
     public static final String LINK_SCHEDULED_GAMES = "linkscheduledgames";
     public static final String LINK_GAMES_WITH_RESULTS = "linkgameswithresults";

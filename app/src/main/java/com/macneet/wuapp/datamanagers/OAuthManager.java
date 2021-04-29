@@ -54,10 +54,6 @@ public class OAuthManager extends DataManager {
 
     @Override
     public void reload() {
-        File file = new File(context.getFilesDir(), "token.txt");
-        if(file.exists()) {
-            file.delete();
-        }
         exception = null;
         if(oAuthToken != null) { return; }
         oAuthToken = readToken(context);
