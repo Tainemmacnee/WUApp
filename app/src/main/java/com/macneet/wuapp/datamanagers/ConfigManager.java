@@ -45,7 +45,6 @@ public class ConfigManager {
 
             return new ConfigManager(cacheEvents, cacheLogin, context);
         } catch (FileNotFoundException fileNotFoundException) {
-            //fileNotFoundException.printStackTrace();
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (ClassNotFoundException classNotFoundException) {

@@ -10,7 +10,6 @@ import java.util.List;
 public class ReportFormState{
 
     public String comments;
-    public int homeTeamScore, awayTeamScore, RKU, FBC, FM, PAS, COM;
     public Document doc;
     public spinnerState homeScoreSpinner, awayScoreSpinner, RKUSpinner, FBCSpinner, FMSpinner, PASSpinner, COMSpinner;
     public List<spinnerState> maleMVPSpinners, femaleMVPSpinners;
@@ -64,10 +63,12 @@ public class ReportFormState{
 
         private List<String> spinnerValues;
         private int selectedIndex;
+        private boolean locked;
 
-        public spinnerState(List<String> spinnerValues, int selectedIndex){
+        public spinnerState(List<String> spinnerValues, int selectedIndex, boolean locked){
             this.spinnerValues = spinnerValues;
             this.selectedIndex = selectedIndex;
+            this.locked = locked;
         }
 
         public List<String> getSpinnerValues(){
@@ -77,5 +78,7 @@ public class ReportFormState{
         public int getSelectedIndex() {
             return selectedIndex;
         }
+
+        public boolean isLocked() { return locked; }
     }
 }

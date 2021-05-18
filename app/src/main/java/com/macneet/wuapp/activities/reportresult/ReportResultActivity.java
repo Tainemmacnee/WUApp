@@ -12,16 +12,16 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.macneet.wuapp.R;
+import com.macneet.wuapp.datamanagers.APIGameManager;
 import com.macneet.wuapp.datamanagers.DataReceiver;
 import com.macneet.wuapp.datamanagers.DataManager;
-import com.macneet.wuapp.datamanagers.GamesManager;
-import com.macneet.wuapp.datamanagers.OAuthManager;
 import com.macneet.wuapp.datamanagers.ReportFormManager;
 import com.macneet.wuapp.databinding.ActivityReportResultBinding;
 import com.macneet.wuapp.databinding.ReportResultMvpBoxBinding;
 import com.macneet.wuapp.exceptions.InvalidLinkException;
 import com.macneet.wuapp.model.Game;
 import com.macneet.wuapp.model.ReportFormState;
+import com.macneet.wuapp.model.UserLoginToken;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Connection;
@@ -49,7 +49,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
 
     private ActivityReportResultBinding binding;
     private List<ReportResultMvpBoxBinding> MVPBindings = new ArrayList<>();
-    private boolean binded = false;
     private String oAuthToken;
 
     @Override
@@ -60,9 +59,10 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
 
         Intent intent = getIntent();
         game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
+        UserLoginToken loginToken = (UserLoginToken) intent.getSerializableExtra(getString(R.string.MESSAGE_LOGINTOKEN));
+        oAuthToken = loginToken.getoAuthToken();
 
-        OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
-        ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink()));
+        ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, game.getReportLink()));
     }
 
     public void exit(View view){
@@ -70,18 +70,13 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     }
 
     public void reload(){
-        oAuthToken = null;
         reportFormState = null;
 
-        OAuthManager.getInstance().reload();
-
-        ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, DataManager.HOME_URL + game.getReportLink()));
-        OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
+        ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, game.getReportLink()));
     }
 
     private void bindReportFormState(ReportFormState formState){
         setContentView(binding.getRoot());
-        binded = true;
         binding.team1Name.setText(game.getHomeTeamName());
         binding.team2Name.setText(game.getAwayTeamName());
         Picasso.get().load(game.getHomeTeamImg()).into(binding.team1Image);
@@ -121,21 +116,15 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
     private void setupSpinner(Spinner spinner, ReportFormState.spinnerState state){
         spinner.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, state.getSpinnerValues()));
         spinner.setSelection(state.getSelectedIndex());
+        spinner.setEnabled(!state.isLocked());
     }
 
     @Override
     public <T> void receiveResponse(Response<T> response) {
         if(response.exception == null && !response.results.isEmpty()){
             if (response.results.get(0) instanceof ReportFormState) { //received report form state
-
                 reportFormState = (ReportFormState) response.results.get(0);
-
-            }
-            if(response.results.get(0) instanceof String){ //OAuthToken received
-                oAuthToken = (String) response.results.get(0);
-            }
-            if(!binded && oAuthToken != null && reportFormState != null) {
-                bindReportFormState((ReportFormState)reportFormState);
+                bindReportFormState(reportFormState);
             }
         } else {
             try{
@@ -146,12 +135,10 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
                 loadErrorMessage("Couldn't find that report form \n has the wds website changed?");
             } catch (ParseException e) {
                 loadErrorMessage("We encountered a problem while parsing the report form \n has the wds website changed?");
+            }catch (org.jsoup.HttpStatusException e){
+                loadErrorMessage("You are unable to report scores for this game at this time.");
             } catch (Throwable throwable) {
-                if(response.initialRequest.request.equals(ReportFormManager.REQUEST_REPORT_FORM)){
-                    loadErrorMessage("There was an unknown error while loading the report form");
-                } else {
-                    loadErrorMessage("There was an unknown error while loading your OAuth2Token");
-                }
+                loadErrorMessage("There was an unknown error while loading the report form");
             }
         }
     }
@@ -165,12 +152,12 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         ProgressDialog dialog = ProgressDialog.show(ReportResultActivity.this, "",
                 "Reporting Results. Please wait...", true);
 
-        CompletableFuture future = CompletableFuture.supplyAsync(this::submitSpiritAndScores)
+        CompletableFuture.supplyAsync(this::submitSpiritAndScores)
                 .thenAcceptBoth(CompletableFuture.supplyAsync(this::submitMVPs),
                         (s1, s2) -> {
                             dialog.dismiss();
                             if(s1 && s2){
-                                GamesManager.getInstance().reload();
+                                APIGameManager.getInstance().reload();
                                 finish();
                             } else {
                                 String message = "";
@@ -200,8 +187,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             String commentsReportLink;
             String comments = binding.reportResultComments.getText().toString();
 
-
-
             if (reportPage.getElementById("game_home_game_report_survey_6_answer") == null) {
                 commentsReportLink = "game[away_game_report_survey][6][answer]";
             } else {
@@ -209,6 +194,7 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             }
 
             FormElement form = (FormElement) reportPage.getElementById("game-report-score-form");
+            form.setBaseUri(DataManager.HOME_URL);
             Connection.Response response = form.submit()
                     .data(commentsReportLink, comments)
                     .cookies(ReportFormManager.getInstance().getLoginToken().getCookies())

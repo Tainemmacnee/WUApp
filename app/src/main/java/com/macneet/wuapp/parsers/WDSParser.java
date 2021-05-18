@@ -1,5 +1,6 @@
 package com.macneet.wuapp.parsers;
 
+import com.macneet.wuapp.datamanagers.DataManager;
 import com.macneet.wuapp.exceptions.ElementNotFoundException;
 import com.macneet.wuapp.model.Event;
 import com.macneet.wuapp.model.Game;
@@ -28,7 +29,7 @@ public class WDSParser {
             Elements eventLinks = htmlDOC.getElementsByClass("global-toolbar-subnav-img-item plain-link");
             for (Element e : eventLinks) {
                 if (e.attr("href").startsWith("/e/")) {
-                    eventLink = htmlDOC.location() + e.attr("href");
+                    eventLink = DataManager.HOME_URL + e.attr("href");
                     if(eventLink.endsWith("/register")){ //remove register suffix if present
                         eventLink = eventLink.substring(0, eventLink.length() - 9);
                     }
@@ -245,22 +246,25 @@ public class WDSParser {
                     femaleMVPSpinners = new ArrayList<>();
             try {
                 int selectFormIndex = 0;
+                boolean spiritLocked = doc.getElementsByClass("help-block").size() > 0;
                 List<Element> selectForms = doc.getElementsByTag("select");
+                List<Element> adminSelectForms = doc.getElementsByClass("row-fluid").get(2).child(1).getElementsByTag("select");
+                selectForms.removeAll(adminSelectForms);
 
-                homeScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-                awayScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-                RKUSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-                FBCSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-                FMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-                PASSpinner = parseSpinner(selectForms.get(selectFormIndex++));
-                COMSpinner = parseSpinner(selectForms.get(selectFormIndex++));
+                homeScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++), false, false);
+                awayScoreSpinner = parseSpinner(selectForms.get(selectFormIndex++), false, false);
+                RKUSpinner = parseSpinner(selectForms.get(selectFormIndex++), spiritLocked, true);
+                FBCSpinner = parseSpinner(selectForms.get(selectFormIndex++), spiritLocked, true);
+                FMSpinner = parseSpinner(selectForms.get(selectFormIndex++), spiritLocked, true);
+                PASSpinner = parseSpinner(selectForms.get(selectFormIndex++), spiritLocked, true);
+                COMSpinner = parseSpinner(selectForms.get(selectFormIndex++), spiritLocked, true);
 
                 int mvpCount = selectForms.size() - selectFormIndex;
                 while (selectFormIndex < selectForms.size()) {
                     if (selectFormIndex - 7 < mvpCount / 2) {
-                        femaleMVPSpinners.add(parseSpinner(selectForms.get(selectFormIndex++)));
+                        femaleMVPSpinners.add(parseSpinner(selectForms.get(selectFormIndex++), false, false));
                     } else {
-                        maleMVPSpinners.add(parseSpinner(selectForms.get(selectFormIndex++)));
+                        maleMVPSpinners.add(parseSpinner(selectForms.get(selectFormIndex++), false, false));
                     }
                 }
 
@@ -288,17 +292,18 @@ public class WDSParser {
             }
     }
 
-    private static ReportFormState.spinnerState parseSpinner(Element selectTag){
+    private static ReportFormState.spinnerState parseSpinner(Element selectTag, boolean locked, boolean adjust){
         List<String> options = new ArrayList<>();
         int selectedIndex = -1, currentIndex = 0;
         for(Element option : selectTag.children()){
             options.add(option.text());
             if(option.attr("selected").equals("selected")){
-                selectedIndex = currentIndex;
+                if(currentIndex == 0 && adjust) { selectedIndex = 3; }
+                else { selectedIndex = currentIndex; }
             }
             currentIndex++;
         }
 
-        return new ReportFormState.spinnerState(options, selectedIndex);
+        return new ReportFormState.spinnerState(options, selectedIndex, locked);
     }
 }

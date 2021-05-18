@@ -22,6 +22,10 @@
         <item name="android:paddingRight">10dp</item>
     </style>
 
+    <style name="StandardSpinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_color_selector</item>
+    </style>
+
     <style name="EmphasizedButton" parent="StandardButton">
         <item name="android:background">@drawable/rounded_background_yellow</item>
     </style>

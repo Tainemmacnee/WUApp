@@ -48,21 +48,20 @@ public class ReportFormManager extends DataManager {
     public void downloadReportForm(String link){
         this.downloading = true;
         CompletableFuture.supplyAsync(() -> {
-            try {
-                return downloadWebPage(link);
-            } catch (IOException | InvalidLinkException e) {
-                throw new CompletionException(e);
-            }
-        }).thenApply(r -> {
-            try {
-                return WDSParser.parseReportForm(r);
-            } catch (ParseException e) {
-                throw new CompletionException(e);
-            }
-        }).thenAccept(r -> {
-            reportForm = r;
-            this.downloading = false;
-            prepareResponse();
-        }).whenComplete((msg, ex) -> {exception = ex; downloading = false; prepareResponse();});
+                    try {
+                        return downloadWebPage(link);
+                    } catch (IOException | InvalidLinkException e) {
+                        throw new CompletionException(e);
+                    }
+                })
+                .thenApply(r -> {
+                    try {
+                        return WDSParser.parseReportForm(r);
+                    } catch (ParseException e) {
+                        throw new CompletionException(e);
+                    }
+                })
+                .thenAccept(r -> reportForm = r)
+                .whenComplete((msg, ex) -> {exception = ex; downloading = false; prepareResponse();});
     }
 }
