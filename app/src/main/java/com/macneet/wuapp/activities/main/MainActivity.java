@@ -10,10 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.macneet.wuapp.R;
+import com.macneet.wuapp.datamanagers.APIGameManager;
 import com.macneet.wuapp.datamanagers.DataReceiver;
 import com.macneet.wuapp.datamanagers.EventsManager;
-import com.macneet.wuapp.datamanagers.GamesManager;
-import com.macneet.wuapp.datamanagers.OAuthManager;
 import com.macneet.wuapp.datamanagers.ReportFormManager;
 import com.macneet.wuapp.datamanagers.StandingsManager;
 import com.macneet.wuapp.model.Game;
@@ -49,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         //setup data managers
         EventsManager.initialise(loginToken, this);
-        GamesManager.initialise(loginToken);
+        APIGameManager.initialise(loginToken);
         StandingsManager.initialise(loginToken);
         ReportFormManager.initialise(loginToken);
-        OAuthManager.initialise(loginToken, this);
 
         //setup navigation
         navigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     public void reportGame(View view, Game game){
         Intent intent = new Intent(this, ReportResultActivity.class);
         intent.putExtra(getString(R.string.MESSAGE_GAME), game);
+        intent.putExtra(getString(R.string.MESSAGE_LOGINTOKEN), loginToken);
         startActivity(intent);
     }
 
@@ -121,30 +120,25 @@ public class MainActivity extends AppCompatActivity {
             file.delete();
         }
         EventsManager.getInstance().reload();
-        GamesManager.getInstance().reload();
-        OAuthManager.getInstance().reload();
+        APIGameManager.getInstance().reload();
         navigationView.setSelectedItemId(navigationView.getSelectedItemId());
     }
 
     /**
-     * Used to reload the game (and oauthtoken) data. OAuthToken is reloaded
-     * because if the games have failed to load then probably so has the token.
+     * Used to reload the game data.
      * @param view needed to be able to bind function to button. usually null
      */
     public void reloadGames(View view){
-        GamesManager.getInstance().reload();
-        OAuthManager.getInstance().reload();
+        APIGameManager.getInstance().reload();
         navigationView.setSelectedItemId(navigationView.getSelectedItemId());
     }
 
     /**
-     * Used to reload the event (and oauthtoken) data. OAuthToken is reloaded
-     * because if the games have failed to load then probably so has the token.
+     * Used to reload the event
      * @param view needed to be able to bind function to button. usually null
      */
     public void reloadEvents(View view){
         EventsManager.getInstance().reload();
-        OAuthManager.getInstance().reload();
         navigationView.setSelectedItemId(navigationView.getSelectedItemId());
     }
 

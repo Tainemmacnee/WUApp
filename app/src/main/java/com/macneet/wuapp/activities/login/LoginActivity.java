@@ -12,10 +12,14 @@ import com.macneet.wuapp.R;
 import com.macneet.wuapp.datamanagers.ConfigManager;
 import com.macneet.wuapp.datamanagers.DataManager;
 import com.macneet.wuapp.databinding.ActivityLoginBinding;
+import com.macneet.wuapp.exceptions.InvalidLinkException;
 import com.macneet.wuapp.model.UserLoginToken;
 import com.macneet.wuapp.activities.main.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,20 +33,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
 
     public final String LOGIN_URL = "https://wds.usetopscore.com";
+    public final String OAUTH_URL = "https://wds.usetopscore.com/u/oauth-key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ConfigManager.initialise(getApplicationContext());
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -54,10 +60,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        //check configManager to see if we should use saved login
-        ConfigManager configManager = ConfigManager.getInstance();
-        if(configManager.getCacheLogin()) {
+        //check config to see if we should use saved login
+        ConfigManager.initialise(this);
+        ConfigManager config = ConfigManager.getInstance();
+        if(config.getCacheLogin()) {
 
+            //load login token
             UserLoginToken loginToken = null;
             try (FileInputStream fin = getApplicationContext().openFileInput("login.txt"); ObjectInputStream oin = new ObjectInputStream(fin)) {
                 loginToken = (UserLoginToken) oin.readObject();
@@ -115,21 +123,82 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
 
-        //Collect login data
+        //Collect username
         Element userButton = loginPage.getElementsByClass("global-toolbar-user-btn ").first();
         String name = userButton.child(1).text();
-
+        //Collect profile image
         String profileImage = userButton.child(0).attr("src").replace("30", "200");
-
+        //Collect login cookies
         HashMap<String, String> cookies = (HashMap<String, String>) loginActionResponse.cookies();
-
+        //collect links needed to download more data
         HashMap<String, String> links = new HashMap<>();
         links.put(UserLoginToken.LINK_USER, LOGIN_URL+userButton.attr("href"));
         links.put(UserLoginToken.LINK_SCHEDULED_GAMES, LOGIN_URL+userButton.attr("href") + "/schedule");
         links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/with_result");
         links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
 
-        return new UserLoginToken(cookies, links, name, profileImage);
+        String oAuthToken = generateOAuthToken(cookies);
+        String personID = generatePersonID(cookies);
+        if(oAuthToken == null || personID == null) { return null; }
+
+        return new UserLoginToken(cookies, links, name, profileImage, oAuthToken, personID);
+    }
+
+    private String generatePersonID(HashMap<String, String> cookies){
+        try { //download web page with oAuth Credentials
+            Connection.Response response = Jsoup.connect("https://wds.usetopscore.com/api/me")
+                    .method(Connection.Method.GET)
+                    .ignoreContentType(true)
+                    .userAgent(DataManager.USER_AGENT)
+                    .cookies(cookies)
+                    .execute();
+
+            System.out.println(response.body());
+            JSONObject result = (JSONObject) new JSONObject(response.body()).getJSONArray("result").get(0);
+            return ""+ result.get("person_id");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String generateOAuthToken(HashMap<String, String> cookies){
+        Document oAuthPage;
+        try { //download web page with oAuth Credentials
+            Connection.Response loadPageResponse = Jsoup.connect(OAUTH_URL)
+                    .method(Connection.Method.GET)
+                    .userAgent(DataManager.USER_AGENT)
+                    .cookies(cookies)
+                    .execute();
+            oAuthPage = loadPageResponse.parse();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        //grab client_id and client_secret from web page
+        Element table = oAuthPage.getElementsByClass("table no-border").first();
+        List<String> oAuthInfo = new ArrayList<>();
+
+        for (Element row : table.getElementsByTag("tr")) { //find id and secret in table
+            oAuthInfo.add(row.getElementsByTag("td").first().text());
+        }
+
+        try { //send auth details to generate token
+            Document response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
+                    .userAgent(DataManager.USER_AGENT)
+                    .data("grant_type", "client_credentials")
+                    .data("client_id", oAuthInfo.get(0))
+                    .data("client_secret", oAuthInfo.get(1))
+                    .ignoreContentType(true)
+                    .post();
+
+            //Take oauth token from JSON response
+            JSONObject result = new JSONObject(response.body().text());
+            return (String) result.get("access_token");
+        } catch (IOException | JSONException e){
+            return null;
+        }
     }
 
     public void attemptLogin(View view){
@@ -143,7 +212,6 @@ public class LoginActivity extends AppCompatActivity {
                 .thenApply(r -> attemptLogin(r, username, password))
                 .thenAccept(r -> {
                     dialog.dismiss();
-
                     if(r != null) {
                         saveLoginToken(r);
 
@@ -156,15 +224,19 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void saveLoginToken(UserLoginToken token){
-        if (!new File(getApplicationContext().getFilesDir(), "login.txt").exists()) {
-            try (FileOutputStream fout = getApplicationContext().openFileOutput("login.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
-                oos.writeObject(token);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private void saveLoginToken(UserLoginToken token) {
+        //delete login if one is already saved
+        File login = new File(getApplicationContext().getFilesDir(), "login.txt");
+        if (login.exists()) {
+            login.delete();
+        }
+        //save login to file
+        try (FileOutputStream fout = getApplicationContext().openFileOutput("login.txt", Context.MODE_PRIVATE); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+            oos.writeObject(token);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
