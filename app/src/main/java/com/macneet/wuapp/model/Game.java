@@ -71,7 +71,7 @@ public class Game implements Parcelable {
 
     public String getReportLink() { return reportLink; }
 
-    public boolean isReportable() { return reportLink != null; }
+    public boolean isReportable() { return reportLink != null && !isUpcoming(); }
 
     public boolean isUpcoming(){
         SimpleDateFormat sdf = new SimpleDateFormat("E, dd/MM/yyyy hh:mm a");

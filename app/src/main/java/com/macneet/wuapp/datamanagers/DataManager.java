@@ -29,12 +29,12 @@ public abstract class DataManager {
 
     protected Document downloadWebPage(String link) throws IOException, InvalidLinkException {
         if(link == null) { throw new InvalidLinkException(); }
-        return Jsoup.connect(link)
+        return Jsoup.parse(Jsoup.connect(link)
                 .method(Connection.Method.GET)
                 .userAgent(USER_AGENT)
                 .cookies(loginToken.getCookies())
                 .execute()
-                .parse();
+                .body());
     }
 
     public UserLoginToken getLoginToken(){ return this.loginToken; }
