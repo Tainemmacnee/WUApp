@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.macneet.wuapp.R;
+import com.macneet.wuapp.datamanagers.APIGameManager;
 import com.macneet.wuapp.datamanagers.DataReceiver;
-import com.macneet.wuapp.datamanagers.GamesManager;
 import com.macneet.wuapp.model.Game;
 import com.macneet.wuapp.activities.main.DisplayFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -29,11 +29,11 @@ public class GameTabsFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0){
                     selectedFragment = new UpcomingGamesFragment();
-                    GamesManager.getInstance().requestData(new DataReceiver.Request(selectedFragment, GamesManager.REQUEST_SCHEDULED_GAMES));
+                    APIGameManager.getInstance().requestData(new DataReceiver.Request(selectedFragment, APIGameManager.REQUEST_SCHEDULED_GAMES));
                 }
                 if(tab.getPosition() == 1){
                     selectedFragment = new PlayedGamesFragment();
-                    GamesManager.getInstance().requestData(new DataReceiver.Request(selectedFragment, GamesManager.REQUEST_RECENT_GAMES));
+                    APIGameManager.getInstance().requestData(new DataReceiver.Request(selectedFragment, APIGameManager.REQUEST_RECENT_GAMES));
                 }
                 loadFragment(selectedFragment);
             }

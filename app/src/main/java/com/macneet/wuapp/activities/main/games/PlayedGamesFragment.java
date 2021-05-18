@@ -5,8 +5,8 @@ import android.view.View;
 import com.macneet.wuapp.activities.main.DisplayFragment;
 import com.macneet.wuapp.activities.main.MainActivity;
 import com.macneet.wuapp.databinding.FragmentExceptionDisplayBinding;
+import com.macneet.wuapp.datamanagers.APIGameManager;
 import com.macneet.wuapp.datamanagers.DataReceiver;
-import com.macneet.wuapp.datamanagers.GamesManager;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class PlayedGamesFragment extends DisplayFragment {
 
     @Override
     protected void refresh() {
-        GamesManager.getInstance().reload();
-        GamesManager.getInstance().requestData(new DataReceiver.Request(this, GamesManager.REQUEST_RECENT_GAMES));
+        APIGameManager.getInstance().reload();
+        APIGameManager.getInstance().requestData(new DataReceiver.Request(this, APIGameManager.REQUEST_RECENT_GAMES));
     }
 
     public void loadErrorMessage(String message){
