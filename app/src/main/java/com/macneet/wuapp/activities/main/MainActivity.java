@@ -13,6 +13,7 @@ import com.macneet.wuapp.R;
 import com.macneet.wuapp.datamanagers.APIGameManager;
 import com.macneet.wuapp.datamanagers.DataReceiver;
 import com.macneet.wuapp.datamanagers.EventsManager;
+import com.macneet.wuapp.datamanagers.OAuthManager;
 import com.macneet.wuapp.datamanagers.ReportFormManager;
 import com.macneet.wuapp.datamanagers.StandingsManager;
 import com.macneet.wuapp.model.Game;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         APIGameManager.initialise(loginToken);
         StandingsManager.initialise(loginToken);
         ReportFormManager.initialise(loginToken);
+        OAuthManager.initialise(loginToken);
 
         //setup navigation
         navigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);

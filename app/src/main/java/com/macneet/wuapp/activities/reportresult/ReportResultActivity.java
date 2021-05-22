@@ -15,6 +15,7 @@ import com.macneet.wuapp.R;
 import com.macneet.wuapp.datamanagers.APIGameManager;
 import com.macneet.wuapp.datamanagers.DataReceiver;
 import com.macneet.wuapp.datamanagers.DataManager;
+import com.macneet.wuapp.datamanagers.OAuthManager;
 import com.macneet.wuapp.datamanagers.ReportFormManager;
 import com.macneet.wuapp.databinding.ActivityReportResultBinding;
 import com.macneet.wuapp.databinding.ReportResultMvpBoxBinding;
@@ -60,9 +61,9 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         Intent intent = getIntent();
         game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
         UserLoginToken loginToken = (UserLoginToken) intent.getSerializableExtra(getString(R.string.MESSAGE_LOGINTOKEN));
-        oAuthToken = loginToken.getoAuthToken();
 
         ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, game.getReportLink()));
+        OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
     }
 
     public void exit(View view){
@@ -71,8 +72,9 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
 
     public void reload(){
         reportFormState = null;
-
+        oAuthToken = null;
         ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, game.getReportLink()));
+        OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
     }
 
     private void bindReportFormState(ReportFormState formState){
@@ -125,6 +127,8 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
             if (response.results.get(0) instanceof ReportFormState) { //received report form state
                 reportFormState = (ReportFormState) response.results.get(0);
                 bindReportFormState(reportFormState);
+            } else if (response.results.get(0) instanceof String){
+                oAuthToken = (String) response.results.get(0);
             }
         } else {
             try{

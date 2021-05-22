@@ -5,6 +5,11 @@ import com.macneet.wuapp.exceptions.InvalidLinkException;
 import com.macneet.wuapp.model.ReportFormState;
 import com.macneet.wuapp.model.UserLoginToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,7 +59,7 @@ public class ReportFormManager extends DataManager {
                         throw new CompletionException(e);
                     }
                 })
-                .thenApply(r -> {
+                .thenApplyAsync(r -> {
                     try {
                         return WDSParser.parseReportForm(r);
                     } catch (ParseException e) {

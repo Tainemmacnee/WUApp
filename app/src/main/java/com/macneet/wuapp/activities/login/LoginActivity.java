@@ -137,11 +137,11 @@ public class LoginActivity extends AppCompatActivity {
         links.put(UserLoginToken.LINK_GAMES_WITH_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/with_result");
         links.put(UserLoginToken.LINK_GAMES_MISSING_RESULTS, LOGIN_URL+userButton.attr("href") + "/schedule/game_type/missing_result");
 
-        String oAuthToken = generateOAuthToken(cookies);
+        List<String> oAuthDetails = generateOAuthDetails(cookies);
         String personID = generatePersonID(cookies);
-        if(oAuthToken == null || personID == null) { return null; }
+        if(oAuthDetails == null || personID == null) { return null; }
 
-        return new UserLoginToken(cookies, links, name, profileImage, oAuthToken, personID);
+        return new UserLoginToken(cookies, links, name, profileImage, oAuthDetails.get(1), oAuthDetails.get(0), personID);
     }
 
     private String generatePersonID(HashMap<String, String> cookies){
@@ -153,7 +153,6 @@ public class LoginActivity extends AppCompatActivity {
                     .cookies(cookies)
                     .execute();
 
-            System.out.println(response.body());
             JSONObject result = (JSONObject) new JSONObject(response.body()).getJSONArray("result").get(0);
             return ""+ result.get("person_id");
         } catch (Exception e) {
@@ -162,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private String generateOAuthToken(HashMap<String, String> cookies){
+    private List<String> generateOAuthDetails(HashMap<String, String> cookies){
         Document oAuthPage;
         try { //download web page with oAuth Credentials
             Connection.Response loadPageResponse = Jsoup.connect(OAUTH_URL)
@@ -178,27 +177,12 @@ public class LoginActivity extends AppCompatActivity {
 
         //grab client_id and client_secret from web page
         Element table = oAuthPage.getElementsByClass("table no-border").first();
-        List<String> oAuthInfo = new ArrayList<>();
+        List<String> oAuthDetails = new ArrayList<>();
 
         for (Element row : table.getElementsByTag("tr")) { //find id and secret in table
-            oAuthInfo.add(row.getElementsByTag("td").first().text());
+            oAuthDetails.add(row.getElementsByTag("td").first().text());
         }
-
-        try { //send auth details to generate token
-            Document response = Jsoup.connect("https://wds.usetopscore.com/api/oauth/server")
-                    .userAgent(DataManager.USER_AGENT)
-                    .data("grant_type", "client_credentials")
-                    .data("client_id", oAuthInfo.get(0))
-                    .data("client_secret", oAuthInfo.get(1))
-                    .ignoreContentType(true)
-                    .post();
-
-            //Take oauth token from JSON response
-            JSONObject result = new JSONObject(response.body().text());
-            return (String) result.get("access_token");
-        } catch (IOException | JSONException e){
-            return null;
-        }
+        return oAuthDetails;
     }
 
     public void attemptLogin(View view){

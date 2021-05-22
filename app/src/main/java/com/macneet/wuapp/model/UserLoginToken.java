@@ -36,28 +36,42 @@ public class UserLoginToken implements Serializable {
         this.profileImage = profileImage;
     }
 
-    public void setoAuthToken(String oAuthToken) {
-        this.oAuthToken = oAuthToken;
-    }
-
     public void setPersonID(String personID) {
         this.personID = personID;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
     }
 
     private HashMap<String ,String> cookies;
     private HashMap<String ,String> links;
     private String name;
     private String profileImage;
-    private String oAuthToken;
+    private String clientSecret;
+    private String clientID;
     private String personID;
 
-    public UserLoginToken(HashMap<String ,String> cookies, HashMap<String ,String> links, String name, String profileImage, String oAuthToken, String personID){
+    public UserLoginToken(HashMap<String ,String> cookies, HashMap<String ,String> links, String name, String profileImage, String clientSecret, String clientID, String personID){
         this.cookies = cookies;
         this.links = links;
         this.name = name;
         this.profileImage = profileImage;
-        this.oAuthToken = oAuthToken;
+        this.clientID = clientID;
+        this.clientSecret = clientSecret;
         this.personID = personID;
+    }
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
     }
 
     public HashMap<String, String> getCookies() {
@@ -75,8 +89,6 @@ public class UserLoginToken implements Serializable {
     public String getProfileImage() {
         return profileImage;
     }
-
-    public String getoAuthToken() { return oAuthToken; }
 
     public String getPersonID() { return personID; }
 }
