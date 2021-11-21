@@ -4,16 +4,16 @@ android {
     compileSdkVersion 30
     buildToolsVersion '30.0.0'
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     defaultConfig {
         applicationId "com.macneet.wuapp"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.0.8"
+        versionCode 7
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

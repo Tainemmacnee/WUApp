@@ -60,7 +60,6 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
 
         Intent intent = getIntent();
         game = intent.getParcelableExtra(getString(R.string.MESSAGE_GAME));
-        UserLoginToken loginToken = (UserLoginToken) intent.getSerializableExtra(getString(R.string.MESSAGE_LOGINTOKEN));
 
         ReportFormManager.getInstance().requestData(new Request(this, ReportFormManager.REQUEST_REPORT_FORM, game.getReportLink()));
         OAuthManager.getInstance().requestData(new Request(this, OAuthManager.REQUEST_OAUTH_TOKEN));
@@ -178,6 +177,7 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
         try {
             Document reportPage = reportFormState.doc;
             List<Element> selectForms = reportPage.getElementsByTag("select");
+
             int selectFormIndex = 0;
 
             setSpinner(selectForms.get(selectFormIndex++), binding.reportResultHomeScore.getSelectedItemPosition());
@@ -276,15 +276,12 @@ public class ReportResultActivity extends AppCompatActivity implements DataRecei
      */
     private void setSpinner(Element selectTag, int index){
         //remove selected attribute
-        Element selectedOption = selectTag.children().select("[selected]").first();
-        if (selectedOption != null) {
-            selectedOption.removeAttr("selected");
-        }
+        //Element selectedOption = selectTag.children().select("[selected]").first();
+        selectTag.children().removeAttr("selected");
+//        if (selectedOption != null) {
+//            selectedOption.removeAttr("selected");
+//        }
         //set correct selected option
         selectTag.child(index).attr("selected", "selected");
     }
-
-
-
-
 }

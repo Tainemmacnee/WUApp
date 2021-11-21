@@ -1,11 +1,14 @@
 package com.macneet.wuapp.activities.main.settings;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.macneet.wuapp.BuildConfig;
 import com.macneet.wuapp.datamanagers.ConfigManager;
 import com.macneet.wuapp.datamanagers.EventsManager;
 import com.macneet.wuapp.activities.main.MainActivity;
@@ -46,6 +49,7 @@ public class SettingsFragment extends DisplayFragment {
             }
         });
 
+        binding.versionNumber.setText(BuildConfig.VERSION_NAME);
 
         return binding.getRoot();
     }
